@@ -20,6 +20,8 @@ String[] emily_conditions = {"con", "opp", "de", "li", "west"};
 String top_data_folder = "C:/Users/alzfr/Desktop/Empatica VR Study 2 just forest condition/Dense Forest Empatica files"; // all files, VR
 //String top_data_folder = "C:/Users/alzfr/Desktop/expt 3 data/empatica";
 
+boolean folderIsSelected = false;
+
 int filecount = 0;
 //String type = "adam";
 String type = "emily";
@@ -126,15 +128,28 @@ void listfiles(){
 }
 */
 
-
+void folderSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+    top_data_folder = selection.getAbsolutePath();
+    top_data_folder = top_data_folder.replace("\\","/");
+    println(top_data_folder);
+    folderIsSelected = true;
+    listfiles();
+  }
+}
 
 void setup() {
   //size(700,700);
   fullScreen();
   textFont(createFont("Arial",10),10);
-  listfiles();
-  print("esize");
-  println(emily_empatica_list.size());
+  selectFolder("Select folder to process", "folderSelected");
+  
+  //listfiles();
+  //print("esize");
+  //println(emily_empatica_list.size());
   //emily_empatica_list = new ArrayList<Empatica>(emily_empatica_list.subList(22,24)); // hack to reduce list size for inspection
   
   /*
@@ -150,23 +165,30 @@ void setup() {
 }
 
 void draw(){
-   background(255);
-   //cg.draw_graph();
-   //e1.draw_data();
-   /*
-   for (int e = 0; e < emily_empatica_list.size(); e++){
-     emily_empatica_list.get(e).draw_data();
-   }
-   */
-   if (type == "emily"){
-     if (filecount < emily_empatica_list.size()){
-       emily_empatica_list.get(filecount).draw_data();
+  
+  if (folderIsSelected){
+     background(255);
+     //cg.draw_graph();
+     //e1.draw_data();
+     /*
+     for (int e = 0; e < emily_empatica_list.size(); e++){
+       emily_empatica_list.get(e).draw_data();
      }
-   } else {
-     adam_empatica_list.get(filecount).draw_data();
-   }
-   
-   draw_mouseline();
+     */
+     if (type == "emily"){
+       if (filecount < emily_empatica_list.size()){
+         emily_empatica_list.get(filecount).draw_data();
+       }
+     } else {
+       adam_empatica_list.get(filecount).draw_data();
+     }
+     
+     draw_mouseline();
+  } else {
+    background(frameCount%255);
+    //do nothing, wait for folder
+  }
+
 }
 
 void keyPressed() {
