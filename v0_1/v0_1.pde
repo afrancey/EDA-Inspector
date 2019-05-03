@@ -1,0 +1,456 @@
+import org.gicentre.utils.stat.*;
+import org.gicentre.utils.colour.*;
+import java.util.Arrays;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+//CustomGraph cg;
+Empatica e1;
+ArrayList<Empatica> emily_empatica_list=new ArrayList<Empatica>();
+ArrayList<Empatica> adam_empatica_list=new ArrayList<Empatica>();
+
+ArrayList<PVector> screen_boundaries = new ArrayList<PVector>();
+ArrayList<ArrayList<Integer>> sample_boundaries_each_subject = new ArrayList<ArrayList<Integer>>();
+ArrayList<String> names_boundaries = new ArrayList<String>();
+
+String[] emily_conditions = {"con", "opp", "de", "li", "west"};
+//String top_data_folder = "C:/Users/alzfr/Desktop/Study 4 Confirming VR with real world Fall/Data/Empatica"; // look for "de" files, REAL
+String top_data_folder = "C:/Users/alzfr/Desktop/Empatica VR Study 2 just forest condition/Dense Forest Empatica files"; // all files, VR
+//String top_data_folder = "C:/Users/alzfr/Desktop/expt 3 data/empatica";
+
+int filecount = 0;
+//String type = "adam";
+String type = "emily";
+
+void listfiles(){
+  File folder = new File(top_data_folder);
+  File[] listOfFiles = folder.listFiles();
+  
+  for(int i = 0; i < listOfFiles.length; i++) {
+    if (listOfFiles[i].isFile()) {
+      println("File " + listOfFiles[i].getName());
+    } else if (listOfFiles[i].isDirectory()) {
+      // if directory, extract data
+      //println("Directory " + listOfFiles[i].getName());
+      if (type == "emily"){
+        //String[] goodfiles = {"20 Dense","26 Dense F","73 dens","76 dens","92 dens", "3 Dense F", "51 Dense F"}; // REAL
+        //String[] goodfiles = {"100", "120", "127","136","148"};//"156","47","50","53","54","83","85","92"}; // VR
+        String[] goodfiles = {"83","85","92"}; // REAL
+        boolean added = false;
+        for (int s = 0; s < goodfiles.length; s++){
+          if (listOfFiles[i].getName().equals(goodfiles[s])){
+          //if (added == false){
+            added = true;
+            Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, listOfFiles[i].getName(), "dense", "emily");
+            //emily_empatica_list.add(new Empatica(this, 100,100, top_data_folder, listOfFiles[i].getName(), emily_conditions[cond], "emily"));
+            emily_empatica_list.add(new_emily_empatica);
+            println("adding empatica emily " + listOfFiles[i].getName());
+            
+          }
+        }
+       } else {
+        //int[] valid_empatica_participants = {5,6,7,8,9,10,12,13,14,17,18,19, 20, 21, 22, 23, 24, 25, 26};
+        int[] valid_empatica_participants = {6,9,12,17,18,19, 20, 21, 22, 23}; //p8 removed
+        for (int v = 0; v < valid_empatica_participants.length; v++){
+          if (listOfFiles[i].getName().contains("__" + Integer.toString(valid_empatica_participants[v]))){
+            println("adding empatica adam " + listOfFiles[i].getName());
+            adam_empatica_list.add(new Empatica(this, 100,20, top_data_folder, listOfFiles[i].getName(), "null", "adam"));
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+void listfiles(){
+  File folder = new File(top_data_folder);
+  File[] listOfFiles = folder.listFiles();
+  
+  for(int i = 0; i < listOfFiles.length; i++) {
+    if (listOfFiles[i].isFile()) {
+      println("File " + listOfFiles[i].getName());
+    } else if (listOfFiles[i].isDirectory()) {
+      // if directory, extract data
+      //println("Directory " + listOfFiles[i].getName());
+      if (type == "emily"){
+        //if (listOfFiles[i].getName().contains("de") || listOfFiles[i].getName().contains("De") ){ // FOR REAL FILES
+        if (listOfFiles[i].getName().contains("92")){
+        //if (true){/////////////////////////////////////////// FOR VR FILES ////////////////////////////////////////////////////////////////////////////
+          boolean good_file = true;
+          
+          // REAL FILES
+          if (listOfFiles[i].getName().contains("13") || listOfFiles[i].getName().contains("37") || 
+            listOfFiles[i].getName().contains("89") || listOfFiles[i].getName().contains("39") || listOfFiles[i].getName().contains("64")){
+              good_file = false;
+          }
+          
+          if (listOfFiles[i].getName().contains("134")){
+            good_file = true;
+          }
+          
+          
+          
+          // VR FILES
+          
+          if (listOfFiles[i].getName().contains("121") || listOfFiles[i].getName().contains("126") || 
+            listOfFiles[i].getName().contains("128") || listOfFiles[i].getName().contains("137")){
+              good_file = false;
+          }
+          
+          
+          
+          if (good_file){
+            Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, listOfFiles[i].getName(), "dense", "emily");
+            //emily_empatica_list.add(new Empatica(this, 100,100, top_data_folder, listOfFiles[i].getName(), emily_conditions[cond], "emily"));
+            emily_empatica_list.add(new_emily_empatica);
+            println("adding empatica emily " + listOfFiles[i].getName());
+          } else {
+            println("bad file emily " + listOfFiles[i].getName());
+          }
+        }
+       } else {
+        //int[] valid_empatica_participants = {5,6,7,8,9,10,12,13,14,17,18,19, 20, 21, 22, 23, 24, 25, 26};
+        int[] valid_empatica_participants = {6,9,12,17,18,19, 20, 21, 22, 23}; //p8 removed
+        for (int v = 0; v < valid_empatica_participants.length; v++){
+          if (listOfFiles[i].getName().contains("__" + Integer.toString(valid_empatica_participants[v]))){
+            println("adding empatica adam " + listOfFiles[i].getName());
+            adam_empatica_list.add(new Empatica(this, 100,20, top_data_folder, listOfFiles[i].getName(), "null", "adam"));
+          }
+        }
+      }
+    }
+  }
+}
+*/
+
+
+
+void setup() {
+  //size(700,700);
+  fullScreen();
+  textFont(createFont("Arial",10),10);
+  listfiles();
+  print("esize");
+  println(emily_empatica_list.size());
+  //emily_empatica_list = new ArrayList<Empatica>(emily_empatica_list.subList(22,24)); // hack to reduce list size for inspection
+  
+  /*
+  try{
+    output_zeroes_and_area();
+  } catch(IOException e) {
+    println("exception");
+  }
+  */
+  
+ 
+  
+}
+
+void draw(){
+   background(255);
+   //cg.draw_graph();
+   //e1.draw_data();
+   /*
+   for (int e = 0; e < emily_empatica_list.size(); e++){
+     emily_empatica_list.get(e).draw_data();
+   }
+   */
+   if (type == "emily"){
+     if (filecount < emily_empatica_list.size()){
+       emily_empatica_list.get(filecount).draw_data();
+     }
+   } else {
+     adam_empatica_list.get(filecount).draw_data();
+   }
+   
+   draw_mouseline();
+}
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == RIGHT) {
+      if (type.equals("emily")){
+        println("in here!");
+        names_boundaries.add(emily_empatica_list.get(filecount).fname);
+        ArrayList<Integer> sample_boundaries = new ArrayList<Integer>();
+        for (int i = 0; i < screen_boundaries.size(); i++){
+          PVector data_value = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(screen_boundaries.get(i));
+          float time_boundary = data_value.x;
+          int sample_boundary = (int)(time_boundary*4.0);
+          sample_boundaries.add(sample_boundary);
+        }
+        sample_boundaries_each_subject.add(sample_boundaries);
+        screen_boundaries.clear();
+      }
+      filecount++;
+    } else if (keyCode == UP){
+        try{
+          emily_finished();
+        } catch(IOException e) {
+          println("exception");
+        }
+      
+    }
+  } 
+}
+void mouseClicked(){
+  if (type.equals("emily")){
+    //println(emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(new PVector(mouseX, mouseY)));
+    PVector mousepos = new PVector(mouseX, mouseY);
+    screen_boundaries.add(mousepos);
+  }
+  
+}
+
+void draw_mouseline(){
+  line(mouseX, 0, mouseX, height);
+  for (int b = 0; b < screen_boundaries.size(); b++){
+    if (b%2 == 0){
+      stroke(0,255,0);
+    } else {
+      stroke(255,0,0);
+    }
+    line(screen_boundaries.get(b).x, 0, screen_boundaries.get(b).x, height);
+    stroke(0,0,0);
+  }
+  
+  if (filecount < emily_empatica_list.size()){
+    PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(new PVector(mouseX, mouseY));
+    if (datapoint != null){
+      text("time: " + Float.toString(datapoint.x), mouseX + 20, 700);
+      text("SCL: " + Float.toString(datapoint.y), mouseX + 20, 730);
+      PVector mouse_endpoint = emily_empatica_list.get(filecount).SCL.lineChart.getDataToScreen(new PVector(datapoint.x + 2, datapoint.y + 0.1));
+      line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
+      line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
+    }
+  }
+
+
+}
+
+void output_zeroes_and_area() throws IOException{
+  String output = "";
+  float[] sum_area = new float[84];
+  float[] sum_extrema = new float[84];
+  String[] averages_names = {"bstand", "bwave", "bwalk", "sstand", "swave", "swalk"};
+  for (int i = 0; i < 84; i++){
+    sum_area[i] = 0.0;
+    sum_extrema[i] = 0.0;
+  }
+  for (int e = 0; e < adam_empatica_list.size(); e++){
+    output+=adam_empatica_list.get(e).pid_adam + ",";
+    print("len rois");
+    println(adam_empatica_list.get(e).rois.size());
+    
+    for (int r = 0; r < adam_empatica_list.get(e).rois.size(); r++){
+      float area = adam_empatica_list.get(e).rois.get(r).area;
+      int num_peaks = adam_empatica_list.get(e).rois.get(r).num_peaks;
+      String stim_type = adam_empatica_list.get(e).rois.get(r).stim_type;
+      sum_area[r]+= area;
+      sum_extrema[r]+=num_peaks;
+      if (stim_type.equals("none") == false){
+        print("write stim type ");
+        println(stim_type);
+      }
+      output+= "[" + stim_type + " " + Integer.toString(num_peaks) + " " + Float.toString(area) + "],";  
+    }
+    output+= "\n";
+  }
+  print(output);
+  PrintWriter writer = new PrintWriter("C:/Users/alzfr/Desktop/expt 3 data/stats.csv", "UTF-8");
+  writer.print(output);
+  writer.close();
+  
+  float[] block_average_area = {0.0,0.0,0.0,0.0,0.0,0.0};
+  float[] block_average_extrema = {0.0,0.0,0.0,0.0,0.0,0.0};
+  
+  for (int beep = 0; beep < 7; beep++){
+    block_average_area[0] += sum_area[beep];
+    block_average_extrema[0] += sum_extrema[beep];
+  }
+  for (int beep = 7; beep < 14; beep++){
+    block_average_area[1] += sum_area[beep];
+    block_average_extrema[1] += sum_extrema[beep];
+  }
+  for (int beep = 21; beep < 28; beep++){
+    block_average_area[2] += sum_area[beep];
+    block_average_extrema[2] += sum_extrema[beep];
+  }
+  for (int beep = 28; beep < 42; beep++){
+    block_average_area[3] += sum_area[beep];
+    block_average_extrema[3] += sum_extrema[beep];
+  }
+  for (int beep = 42; beep < 56; beep++){
+    block_average_area[4] += sum_area[beep];
+    block_average_extrema[4] += sum_extrema[beep];
+  }
+  for (int beep = 70; beep < 84; beep++){
+    block_average_area[5] += sum_area[beep];
+    block_average_extrema[5] += sum_extrema[beep];
+  }
+  
+  block_average_area[0] = block_average_area[0]/(adam_empatica_list.size()*7);
+  block_average_area[1] = block_average_area[1]/(adam_empatica_list.size()*7);
+  block_average_area[2] = block_average_area[2]/(adam_empatica_list.size()*7);
+  block_average_area[3] = block_average_area[3]/(adam_empatica_list.size()*14);
+  block_average_area[4] = block_average_area[4]/(adam_empatica_list.size()*14);
+  block_average_area[5] = block_average_area[5]/(adam_empatica_list.size()*14);
+  
+  block_average_extrema[0] = block_average_extrema[0]/(adam_empatica_list.size()*7);
+  block_average_extrema[1] = block_average_extrema[1]/(adam_empatica_list.size()*7);
+  block_average_extrema[2] = block_average_extrema[2]/(adam_empatica_list.size()*7);
+  block_average_extrema[3] = block_average_extrema[3]/(adam_empatica_list.size()*14);
+  block_average_extrema[4] = block_average_extrema[4]/(adam_empatica_list.size()*14);
+  block_average_extrema[5] = block_average_extrema[5]/(adam_empatica_list.size()*14);
+  
+  
+  print("avg area ");
+  println(block_average_area);
+  print("avg extrema ");
+  println(block_average_extrema);
+  
+  //for (int i = 
+ // println(adam_empatica_list.get(0).rois);
+  
+}
+
+float[] get_section_averages(int pnum){
+  Empatica emp = emily_empatica_list.get(pnum);
+  ArrayList<Float> SCL_baseline_d = emp.SCL_baseline_d;
+  //ArrayList<Float> baseline_score_params = mean_ssd(SCL_baseline_d); // NO LONGER USING MEAN AND ZSCORE FROM BASELINE
+  ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
+  
+  ArrayList<Integer> sample_bounds = sample_boundaries_each_subject.get(pnum);
+  ArrayList<Float> data = emp.SCL_data;
+  ArrayList<Float> z_data = zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
+
+  ArrayList<Integer> indicator_list = new ArrayList<Integer>();
+  for (int d = 0; d < z_data.size(); d++){
+    boolean rejected = false;
+    for (int bs = 0; bs < sample_bounds.size(); bs = bs+2){
+      int start = sample_bounds.get(bs);
+      int end = sample_bounds.get(bs+1);
+      if (d >= start && d <=end){
+        rejected = true;
+      }
+    }
+    if (rejected){
+      indicator_list.add(0);
+    } else {
+      indicator_list.add(1);
+    }
+  }
+  
+  // now have z-scored list and indicator list
+  // both of size 2400 (10 mins * 4 Hz)
+  // partition into chunks of 2400/10
+  
+  int section_length = 240; //2400/10; 1 minute
+  float[] mean = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  for (int m = 0; m < 10; m++){
+    int start = m*section_length;
+    int end = (m+1)*section_length;
+    ArrayList<Float> chop_z = new ArrayList<Float>(z_data.subList(start,end));
+    ArrayList<Integer> chop_ind = new ArrayList<Integer>(indicator_list.subList(start,end));
+    mean[m] = get_section_mean(chop_z, chop_ind);
+  }
+  
+  return(mean);
+  
+}
+
+float get_section_mean(ArrayList<Float> data, ArrayList<Integer> indicator){
+  // data is 3 minute long section
+  int subsection_length = 80; //240/3; 20 seconds
+  float[] sums = {0.0,0.0,0.0};
+  float[] num_indicators = {0.0,0.0,0.0};
+  for (int m = 0; m < 3; m++){
+    for (int s = m*subsection_length; s < (m+1)*subsection_length;s++){
+      if (indicator.get(s) == 1){
+        // good data
+        sums[m] += data.get(s);
+        num_indicators[m] += 1;
+      }
+    }
+  }
+  
+  float weighted_mean = 0.0;
+  for (int m = 0; m < 3; m++){
+    float weight = num_indicators[m]/(num_indicators[0]+num_indicators[1]+num_indicators[2]);
+    float unweighted_mean = sums[m]/num_indicators[m];
+    weighted_mean += weight*unweighted_mean;
+  }
+  
+  return(weighted_mean);
+}
+
+ArrayList<Float> mean_ssd(ArrayList<Float> data){
+  
+  ArrayList<Float> result = new ArrayList<Float>();
+  // calculate mean
+  float sum = 0;
+  for (int i = 0; i < data.size();i++){
+    sum+=data.get(i);
+  }
+  float mean = sum/data.size();
+  result.add(mean);
+  
+  //calculate sample SD
+  float sum_of_squares = 0;
+  for (int i = 0; i < data.size();i++){
+    sum_of_squares+=pow(data.get(i) - mean,2);
+  }
+  
+  float ssd = pow(sum_of_squares/(data.size()-1),0.5);
+  result.add(ssd);
+  
+  return(result);
+ 
+}
+
+ArrayList<Float> zscore_list(ArrayList<Float> data, float mean, float ssd){
+  
+  // create array of baseline standing values
+  ArrayList<Float> zscored = new ArrayList<Float>();
+  
+  for (int i = 0; i < data.size(); i++){
+    float val = (data.get(i) - mean)/ssd;
+    zscored.add(i, val);
+  }
+  
+  return(zscored);
+}
+
+void emily_finished() throws IOException{
+  // save means for each participant
+  String means_output = "";
+  for (int p = 0; p < emily_empatica_list.size(); p++){
+    means_output+=emily_empatica_list.get(p).fname + ",";
+    float[] weighted_means = get_section_averages(p);
+    for (int m = 0; m < 10; m++){
+      means_output+= Float.toString(weighted_means[m]) + ",";
+    }
+    means_output+="\n";
+  }
+  
+  String boundaries_output = "";
+  for (int p = 0; p < emily_empatica_list.size(); p++){
+    boundaries_output+=emily_empatica_list.get(p).fname + ",";
+    ArrayList<Integer> subject_bounds = sample_boundaries_each_subject.get(p);
+    for (int b = 0; b < subject_bounds.size(); b++){
+      boundaries_output+= Integer.toString(subject_bounds.get(b)) + " ";
+    }
+    boundaries_output+="\n";
+  }
+  PrintWriter mwriter = new PrintWriter("C:/Users/alzfr/Desktop/expt 3 data/means.csv", "UTF-8");
+  mwriter.print(means_output);
+  mwriter.close();
+  
+  PrintWriter bwriter = new PrintWriter("C:/Users/alzfr/Desktop/expt 3 data/bounds.csv", "UTF-8");
+  bwriter.print(boundaries_output);
+  bwriter.close();
+}
+  
