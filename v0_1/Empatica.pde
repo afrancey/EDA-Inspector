@@ -98,7 +98,6 @@ class Empatica{
       read_data_adam();
     }
     get_interval("stim wave nothing");
-    //get_ROI();
     if (study_type.equals("adam")){
       generate_ROI_adam();
     }
@@ -489,61 +488,6 @@ class Empatica{
       rois.add(roi);
     }
 
-  }
-  
-  void get_ROI(){
-    int num_groups = 9;
-    ArrayList<String> ROI_pid_list = new ArrayList<String>();
-    ArrayList<String> lines = read_data_file("C:/Users/alzfr/Desktop/expt 3 data/ROI.csv");
-      for (int l = 1; l < lines.size();l++){
-        //println(lines.get(l));
-        //pid  bstand  bwave  bwalk  sstand1  sstand2  swave1  swave2  swalk1  swalk2
-        String[] linesplit = split(lines.get(l),",");
-        ROI_pid_list.add(linesplit[0]);
-        for (int item = 1; item < linesplit.length; item++){
-          int stimuli_index_offset = (item - 1)*num_groups;
-          if (linesplit[item].equals("a")){
-            for (int s = 0; s < 7; s++){
-              int stimuli_index = stimuli_index_offset + s;
-              rois.add(new ROI(mainscreen, 
-                               fs_EDA, 
-                               new ArrayList<Float>(
-                                 SCL_time.subList((int)(markers.timestamps[stimuli_index]*fs_EDA),
-                                                  (int)(markers.timestamps[stimuli_index+1]*fs_EDA)
-                                 )
-                               ),
-                               new ArrayList<Float>(
-                                 SCL_data.subList((int)(markers.timestamps[stimuli_index]*fs_EDA),
-                                                  (int)(markers.timestamps[stimuli_index+1]*fs_EDA)
-                                                  )
-                               )
-                               )
-                               );
-            }
-          } else if (linesplit[item].equals("n") == false){
-            String[] cell_split = split(linesplit[item]," ");
-            for (int cs = 0; cs < cell_split.length; cs++){
-              int stimuli_index = stimuli_index_offset + Integer.parseInt(cell_split[cs]) - 1;
-              rois.add(new ROI(mainscreen, 
-                               fs_EDA, 
-                               new ArrayList<Float>(
-                                 SCL_time.subList((int)(markers.timestamps[stimuli_index]*fs_EDA),
-                                                  (int)(markers.timestamps[stimuli_index+1]*fs_EDA)
-                                 )
-                               ),
-                               new ArrayList<Float>(
-                                 SCL_data.subList((int)(markers.timestamps[stimuli_index]*fs_EDA),
-                                                  (int)(markers.timestamps[stimuli_index+1]*fs_EDA)
-                                                  )
-                               )
-                               )
-                               ); 
-            }
-  
-            
-          }
-        }
-      }
   }
 }
   
