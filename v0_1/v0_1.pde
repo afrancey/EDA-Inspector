@@ -84,6 +84,7 @@ void folderSelected(File selection) {
     top_data_folder = top_data_folder.replace("\\","/");
     println(top_data_folder);
     folderIsSelected = true;
+    stage = "folder selected";
     listfiles();
   }
 }
@@ -122,6 +123,8 @@ void draw(){
     }
   } else if (stage.equals("folder selected")){
     // show results on screen
+    background(0);
+    displayFolderSelectionResults();
   } else if (stage.equals("inspection")){
      background(255);
      if (filecount < emily_empatica_list.size()){
@@ -130,6 +133,23 @@ void draw(){
      draw_mouseline();
   }
 
+}
+
+void displayFolderSelectionResults(){
+  
+  textSize(30);
+  
+  text("Empatica Folders Found: ", 50, 50);
+  for (int en = 0; en < empatica_names.size(); en++){
+    text(empatica_names.get(en), 50, 90 + en*40);
+  }
+
+  text("Errors Found: ", 400, 50);
+  for (int ne = 0; ne < not_empatica.size(); ne++){
+    text(not_empatica.get(ne).get(0) + ", reason: " + not_empatica.get(ne).get(1), 400, 90 + ne*40);
+  }
+  
+  
 }
 
 void keyPressed() {
