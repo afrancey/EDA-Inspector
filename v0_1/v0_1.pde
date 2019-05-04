@@ -187,10 +187,14 @@ void keyPressed() {
   }
 }
 void mouseClicked(){
-  if (type.equals("emily")){
-    //println(emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(new PVector(mouseX, mouseY)));
-    PVector mousepos = new PVector(mouseX, mouseY);
-    screen_boundaries.add(mousepos);
+  if (stage.equals("inspection")){
+    int x = mouseX;
+    int y = mouseY;
+    PVector point = new PVector(x, x);
+    PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(point);
+    if (datapoint != null){
+      screen_boundaries.add(point);
+    }
   }
   
 }
