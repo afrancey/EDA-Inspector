@@ -22,10 +22,59 @@ String top_data_folder = "C:/Users/alzfr/Desktop/Empatica VR Study 2 just forest
 
 boolean folderIsSelected = false;
 
+ArrayList<ArrayList<String>> not_empatica = new ArrayList<ArrayList<String>>(); // not_empatica.get(i) = {filename, reason};
+ArrayList<String> empatica_names = new ArrayList<String>(); // not_empatica.get(i) = {filename, reason};
+
+//ArrayList<String[]> not_empatica = new ArrayList<String[]>(); // not_empatica.get(i) = {"
+
 int filecount = 0;
 //String type = "adam";
 String type = "emily";
 
+void listfiles(){
+  
+  // find empatica files
+  // each item in top_data_folder needs to be a subfolder containing 6 empatica .csvs
+  
+  File folder = new File(top_data_folder);
+  File[] listOfFiles = folder.listFiles();
+
+  for(int i = 0; i < listOfFiles.length; i++) {
+    String filename = listOfFiles[i].getName();
+    if (listOfFiles[i].isFile()) {
+      println("File " + listOfFiles[i].getName());
+      not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "not a folder")));
+    } else if (listOfFiles[i].isDirectory()) {
+      File subfolder = new File(top_data_folder + "/" + filename);
+      File[] subfiles = subfolder.listFiles();
+      
+      if (subfiles.length != 8){
+        not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "wrong number")));
+      } else {
+        // check to see if it has correct files
+        // "ACC.csv", "BVP.csv", "EDA.csv", "HR.csv", "IBI.csv", "info.txt", "tags.csv", "TEMP.csv"
+        String empatica_filenames[] = {"ACC.csv", "BVP.csv", "EDA.csv", "HR.csv", "IBI.csv", "info.txt", "tags.csv", "TEMP.csv"};
+        String filenames_in_empatica_folder[] = new String[8];
+        for (int sf = 0; sf < subfiles.length;sf++){
+          filenames_in_empatica_folder[sf] = subfiles[sf].getName();
+        }
+        
+        if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
+          // has right files in folder
+          Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, filename, "dense", "emily");
+          emily_empatica_list.add(new_emily_empatica);
+          empatica_names.add(filename);
+        } else {
+          // does not have correct files in folder
+          not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "wrong files")));
+        }
+      }
+            
+    }
+  }
+}
+
+/*
 void listfiles(){
   File folder = new File(top_data_folder);
   File[] listOfFiles = folder.listFiles();
@@ -65,6 +114,8 @@ void listfiles(){
     }
   }
 }
+
+/*
 
 /*
 void listfiles(){
