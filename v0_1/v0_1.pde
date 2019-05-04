@@ -114,21 +114,9 @@ void draw(){
   
   if (folderIsSelected){
      background(255);
-     //cg.draw_graph();
-     //e1.draw_data();
-     /*
-     for (int e = 0; e < emily_empatica_list.size(); e++){
-       emily_empatica_list.get(e).draw_data();
+     if (filecount < emily_empatica_list.size()){
+       emily_empatica_list.get(filecount).draw_data();
      }
-     */
-     if (type == "emily"){
-       if (filecount < emily_empatica_list.size()){
-         emily_empatica_list.get(filecount).draw_data();
-       }
-     } else {
-       adam_empatica_list.get(filecount).draw_data();
-     }
-     
      draw_mouseline();
   } else {
     background(frameCount%255);
