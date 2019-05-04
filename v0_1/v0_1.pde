@@ -149,35 +149,42 @@ void displayFolderSelectionResults(){
     text(not_empatica.get(ne).get(0) + ", reason: " + not_empatica.get(ne).get(1), 400, 90 + ne*40);
   }
   
+  text("press any key to continue", 800, 400);
+  
   
 }
 
 void keyPressed() {
-  if (key == CODED) {
-    if (keyCode == RIGHT) {
-      if (type.equals("emily")){
-        println("in here!");
-        names_boundaries.add(emily_empatica_list.get(filecount).fname);
-        ArrayList<Integer> sample_boundaries = new ArrayList<Integer>();
-        for (int i = 0; i < screen_boundaries.size(); i++){
-          PVector data_value = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(screen_boundaries.get(i));
-          float time_boundary = data_value.x;
-          int sample_boundary = (int)(time_boundary*4.0);
-          sample_boundaries.add(sample_boundary);
+  
+  if (stage.equals("folder selected")){
+    stage = "inspection";
+  } else if (stage.equals("inspection")){
+    if (key == CODED) {
+      if (keyCode == RIGHT) {
+        if (type.equals("emily")){
+          println("in here!");
+          names_boundaries.add(emily_empatica_list.get(filecount).fname);
+          ArrayList<Integer> sample_boundaries = new ArrayList<Integer>();
+          for (int i = 0; i < screen_boundaries.size(); i++){
+            PVector data_value = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(screen_boundaries.get(i));
+            float time_boundary = data_value.x;
+            int sample_boundary = (int)(time_boundary*4.0);
+            sample_boundaries.add(sample_boundary);
+          }
+          sample_boundaries_each_subject.add(sample_boundaries);
+          screen_boundaries.clear();
         }
-        sample_boundaries_each_subject.add(sample_boundaries);
-        screen_boundaries.clear();
+        filecount++;
+      } else if (keyCode == UP){
+          try{
+            emily_finished();
+          } catch(IOException e) {
+            println("exception");
+          }
+        
       }
-      filecount++;
-    } else if (keyCode == UP){
-        try{
-          emily_finished();
-        } catch(IOException e) {
-          println("exception");
-        }
-      
-    }
-  } 
+    } 
+  }
 }
 void mouseClicked(){
   if (type.equals("emily")){
