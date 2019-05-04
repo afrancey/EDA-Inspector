@@ -21,6 +21,7 @@ String top_data_folder = "C:/Users/alzfr/Desktop/Empatica VR Study 2 just forest
 //String top_data_folder = "C:/Users/alzfr/Desktop/expt 3 data/empatica";
 
 boolean folderIsSelected = false;
+String stage = "folder selection";
 
 ArrayList<ArrayList<String>> not_empatica = new ArrayList<ArrayList<String>>(); // not_empatica.get(i) = {filename, reason};
 ArrayList<String> empatica_names = new ArrayList<String>(); // not_empatica.get(i) = {filename, reason};
@@ -112,15 +113,21 @@ void setup() {
 
 void draw(){
   
-  if (folderIsSelected){
+  if (stage.equals("folder selection")){
+    // do nothing ; neat animation
+    if (frameCount%300 < 150){
+      background(50 + frameCount%150);
+    } else {
+      background(200 - frameCount%150);
+    }
+  } else if (stage.equals("folder selected")){
+    // show results on screen
+  } else if (stage.equals("inspection")){
      background(255);
      if (filecount < emily_empatica_list.size()){
        emily_empatica_list.get(filecount).draw_data();
      }
      draw_mouseline();
-  } else {
-    background(frameCount%255);
-    //do nothing, wait for folder
   }
 
 }
