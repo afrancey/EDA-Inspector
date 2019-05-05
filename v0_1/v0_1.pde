@@ -27,12 +27,15 @@ String stage = "folder selection";
 
 ArrayList<ArrayList<String>> not_empatica = new ArrayList<ArrayList<String>>(); // not_empatica.get(i) = {filename, reason};
 ArrayList<String> empatica_names = new ArrayList<String>(); // not_empatica.get(i) = {filename, reason};
+ArrayList<String> rejected_empatica = new ArrayList<String>(); // rejected_empatica.get(i) = filename;
 
 //ArrayList<String[]> not_empatica = new ArrayList<String[]>(); // not_empatica.get(i) = {"
 
 int filecount = 0;
 //String type = "adam";
 String type = "emily";
+
+float EDA_threshold = 0.5;
 
 void listfiles(){
   
@@ -65,8 +68,14 @@ void listfiles(){
         if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
           // has right files in folder
           Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, filename, "dense", "emily");
-          emily_empatica_list.add(new_emily_empatica);
-          empatica_names.add(filename);
+          
+          if (new_emily_empatica.max_EDA > EDA_threshold){
+            emily_empatica_list.add(new_emily_empatica);
+            empatica_names.add(filename);
+          } else {
+            // rejected for too low EDA
+            rejected_empatica.add(filename);
+          }
         } else {
           // does not have correct files in folder
           not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "wrong files")));
