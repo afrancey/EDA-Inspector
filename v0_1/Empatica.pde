@@ -63,6 +63,8 @@ class Empatica{
   
   String study_type;
   
+  float max_EDA = 0.0;
+  
   int[] SCL_indices = new int[2];
   int[] ACC_indices = new int[2];
   int[] BVP_indices = new int[2];
@@ -142,8 +144,17 @@ class Empatica{
       
       int sample_count = 0;
       for (int l = lines.size() - 3000; l < lines.size() - 600;l++){
-        SCL_data.add(Float.parseFloat(lines.get(l)));
+        
+        float current_datapoint_EDA = Float.parseFloat(lines.get(l));
+        // add data
+        SCL_data.add(current_datapoint_EDA);
         SCL_time.add(sample_count/fs_EDA);
+        
+        //check max
+        if (current_datapoint_EDA > max_EDA){
+          max_EDA = current_datapoint_EDA;
+        }
+        
         sample_count++;
       }
       sample_count = 0;
