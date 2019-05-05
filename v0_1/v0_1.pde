@@ -150,14 +150,19 @@ void displayFolderSelectionResults(){
   
   textSize(30);
   
-  text("Empatica Folders Found: ", 50, 50);
+  text("Participants: ", 50, 50);
   for (int en = 0; en < empatica_names.size(); en++){
     text(empatica_names.get(en), 50, 90 + en*40);
   }
 
-  text("Errors Found: ", 400, 50);
+  text("Errors: ", width/4, 50);
   for (int ne = 0; ne < not_empatica.size(); ne++){
-    text(not_empatica.get(ne).get(0) + ", reason: " + not_empatica.get(ne).get(1), 400, 90 + ne*40);
+    text(not_empatica.get(ne).get(0), width/4, 90 + ne*40);
+  }
+  
+  text("Does not reach " + Float.toString(EDA_threshold) + " uS threshold (REJECTED): ", width/2, 50);
+  for (int re = 0; re < rejected_empatica.size(); re++){
+    text(rejected_empatica.get(re), width/2, 90 + re*40);
   }
   
   text("press any key to continue", 800, 400);
@@ -199,9 +204,10 @@ void keyPressed() {
 }
 void mouseClicked(){
   if (stage.equals("inspection")){
+    println("mouseclicked");
     int x = mouseX;
     int y = mouseY;
-    PVector point = new PVector(x, x);
+    PVector point = new PVector(x, y);
     PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(point);
     if (datapoint != null){
       screen_boundaries.add(point);
