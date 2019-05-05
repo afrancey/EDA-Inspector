@@ -119,11 +119,8 @@ class CustomGraph {
   void draw_graph(){
     textSize(30);
     if (empty_chart == false){
-      lineChart.draw(x_pos - lineChart.getLeftSpacing(),y_pos+20,1700+lineChart.getLeftSpacing(),500);
-      //lineChart.draw(x_pos - lineChart.getLeftSpacing(),y_pos+10,600+lineChart.getLeftSpacing(),400);
-      //lineChart.draw(100,0,900,400);
-      
-      //lineChart.draw(0,0,1600,600);
+      //lineChart.draw(x_pos - lineChart.getLeftSpacing(),y_pos+20,1700+lineChart.getLeftSpacing(),500);
+      lineChart.draw(50, 50, width-50, height - height/3);
     } else {
       text(title, x_pos+500,y_pos+700);
       text("empty chart", x_pos+500,y_pos+725);
