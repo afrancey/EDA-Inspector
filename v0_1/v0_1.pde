@@ -119,6 +119,8 @@ void setup() {
   }
   */
   
+  println(dataPath(""));
+  
  
   
 }
@@ -480,11 +482,15 @@ void emily_finished() throws IOException{
     }
     boundaries_output+="\n";
   }
-  PrintWriter mwriter = new PrintWriter("C:/Users/alzfr/Desktop/expt 3 data/means.csv", "UTF-8");
+  
+  String dpath = dataPath("");
+  dpath = dpath.replace("\\","/");
+  
+  PrintWriter mwriter = new PrintWriter(dpath + "/means.csv", "UTF-8");
   mwriter.print(means_output);
   mwriter.close();
   
-  PrintWriter bwriter = new PrintWriter("C:/Users/alzfr/Desktop/expt 3 data/bounds.csv", "UTF-8");
+  PrintWriter bwriter = new PrintWriter(dpath + "/bounds.csv", "UTF-8");
   bwriter.print(boundaries_output);
   bwriter.close();
 }
