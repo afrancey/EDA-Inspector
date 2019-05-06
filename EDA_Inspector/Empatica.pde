@@ -34,6 +34,10 @@ class Empatica{
   CustomGraph small_EDA;
   
   ArrayList<CustomGraph> subgraphs_EDA = new ArrayList<CustomGraph>();
+  int current_subgraph_index = 0;
+  int num_subgraphs = 4;
+  
+  CustomGraph current_graph;
     
   String folder_path;
   String[] filenames;
@@ -386,7 +390,11 @@ class Empatica{
   
   void draw_data(){
     
-    SCL.draw_graph();
+    //current_graph = subgraphs_EDA.get(current_subgraph_index);
+    current_graph = SCL;
+    current_graph.draw_graph();
+    
+    //SCL.draw_graph();
     //subgraphs_EDA.get(0).draw_graph();
     small_EDA.draw_graph();
     //SCL_walk.draw_graph();

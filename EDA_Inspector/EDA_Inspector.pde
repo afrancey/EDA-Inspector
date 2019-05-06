@@ -193,7 +193,7 @@ void keyPressed() {
           names_boundaries.add(emily_empatica_list.get(filecount).fname);
           ArrayList<Integer> sample_boundaries = new ArrayList<Integer>();
           for (int i = 0; i < screen_boundaries.size(); i++){
-            PVector data_value = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(screen_boundaries.get(i));
+            PVector data_value = emily_empatica_list.get(filecount).current_graph.lineChart.getScreenToData(screen_boundaries.get(i));
             float time_boundary = data_value.x;
             int sample_boundary = (int)(time_boundary*4.0);
             sample_boundaries.add(sample_boundary);
@@ -219,7 +219,7 @@ void mouseClicked(){
     int x = mouseX;
     int y = mouseY;
     PVector point = new PVector(x, y);
-    PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(point);
+    PVector datapoint = emily_empatica_list.get(filecount).current_graph.lineChart.getScreenToData(point);
     if (datapoint != null){
       screen_boundaries.add(point);
     }
@@ -258,12 +258,12 @@ void draw_mouseline(){
   
   // draw ruler
   if (filecount < emily_empatica_list.size()){
-    PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(new PVector(mouseX, mouseY));
+    PVector datapoint = emily_empatica_list.get(filecount).current_graph.lineChart.getScreenToData(new PVector(mouseX, mouseY));
     if (datapoint != null){
       fill(0,0,0);
       text("time: " + Float.toString(datapoint.x), mouseX + 20, height - height/3 + 100);
       text("SCL: " + Float.toString(datapoint.y), mouseX + 20, height - height/3 + 130);
-      PVector mouse_endpoint = emily_empatica_list.get(filecount).SCL.lineChart.getDataToScreen(new PVector(datapoint.x + 4, datapoint.y + 0.2));
+      PVector mouse_endpoint = emily_empatica_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(datapoint.x + 4, datapoint.y + 0.2));
       line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
       line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
       
