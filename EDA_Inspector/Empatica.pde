@@ -36,7 +36,7 @@ class Empatica{
   ArrayList<CustomGraph> subgraphs_EDA = new ArrayList<CustomGraph>();
   int current_subgraph_index = 0;
   int num_subgraphs = 4;
-  int max_subgraph_index = 3;
+  int max_subgraph_index = num_subgraphs - 1;
   
   CustomGraph current_graph;
     
@@ -73,6 +73,7 @@ class Empatica{
   String study_type;
   
   float max_EDA = 0.0;
+  float min_EDA = 999.000;
   
   int[] SCL_indices = new int[2];
   int[] ACC_indices = new int[2];
@@ -150,22 +151,36 @@ class Empatica{
     if (lines.size() > 100){
       starttime_EDA = Float.parseFloat(lines.get(0));
       fs_EDA = Float.parseFloat(lines.get(1));
+      ArrayList<Float> SCL_data_temp = new ArrayList<Float>();
+      ArrayList<Float> SCL_time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
       for (int l = lines.size() - 3000; l < lines.size() - 600;l++){
         
         float current_datapoint_EDA = Float.parseFloat(lines.get(l));
         // add data
-        SCL_data.add(current_datapoint_EDA);
-        SCL_time.add(sample_count/fs_EDA);
+        SCL_data_temp.add(current_datapoint_EDA);
+        SCL_time_temp.add(sample_count/fs_EDA);
         
         //check max
         if (current_datapoint_EDA > max_EDA){
           max_EDA = current_datapoint_EDA;
         }
         
+        // check min
+        if (current_datapoint_EDA < min_EDA){
+          min_EDA = current_datapoint_EDA;
+        }
+        
         sample_count++;
       }
+      
+      // round down # data to nearest multiple of num_subgraphs
+      int num_data_points_to_use = num_subgraphs*floor(SCL_data_temp.size()/num_subgraphs);
+      SCL_time = new ArrayList<Float>(SCL_time_temp.subList(0, num_data_points_to_use));
+      SCL_data = new ArrayList<Float>(SCL_data_temp.subList(0, num_data_points_to_use));
+      
+      // get baseline values
       sample_count = 0;
       for (int l = 2; l < 1202;l++){
         SCL_baseline_d.add(Float.parseFloat(lines.get(l)));
@@ -223,21 +238,15 @@ class Empatica{
                                  
   }
   
-  void make_subgraphs(int num_subgraphs, ArrayList<Float> t, ArrayList<Float> d){
+  void make_subgraphs(ArrayList<Float> t, ArrayList<Float> d){
     // breaks signal into num_subgraphs separate graphs
     
-    int num_data_points_to_use = num_subgraphs*floor(t.size()/num_subgraphs); // round down # data to nearest multiple of num_subgraphs
-    
-    ArrayList<Float> time = new ArrayList<Float>(t.subList(0, num_data_points_to_use));
-    ArrayList<Float> data = new ArrayList<Float>(d.subList(0, num_data_points_to_use));
-    
-    
     for (int s = 0; s < num_subgraphs;s++){
-      int start = s*num_data_points_to_use/num_subgraphs;
-      int end = (s+1)*num_data_points_to_use/num_subgraphs;
+      int start = s*t.size()/num_subgraphs;
+      int end = (s+1)*t.size()/num_subgraphs;
       
       CustomGraph sg = new CustomGraph(mainscreen,0,0, "SCL_" + Integer.toString(s) + " - " + fname, start/fs_EDA, end/fs_EDA);
-      sg.setup_graph(new ArrayList<Float>(time.subList(start, end)), new ArrayList<Float>(data.subList(start, end)));
+      sg.setup_graph(new ArrayList<Float>(t.subList(start, end)), new ArrayList<Float>(d.subList(start, end)));
       subgraphs_EDA.add(sg);
     }
     
@@ -328,7 +337,7 @@ class Empatica{
       small_EDA = new CustomGraph(mainscreen,x_pos,y_pos, "small", interval[0]/fs_EDA, interval[1]/fs_EDA);
       small_EDA.setup_graph(SCL_time, SCL_data);
       
-      make_subgraphs(4, SCL_time, SCL_data);
+      make_subgraphs(SCL_time, SCL_data);
       
       //acc_x = new CustomGraph(mainscreen,x_pos,y_pos + 400, "X - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
       //acc_x.setup_graph(acc_time, acc_x_data);
