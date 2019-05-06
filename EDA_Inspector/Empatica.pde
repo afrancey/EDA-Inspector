@@ -30,6 +30,8 @@ class Empatica{
   CustomGraph acc_x;
   CustomGraph acc_y;
   CustomGraph acc_z;
+  
+  CustomGraph small_EDA;
     
   String folder_path;
   String[] filenames;
@@ -295,8 +297,11 @@ class Empatica{
       SCL = new CustomGraph(mainscreen,x_pos,y_pos, "SCL - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
       SCL.setup_graph(SCL_time, SCL_data);
       
-      acc_x = new CustomGraph(mainscreen,x_pos,y_pos + 400, "X - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
-      acc_x.setup_graph(acc_time, acc_x_data);
+      small_EDA = new CustomGraph(mainscreen,x_pos,y_pos, "small", interval[0]/fs_EDA, interval[1]/fs_EDA);
+      small_EDA.setup_graph(SCL_time, SCL_data);
+      
+      //acc_x = new CustomGraph(mainscreen,x_pos,y_pos + 400, "X - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
+      //acc_x.setup_graph(acc_time, acc_x_data);
     }
     
     
@@ -357,6 +362,7 @@ class Empatica{
   void draw_data(){
     
     SCL.draw_graph();
+    small_EDA.draw_graph();
     //SCL_walk.draw_graph();
     //SCL_wave.draw_graph();
     //temp.draw_graph();

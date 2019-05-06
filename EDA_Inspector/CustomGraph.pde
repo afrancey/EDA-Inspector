@@ -120,7 +120,14 @@ class CustomGraph {
     textSize(30);
     if (empty_chart == false){
       //lineChart.draw(x_pos - lineChart.getLeftSpacing(),y_pos+20,1700+lineChart.getLeftSpacing(),500);
-      lineChart.draw(50, 50, width-50, height - height/3);
+      
+      if (title.equals("small") == false){
+        //this is big, normal chart
+        lineChart.draw(50, 50, width-50, height - height/3);
+      } else {
+        // title is "small", draw small chart
+        lineChart.draw(width/4, height - height/3+ height/10, width/2, height/4);
+      }
     } else {
       text(title, x_pos+500,y_pos+700);
       text("empty chart", x_pos+500,y_pos+725);
