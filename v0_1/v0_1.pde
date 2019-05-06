@@ -412,7 +412,10 @@ float get_section_mean(ArrayList<Float> data, ArrayList<Integer> indicator){
   float weighted_mean = 0.0;
   for (int m = 0; m < 3; m++){
     float weight = num_indicators[m]/(num_indicators[0]+num_indicators[1]+num_indicators[2]);
-    float unweighted_mean = sums[m]/num_indicators[m];
+    float unweighted_mean = 0.0;
+    if (num_indicators[m] != 0){
+      unweighted_mean = sums[m]/num_indicators[m];
+    } // else the whole section is artifact, and has weight of zero
     weighted_mean += weight*unweighted_mean;
   }
   
