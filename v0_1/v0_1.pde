@@ -233,9 +233,11 @@ void draw_mouseline(){
     if (datapoint != null){
       text("time: " + Float.toString(datapoint.x), mouseX + 20, 700);
       text("SCL: " + Float.toString(datapoint.y), mouseX + 20, 730);
-      PVector mouse_endpoint = emily_empatica_list.get(filecount).SCL.lineChart.getDataToScreen(new PVector(datapoint.x + 2, datapoint.y + 0.1));
+      PVector mouse_endpoint = emily_empatica_list.get(filecount).SCL.lineChart.getDataToScreen(new PVector(datapoint.x + 4, datapoint.y + 0.2));
       line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
       line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
+      
+      line(mouseX + 10, mouse_endpoint.y, mouse_endpoint.x+10, mouseY); // hypoteneuse
     }
   }
 
