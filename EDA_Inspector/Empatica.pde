@@ -36,6 +36,7 @@ class Empatica{
   ArrayList<CustomGraph> subgraphs_EDA = new ArrayList<CustomGraph>();
   int current_subgraph_index = 0;
   int num_subgraphs = 4;
+  int max_subgraph_index = 3;
   
   CustomGraph current_graph;
     
@@ -390,8 +391,8 @@ class Empatica{
   
   void draw_data(){
     
-    //current_graph = subgraphs_EDA.get(current_subgraph_index);
-    current_graph = SCL;
+    current_graph = subgraphs_EDA.get(current_subgraph_index);
+    //current_graph = SCL;
     current_graph.draw_graph();
     
     //SCL.draw_graph();

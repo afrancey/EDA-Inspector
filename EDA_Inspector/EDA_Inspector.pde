@@ -188,20 +188,40 @@ void keyPressed() {
   } else if (stage.equals("inspection")){
     if (key == CODED) {
       if (keyCode == RIGHT) {
-        if (type.equals("emily")){
-          println("in here!");
-          names_boundaries.add(emily_empatica_list.get(filecount).fname);
+        println("rightpress");
+        Empatica current_empatica = emily_empatica_list.get(filecount);
+        if (current_empatica.current_subgraph_index < current_empatica.num_subgraphs){
+          
+          // first turn screen boundaries into SCL sample boundaries determined by timings of currently shown subgraph
           ArrayList<Integer> sample_boundaries = new ArrayList<Integer>();
           for (int i = 0; i < screen_boundaries.size(); i++){
-            PVector data_value = emily_empatica_list.get(filecount).current_graph.lineChart.getScreenToData(screen_boundaries.get(i));
+            PVector data_value = current_empatica.current_graph.lineChart.getScreenToData(screen_boundaries.get(i));
             float time_boundary = data_value.x;
             int sample_boundary = (int)(time_boundary*4.0);
             sample_boundaries.add(sample_boundary);
           }
-          sample_boundaries_each_subject.add(sample_boundaries);
+          
+          // if this is the first subgraph, add it to global arrays
+          if (current_empatica.current_subgraph_index == 0){
+            names_boundaries.add(current_empatica.fname);
+            sample_boundaries_each_subject.add(sample_boundaries);
+          } else {
+            // otherwise, add it to the most recently added array in global array
+            sample_boundaries_each_subject.get(sample_boundaries_each_subject.size() - 1).addAll(sample_boundaries);
+          }
+          
+          // we don't need these anymore, wipe for next graph
           screen_boundaries.clear();
+          
+          // increment index if not on last subgraph,
+          // increment filecount if this is the last subgraph
+          
+          if (current_empatica.current_subgraph_index == current_empatica.max_subgraph_index){
+            filecount++;
+          } else {
+            current_empatica.current_subgraph_index++;
+          }
         }
-        filecount++;
       } else if (keyCode == UP){
           try{
             emily_finished();
