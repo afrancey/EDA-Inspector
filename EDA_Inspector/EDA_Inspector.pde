@@ -17,6 +17,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
+import java.lang.System;
+
 //CustomGraph cg;
 Empatica e1;
 ArrayList<Empatica> emily_empatica_list=new ArrayList<Empatica>();
@@ -43,6 +45,8 @@ ArrayList<String> rejected_empatica = new ArrayList<String>(); // rejected_empat
 int filecount = 0;
 //String type = "adam";
 String type = "emily";
+
+String datafile_timestamp = "null";
 
 float EDA_threshold = 0.5;
 
@@ -130,6 +134,10 @@ void setup() {
   
   println(dataPath(""));
   
+  datafile_timestamp = Long.toString(System.currentTimeMillis());
+  println(datafile_timestamp);
+  
+  
  
   
 }
@@ -153,6 +161,9 @@ void draw(){
        emily_empatica_list.get(filecount).draw_data();
      }
      draw_mouseline();
+  } else if (stage.equals("finished")){
+    //print("finished");
+    background(0);
   }
 
 }
@@ -218,6 +229,9 @@ void keyPressed() {
           
           if (current_empatica.current_subgraph_index == current_empatica.max_subgraph_index){
             filecount++;
+            if (filecount >= emily_empatica_list.size()){
+              stage = "finished";
+            }
           } else {
             current_empatica.current_subgraph_index++;
           }
@@ -590,11 +604,11 @@ void emily_finished() throws IOException{
   String dpath = dataPath("");
   dpath = dpath.replace("\\","/");
   
-  PrintWriter mwriter = new PrintWriter(dpath + "/means.csv", "UTF-8");
+  PrintWriter mwriter = new PrintWriter(dpath + "/means_" + datafile_timestamp + ".csv", "UTF-8");
   mwriter.print(means_output);
   mwriter.close();
   
-  PrintWriter bwriter = new PrintWriter(dpath + "/bounds.csv", "UTF-8");
+  PrintWriter bwriter = new PrintWriter(dpath + "/bounds_" + datafile_timestamp + ".csv", "UTF-8");
   bwriter.print(boundaries_output);
   bwriter.close();
 }
