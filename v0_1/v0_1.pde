@@ -249,8 +249,8 @@ void draw_mouseline(){
     PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(new PVector(mouseX, mouseY));
     if (datapoint != null){
       fill(0,0,0);
-      text("time: " + Float.toString(datapoint.x), mouseX + 20, 700);
-      text("SCL: " + Float.toString(datapoint.y), mouseX + 20, 730);
+      text("time: " + Float.toString(datapoint.x), mouseX + 20, height - height/3 + 100);
+      text("SCL: " + Float.toString(datapoint.y), mouseX + 20, height - height/3 + 130);
       PVector mouse_endpoint = emily_empatica_list.get(filecount).SCL.lineChart.getDataToScreen(new PVector(datapoint.x + 4, datapoint.y + 0.2));
       line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
       line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
