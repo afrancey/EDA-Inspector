@@ -219,7 +219,8 @@ void mouseClicked(){
 void draw_mouseline(){
   
   // draw line on mouse
-  line(mouseX, 0, mouseX, height);
+  line(mouseX, 50, mouseX, height - height/3); // vertical
+  line(50, mouseY, width - 50, mouseY); // horizontal
   
   // draw screen boundary lines
   // draw boundary rectangles
