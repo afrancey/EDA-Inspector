@@ -217,20 +217,38 @@ void mouseClicked(){
 }
 
 void draw_mouseline(){
+  
+  // draw line on mouse
   line(mouseX, 0, mouseX, height);
+  
+  // draw screen boundary lines
+  // draw boundary rectangles
   for (int b = 0; b < screen_boundaries.size(); b++){
+    
+    // draw boundary lines
     if (b%2 == 0){
       stroke(0,255,0);
     } else {
       stroke(255,0,0);
     }
-    line(screen_boundaries.get(b).x, 0, screen_boundaries.get(b).x, height);
+    line(screen_boundaries.get(b).x, 50, screen_boundaries.get(b).x, height - height/3);
+    stroke(0,0,0);
+    
+    // draw boundary rects
+    if (b%2 == 0 && b != screen_boundaries.size() - 1){
+      fill(255,0,0,40);
+      rectMode(CORNERS);
+      rect(screen_boundaries.get(b).x, 50, screen_boundaries.get(b+1).x, height - height/3);
+    }
+    
     stroke(0,0,0);
   }
   
+  // draw ruler
   if (filecount < emily_empatica_list.size()){
     PVector datapoint = emily_empatica_list.get(filecount).SCL.lineChart.getScreenToData(new PVector(mouseX, mouseY));
     if (datapoint != null){
+      fill(0,0,0);
       text("time: " + Float.toString(datapoint.x), mouseX + 20, 700);
       text("SCL: " + Float.toString(datapoint.y), mouseX + 20, 730);
       PVector mouse_endpoint = emily_empatica_list.get(filecount).SCL.lineChart.getDataToScreen(new PVector(datapoint.x + 4, datapoint.y + 0.2));
