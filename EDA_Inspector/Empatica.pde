@@ -33,7 +33,7 @@ class Empatica{
   
   CustomGraph small_EDA;
   
-  CustomGraph[] subgraphs_EDA;
+  ArrayList<CustomGraph> subgraphs_EDA = new ArrayList<CustomGraph>();
     
   String folder_path;
   String[] filenames;
@@ -226,13 +226,16 @@ class Empatica{
     ArrayList<Float> time = new ArrayList<Float>(t.subList(0, num_data_points_to_use));
     ArrayList<Float> data = new ArrayList<Float>(d.subList(0, num_data_points_to_use));
     
+    
     for (int s = 0; s < num_subgraphs;s++){
       int start = s*num_data_points_to_use/num_subgraphs;
       int end = (s+1)*num_data_points_to_use/num_subgraphs;
       
-      subgraphs_EDA[s] = new CustomGraph(mainscreen,0,0, "SCL_" + Integer.toString(s) + " - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
-      subgraphs_EDA[s].setup_graph(new ArrayList<Float>(time.subList(start, end)), new ArrayList<Float>(data.subList(start, end)));
+      CustomGraph sg = new CustomGraph(mainscreen,0,0, "SCL_" + Integer.toString(s) + " - " + fname, start/fs_EDA, end/fs_EDA);
+      sg.setup_graph(new ArrayList<Float>(time.subList(start, end)), new ArrayList<Float>(data.subList(start, end)));
+      subgraphs_EDA.add(sg);
     }
+    
     
   }
   void read_data_adam(){
@@ -320,6 +323,8 @@ class Empatica{
       small_EDA = new CustomGraph(mainscreen,x_pos,y_pos, "small", interval[0]/fs_EDA, interval[1]/fs_EDA);
       small_EDA.setup_graph(SCL_time, SCL_data);
       
+      make_subgraphs(4, SCL_time, SCL_data);
+      
       //acc_x = new CustomGraph(mainscreen,x_pos,y_pos + 400, "X - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
       //acc_x.setup_graph(acc_time, acc_x_data);
     }
@@ -382,6 +387,7 @@ class Empatica{
   void draw_data(){
     
     SCL.draw_graph();
+    //subgraphs_EDA.get(0).draw_graph();
     small_EDA.draw_graph();
     //SCL_walk.draw_graph();
     //SCL_wave.draw_graph();
