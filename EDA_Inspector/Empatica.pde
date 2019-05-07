@@ -248,10 +248,10 @@ class Empatica{
     
     // for emily
     if (study_type.equals("emily")){
-      SCL = new CustomGraph(mainscreen,x_pos,y_pos, "SCL - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
+      SCL = new CustomGraph(mainscreen,x_pos,y_pos, "SCL - " + fname, 0/fs_EDA, SCL_time.size()/fs_EDA);
       SCL.setup_graph(SCL_time, SCL_data);
       
-      small_EDA = new CustomGraph(mainscreen,x_pos,y_pos, "small", interval[0]/fs_EDA, interval[1]/fs_EDA);
+      small_EDA = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs_EDA, SCL_time.size()/fs_EDA);
       small_EDA.setup_graph(SCL_time, SCL_data);
       
       make_subgraphs(SCL_time, SCL_data);
