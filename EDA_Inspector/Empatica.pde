@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 class Empatica{
   
+  int EDA_data_length = 15*60*4; // length (in samples) of data; 15mins * 60secs * 4Hz
+  
   ArrayList<Float> SCL_data = new ArrayList<Float>();// = new float[];
   ArrayList<Float> SCL_time = new ArrayList<Float>();
   CustomGraph SCL;
@@ -155,7 +157,7 @@ class Empatica{
       ArrayList<Float> SCL_time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
-      for (int l = lines.size() - 3000; l < lines.size() - 600;l++){
+      for (int l = lines.size() - EDA_data_length; l < lines.size();l++){
         
         float current_datapoint_EDA = Float.parseFloat(lines.get(l));
         // add data
