@@ -47,6 +47,7 @@ String datafile_timestamp = "null";
 float EDA_threshold = 0.5;
 
 boolean files_created = false;
+boolean files_listed = false;
 
 void listfiles(){
   
@@ -96,6 +97,7 @@ void listfiles(){
             
     }
   }
+  files_listed = true;
 }
 
 void folderSelected(File selection) {
@@ -184,29 +186,32 @@ void displayFolderSelectionResults(){
   
   textSize(30);
   
-  text("Participants: ", 50, 50);
+  text("Participants: ", 50, height/10);
   for (int en = 0; en < empatica_names.size(); en++){
-    text(empatica_names.get(en), 50, 90 + en*40);
+    text(empatica_names.get(en), 50, height/10 + 40 + en*40);
   }
 
-  text("Errors: ", width/4, 50);
+  text("Errors: ", width/4, height/10);
   for (int ne = 0; ne < not_empatica.size(); ne++){
-    text(not_empatica.get(ne).get(0), width/4, 90 + ne*40);
+    text(not_empatica.get(ne).get(0), width/4, height/10 + 40 + ne*40);
   }
   
-  text("Does not reach " + Float.toString(EDA_threshold) + " uS threshold (REJECTED): ", width/2, 50);
+  text("Does not reach " + Float.toString(EDA_threshold) + " uS threshold (REJECTED): ", width/2, height/10);
   for (int re = 0; re < rejected_empatica.size(); re++){
-    text(rejected_empatica.get(re), width/2, 90 + re*40);
+    text(rejected_empatica.get(re), width/2, height/10 + 40 + re*40);
   }
   
-  text("press any key to continue", 800, 400);
+  if (files_listed){
+    textSize(40);
+    text("Click anywhere to continue.", 50 , 50);
+  }
   
   
 }
 
 void keyPressed() {
   
-  if (stage.equals("folder selected")){
+  if (stage.equals("folder selected") && files_listed){
     stage = "inspection";
   } else if (stage.equals("inspection")){
     if (key == CODED) {
@@ -253,7 +258,9 @@ void keyPressed() {
   }
 }
 void mouseClicked(){
-  if (stage.equals("inspection")){
+  if (stage.equals("folder selected") && files_listed){
+    stage = "inspection";
+  } else if (stage.equals("inspection")){
     println("mouseclicked");
     int x = mouseX;
     int y = mouseY;
