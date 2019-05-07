@@ -49,6 +49,8 @@ String datafile_timestamp = "null";
 
 float EDA_threshold = 0.5;
 
+boolean files_created = false;
+
 void listfiles(){
   
   // find empatica files
@@ -163,6 +165,19 @@ void draw(){
   } else if (stage.equals("finished")){
     //print("finished");
     background(0);
+    if (files_created == false){
+      files_created = true;
+      try{
+        emily_finished();
+      } catch(IOException e) {
+        println("exception");
+      }
+    } else {
+      stroke(255);
+      fill(255);
+      text("Inspection complete! Files saved into the data folder.", width/2, height/2);
+      text("Press ESC to close.", width/2, height/2+50);
+    }
   }
 
 }
@@ -237,14 +252,6 @@ void keyPressed() {
         }
       }
     } 
-  } else if (stage.equals("finished")){
-    if (keyCode == UP){
-      try{
-        emily_finished();
-        } catch(IOException e) {
-          println("exception");
-        }
-      }
   }
 }
 void mouseClicked(){
