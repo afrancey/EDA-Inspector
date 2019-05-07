@@ -11,7 +11,7 @@ This tool is intended to be used for visual inspection and manual artifact remov
 
 Your data should be structured according to this image:
 
-![test](https://github.com/afrancey/EDA-Inspector/blob/master/images/folders.PNG)
+![test](https://github.com/afrancey/EDA-Inspector/blob/master/images/folders.png)
 
 ## Usage
 
