@@ -37,4 +37,7 @@ Components of visual inspection screen:
 Sometimes an artifact might be on the edge of the graph. To place boundaries on the left or right edge of the graph, hover the mouse near the edge until the vertical line enlarges and turns colour. If you click in this area, the boundary will be placed on the edge of the graph.
 ![snapping](https://github.com/afrancey/EDA-Inspector/blob/master/images/snapping.png)
 
+### Data Files
+The program will output data files to the EDA_Inspector\data folder.
+
 
