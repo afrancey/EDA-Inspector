@@ -1,8 +1,10 @@
 // DO NOT overlap boundaries
 
 // todo
-// 90% of signal above threshold
-// change screen to black (easier on eyes);
+// - 90% of signal above threshold
+// - change screen to black (easier on eyes);
+// - 30 second condition intervals
+// - condition in data file
 
 
 import org.gicentre.utils.stat.*;
