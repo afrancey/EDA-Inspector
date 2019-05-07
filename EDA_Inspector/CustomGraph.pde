@@ -130,7 +130,9 @@ class CustomGraph {
      
     // Draw a title over the top of the chart.
     fill(120);
-    text(title, 50,50);
+    if (title.equals("small") == false){
+      text(title, 50,50);
+    }
     //PVector mousepos = new PVector(100,50);
     //println(lineChart.getScreenToData(mousepos));
   }
