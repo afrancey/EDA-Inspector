@@ -60,15 +60,7 @@ class CustomGraph {
     lineChart.setMinX(minX);
     lineChart.setMaxX(maxX);
     
-    if (title.contains("X")){
-      lineChart.setYAxisLabel("acceleration");
-    }
-    if (title.contains("BVP")){
-      lineChart.setYAxisLabel("BVP");
-    } else {
-      lineChart.setYAxisLabel("XAcc");
-    }
-    
+    lineChart.setYAxisLabel("SCL");
     lineChart.setXAxisLabel("seconds");
     
     //lineChart.setYFormat("$###,###");  // Monetary value in $US
