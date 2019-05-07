@@ -471,7 +471,6 @@ void output_zeroes_and_area() throws IOException{
 float[] get_section_averages(int pnum){
   Empatica emp = emily_empatica_list.get(pnum);
   ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
-  
   ArrayList<Integer> sample_bounds = sample_boundaries_each_subject.get(pnum);
   ArrayList<Float> data = emp.SCL_data;
   ArrayList<Float> z_data = zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
@@ -494,12 +493,11 @@ float[] get_section_averages(int pnum){
   }
   
   // now have z-scored list and indicator list
-  // both of size 2400 (10 mins * 4 Hz)
-  // partition into chunks of 2400/10
-  
-  int section_length = 240; //2400/10; 1 minute
-  float[] mean = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
-  for (int m = 0; m < 10; m++){
+  // get means
+  int num_sections = 30;
+  int section_length = z_data.size()/num_sections;
+  float[] mean = new float[num_sections];
+  for (int m = 0; m < num_sections; m++){
     int start = m*section_length;
     int end = (m+1)*section_length;
     ArrayList<Float> chop_z = new ArrayList<Float>(z_data.subList(start,end));
@@ -582,7 +580,7 @@ void emily_finished() throws IOException{
   for (int p = 0; p < emily_empatica_list.size(); p++){
     means_output+=emily_empatica_list.get(p).fname + ",";
     float[] weighted_means = get_section_averages(p);
-    for (int m = 0; m < 10; m++){
+    for (int m = 0; m < weighted_means.length; m++){
       means_output+= Float.toString(weighted_means[m]) + ",";
     }
     means_output+="\n";
