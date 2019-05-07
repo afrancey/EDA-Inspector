@@ -514,8 +514,8 @@ float[] get_section_averages(int pnum){
 }
 
 float get_section_mean(ArrayList<Float> data, ArrayList<Integer> indicator){
-  // data is 3 minute long section
-  int subsection_length = 80; //240/3; 20 seconds
+  // break data into 3 sections, determines weighted section mean
+  int subsection_length = data.size()/3;
   float[] sums = {0.0,0.0,0.0};
   float[] num_indicators = {0.0,0.0,0.0};
   for (int m = 0; m < 3; m++){
