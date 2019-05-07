@@ -236,15 +236,16 @@ void keyPressed() {
             current_empatica.current_subgraph_index++;
           }
         }
-      } else if (keyCode == UP){
-          try{
-            emily_finished();
-          } catch(IOException e) {
-            println("exception");
-          }
-        
       }
     } 
+  } else if (stage.equals("finished")){
+    if (keyCode == UP){
+      try{
+        emily_finished();
+        } catch(IOException e) {
+          println("exception");
+        }
+      }
   }
 }
 void mouseClicked(){
