@@ -1,12 +1,8 @@
 // DO NOT overlap boundaries
 
 // todo
-// if mouse exceeds graph area -> boundary is graph edge
-// break signal into 4 sections, display current section at bottom
-
 // 90% of signal above threshold
 // change screen to black (easier on eyes);
-// ruler for subgraphs
 
 
 import org.gicentre.utils.stat.*;
