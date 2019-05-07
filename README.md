@@ -1,6 +1,6 @@
 # EDA-Inspector
 
-This tool is intended to be used for visual inspection and manual artifact removal of SCL data files obtained from an Empatica wristband. Currently, is wil
+This tool is intended to be used for visual inspection and manual artifact removal in SCL data files obtained from an Empatica wristband. Currently, it will allow for inspection of the last 15 minutes of data recorded by the wristband. The output data file contains the mean SCL of each 30 second interval within this 15 minutes for each participant.
 
 ## Downloading
 To download the Processing code, click "clone or download .zip" and then "Download zip". Unzip the files.
@@ -33,8 +33,8 @@ Components of visual inspection screen:
 4. Previously placed boundary.
 5. Location of the current inspection interval with respect to the entire signal.
 
-### Boundaries on the edge of the graph
-To place boundaries on the left or right edge of the graph, hover the mouse near the edge until the vertical line enlarges and turns colour. If you click in this area, the boundary will be placed on the edge of the graph.
+### Placing boundaries on the edge of the graph
+Sometimes an artifact might be on the edge of the graph. To place boundaries on the left or right edge of the graph, hover the mouse near the edge until the vertical line enlarges and turns colour. If you click in this area, the boundary will be placed on the edge of the graph.
 ![snapping](https://github.com/afrancey/EDA-Inspector/blob/master/images/snapping.png)
 
 
