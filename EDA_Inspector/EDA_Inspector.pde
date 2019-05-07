@@ -3,9 +3,6 @@
 // todo
 // - 90% of signal above threshold
 // - change screen to black (easier on eyes);
-// - 30 second condition intervals
-// - condition in data file
-// - automatic data file creation (don't press up)
 
 
 import org.gicentre.utils.stat.*;
@@ -81,7 +78,8 @@ void listfiles(){
         
         if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
           // has right files in folder
-          Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, filename, "dense", "emily");
+          String condition = split(filename, " ")[1];
+          Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, filename, condition, "emily");
           
           if (new_emily_empatica.max_EDA > EDA_threshold){
             emily_empatica_list.add(new_emily_empatica);
@@ -586,7 +584,7 @@ void emily_finished() throws IOException{
   // save means for each participant
   String means_output = "";
   for (int p = 0; p < emily_empatica_list.size(); p++){
-    means_output+=emily_empatica_list.get(p).fname + ",";
+    means_output+= split(emily_empatica_list.get(p).fname,  " ")[0] + "," + emily_empatica_list.get(p).condition + ",";
     float[] weighted_means = get_section_averages(p);
     for (int m = 0; m < weighted_means.length; m++){
       means_output+= Float.toString(weighted_means[m]) + ",";
