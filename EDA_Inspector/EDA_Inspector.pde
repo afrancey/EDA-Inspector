@@ -470,8 +470,6 @@ void output_zeroes_and_area() throws IOException{
 
 float[] get_section_averages(int pnum){
   Empatica emp = emily_empatica_list.get(pnum);
-  ArrayList<Float> SCL_baseline_d = emp.SCL_baseline_d;
-  //ArrayList<Float> baseline_score_params = mean_ssd(SCL_baseline_d); // NO LONGER USING MEAN AND ZSCORE FROM BASELINE
   ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
   
   ArrayList<Integer> sample_bounds = sample_boundaries_each_subject.get(pnum);
