@@ -5,6 +5,7 @@
 // - change screen to black (easier on eyes);
 // - 30 second condition intervals
 // - condition in data file
+// - automatic data file creation (don't press up)
 
 
 import org.gicentre.utils.stat.*;
