@@ -38,6 +38,8 @@ class CustomGraph {
   }
   
   void setup_graph(ArrayList<Float> t, ArrayList<Float> d){
+    
+    textSize(20);
     // Both x and y data set here.
     
     // turn arraylists into float[]
@@ -115,7 +117,7 @@ class CustomGraph {
       
       if (title.equals("small") == false){
         //this is big, normal chart
-        lineChart.draw(50, 50, width-50, height - height/3);
+        lineChart.draw(0, 50, width-lineChart.getLeftSpacing(), height - height/3);
       } else {
         // title is "small", draw small chart
         lineChart.draw(width/4, height - height/3+ height/10, width/2, height/4);
