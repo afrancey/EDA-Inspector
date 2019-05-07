@@ -193,49 +193,7 @@ class Empatica{
     println(SCL_data.size());
     
     //zscore_EDA();
-    
-    lines = read_data_file(folder_path + "/" + "TEMP.csv");
-    if (lines.size() > 100){
-      starttime_TEMP = Float.parseFloat(lines.get(0));
-      fs_TEMP = Float.parseFloat(lines.get(1));
-      
-      int sample_count = 0;
-      for (int l = lines.size() - 3600; l < lines.size();l++){
-        temp_data.add(Float.parseFloat(lines.get(l)));
-        temp_time.add(sample_count/fs_TEMP);
-        sample_count++;
-      }
-    }
-    
-    lines = read_data_file(folder_path + "/" + "BVP.csv");
-    if (lines.size() > 100){
-      starttime_BVP = Float.parseFloat(lines.get(0));
-      fs_BVP = Float.parseFloat(lines.get(1));
-      
-      int sample_count = 0;
-      for (int l = lines.size() - 57600; l < lines.size();l++){
-        BVP_data.add(Float.parseFloat(lines.get(l)));
-        BVP_time.add(sample_count/fs_TEMP);
-        sample_count++;
-      }
-    }
-    
-    lines = read_data_file(folder_path + "/" + "ACC.csv");
-    if (lines.size() > 100){
-      starttime_ACC = Float.parseFloat(split(lines.get(0),",")[0]);
-      fs_ACC = Float.parseFloat(split(lines.get(1),",")[0]);
-      
-      int sample_count = 0;
-      for (int l = lines.size() - 28800; l < lines.size();l++){
-        //println(lines.get(l));
-        acc_x_data.add(Float.parseFloat(split(lines.get(l),",")[0]));
-        acc_y_data.add(Float.parseFloat(split(lines.get(l),",")[1]));
-        acc_z_data.add(Float.parseFloat(split(lines.get(l),",")[2]));
-        acc_time.add(sample_count/fs_ACC);
-        sample_count++;
-      }
-    }
-                                 
+                               
   }
   
   void make_subgraphs(ArrayList<Float> t, ArrayList<Float> d){
@@ -266,50 +224,7 @@ class Empatica{
         SCL_time.add(sample_count/fs_EDA);
         sample_count++;
       }
-    }
-    
-    lines = read_data_file(folder_path + "/" + "TEMP.csv");
-    if (lines.size() > 100){
-      starttime_TEMP = Float.parseFloat(lines.get(0));
-      fs_TEMP = Float.parseFloat(lines.get(1));
-      
-      int sample_count = 0;
-      for (int l = 2; l < lines.size();l++){
-        temp_data.add(Float.parseFloat(lines.get(l)));
-        temp_time.add(sample_count/fs_TEMP);
-        sample_count++;
-      }
-    }
-    
-    lines = read_data_file(folder_path + "/" + "BVP.csv");
-    if (lines.size() > 100){
-      starttime_BVP = Float.parseFloat(lines.get(0));
-      fs_BVP = Float.parseFloat(lines.get(1));
-      
-      int sample_count = 0;
-      for (int l = 2; l < lines.size();l++){
-        BVP_data.add(Float.parseFloat(lines.get(l)));
-        BVP_time.add(sample_count/fs_BVP);
-        sample_count++;
-      }
-    }
-    
-    lines = read_data_file(folder_path + "/" + "ACC.csv");
-    if (lines.size() > 100){
-      starttime_ACC = Float.parseFloat(split(lines.get(0),",")[0]);
-      fs_ACC = Float.parseFloat(split(lines.get(1),",")[0]);
-      
-      int sample_count = 0;
-      for (int l = 2; l < lines.size();l++){
-        //println(lines.get(l));
-        acc_x_data.add(Float.parseFloat(split(lines.get(l),",")[0]));
-        acc_y_data.add(Float.parseFloat(split(lines.get(l),",")[1]));
-        acc_z_data.add(Float.parseFloat(split(lines.get(l),",")[2]));
-        acc_time.add(sample_count/fs_ACC);
-        sample_count++;
-      }
-    }
-                                 
+    }                             
   }
   
   void get_pid(){
@@ -338,9 +253,6 @@ class Empatica{
       small_EDA.setup_graph(SCL_time, SCL_data);
       
       make_subgraphs(SCL_time, SCL_data);
-      
-      //acc_x = new CustomGraph(mainscreen,x_pos,y_pos + 400, "X - " + fname, interval[0]/fs_EDA, interval[1]/fs_EDA);
-      //acc_x.setup_graph(acc_time, acc_x_data);
     }
     
     
@@ -365,36 +277,6 @@ class Empatica{
     }
     
     
-    /*
-    ArrayList<Float> temp_time_chop = new ArrayList<Float>(temp_time.subList((int)(interval[0]*fs_TEMP),min((int)(interval[1]*fs_TEMP), temp_time.size())));
-    ArrayList<Float> temp_data_chop = new ArrayList<Float>(temp_data.subList((int)(interval[0]*fs_TEMP),min((int)(interval[1]*fs_TEMP), temp_data.size())));
-    temp = new CustomGraph(mainscreen,x_pos,y_pos, "TEMP - " + fname, interval[0], interval[1]);
-    temp.setup_graph(temp_time_chop, temp_data_chop);
-    
-    ArrayList<Float> BVP_time_chop = new ArrayList<Float>(BVP_time.subList((int)(interval[0]*fs_BVP),min((int)(interval[1]*fs_BVP), BVP_time.size())));
-    ArrayList<Float> BVP_data_chop = new ArrayList<Float>(BVP_data.subList((int)(interval[0]*fs_BVP),min((int)(interval[1]*fs_BVP), BVP_data.size())));
-    BVP = new CustomGraph(mainscreen,x_pos,y_pos + 500, "BVP - " + fname, interval[0], interval[1]);
-    BVP.setup_graph(BVP_time_chop, BVP_data_chop);
-    //BVP.setup_graph(BVP_time, BVP_data);
-    
-    */
-    
-    /*
-    ArrayList<Float> acc_time_chop = new ArrayList<Float>(acc_time.subList((int)(interval[0]*fs_ACC),min((int)(interval[1]*fs_ACC), acc_time.size())));
-    ArrayList<Float> acc_x_data_chop = new ArrayList<Float>(acc_x_data.subList((int)(interval[0]*fs_ACC),min((int)(interval[1]*fs_ACC), acc_x_data.size())));
-    ArrayList<Float> acc_y_data_chop = new ArrayList<Float>(acc_y_data.subList((int)(interval[0]*fs_ACC),min((int)(interval[1]*fs_ACC), acc_y_data.size())));
-    ArrayList<Float> acc_z_data_chop = new ArrayList<Float>(acc_z_data.subList((int)(interval[0]*fs_ACC),min((int)(interval[1]*fs_ACC), acc_z_data.size())));
-    acc_x = new CustomGraph(mainscreen,x_pos,y_pos, "X - " + fname, interval[0], interval[1]);
-    acc_y = new CustomGraph(mainscreen,x_pos + 1000,y_pos+300, "y - " + fname, interval[0], interval[1]);
-    acc_z = new CustomGraph(mainscreen,x_pos + 1000,y_pos+600, "z - " + fname, interval[0], interval[1]);
-    
-    acc_x.setup_graph(acc_time_chop, acc_x_data_chop);
-    acc_y.setup_graph(acc_time_chop, acc_y_data_chop);
-    acc_z.setup_graph(acc_time_chop, acc_z_data_chop);
-    */
-    
-
-    
     
   }
   
@@ -409,13 +291,6 @@ class Empatica{
     small_EDA.draw_graph();
     //SCL_walk.draw_graph();
     //SCL_wave.draw_graph();
-    //temp.draw_graph();
-    //BVP.draw_graph();
-    
-    
-    //acc_x.draw_graph();
-    //acc_y.draw_graph();
-    //acc_z.draw_graph();
     
     if (study_type.equals("adam")){
       marker_graph.draw_graph();
