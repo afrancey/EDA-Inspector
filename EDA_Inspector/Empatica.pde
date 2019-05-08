@@ -105,7 +105,7 @@ class Empatica{
     }
     mainscreen = parent;
     get_pid();
-    get_markers();
+    //get_markers();
     if (study_type.equals("emily")){
       read_data();
     } else {
