@@ -23,7 +23,7 @@ Run EDA_Inspector.pde with Processing 3. The first screen you will see is a dial
 After picking the folder the program will automatically look through the folder for Empatica files and display the results.
 
 ### Inspecting your Data
-Each signal is broken into four parts and inspected separately. The visual inspection screen looks like this:
+Each signal is broken into four parts and inspected separately. The researcher should place boundaries around artifacts found in the signal. Pressing the **right arrow key** advances the inspection window to the next portion of the signal. The visual inspection screen looks like this:
 ![inspection](https://github.com/afrancey/EDA-Inspector/blob/master/images/inspection.png)
 
 Components of visual inspection screen:
