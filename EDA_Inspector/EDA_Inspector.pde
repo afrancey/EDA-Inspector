@@ -24,12 +24,8 @@ ArrayList<PVector> screen_boundaries = new ArrayList<PVector>();
 ArrayList<ArrayList<Integer>> sample_boundaries_each_subject = new ArrayList<ArrayList<Integer>>();
 ArrayList<String> names_boundaries = new ArrayList<String>();
 
-String[] emily_conditions = {"con", "opp", "de", "li", "west"};
-//String top_data_folder = "C:/Users/alzfr/Desktop/Study 4 Confirming VR with real world Fall/Data/Empatica"; // look for "de" files, REAL
-String top_data_folder = "C:/Users/alzfr/Desktop/Empatica VR Study 2 just forest condition/Dense Forest Empatica files"; // all files, VR
-//String top_data_folder = "C:/Users/alzfr/Desktop/expt 3 data/empatica";
+String top_data_folder = "";
 
-boolean folderIsSelected = false;
 String stage = "folder selection";
 
 ArrayList<ArrayList<String>> not_empatica = new ArrayList<ArrayList<String>>(); // not_empatica.get(i) = {filename, reason};
@@ -108,7 +104,6 @@ void folderSelected(File selection) {
     top_data_folder = selection.getAbsolutePath();
     top_data_folder = top_data_folder.replace("\\","/");
     println(top_data_folder);
-    folderIsSelected = true;
     stage = "folder selected";
     listfiles();
   }
