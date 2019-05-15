@@ -2,6 +2,12 @@
 
 This tool is intended to be used for visual inspection and manual artifact removal in SCL data files obtained from an Empatica wristband. Currently, it will allow for inspection of the last 15 minutes of data recorded by the wristband. The output data file contains the mean SCL of each 30 second interval within this 15 minutes for each participant.
 
+## Prerequisites
+
+This code is a [Processing 3](https://processing.org/) sketch. 
+Required libraries:
+* [giCentre Utils](https://github.com/gicentre/gicentreutils)
+
 ## Downloading
 To download the Processing code, click "Clone or download" and then "Download ZIP". Unzip the files.
 ![downloading](https://github.com/afrancey/EDA-Inspector/blob/master/images/downloading.PNG)
