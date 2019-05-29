@@ -1,5 +1,6 @@
-File location: path/to/configuration/file/filename.txt
-Seconds to analyze: 360
+total time,360
+number of intervals,10
+subintervals per interval,3
 p1,0
 p2,21
 p3,24
