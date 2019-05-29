@@ -46,6 +46,7 @@ boolean files_created = false;
 boolean files_listed = false;
 
 int num_sections = 30;
+int num_subintervals = 3;
 
 void listfiles(){
   
