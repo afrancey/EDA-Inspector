@@ -180,6 +180,7 @@ class Empatica{
   
   void read_data(){
     // read EDA data
+    get_config_from_file();
     ArrayList<String> lines = read_data_file(folder_path + "/" + "EDA.csv");
     if (lines.size() > 100){
       starttime_EDA = Float.parseFloat(lines.get(0));

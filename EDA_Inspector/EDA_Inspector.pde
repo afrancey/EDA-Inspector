@@ -56,6 +56,8 @@ void listfiles(){
   File folder = new File(top_data_folder);
   File[] listOfFiles = folder.listFiles();
   
+  get_config_parameters();
+  
   for(int i = 0; i < listOfFiles.length; i++) {
     String filename = listOfFiles[i].getName();
     if (listOfFiles[i].isFile()) {
