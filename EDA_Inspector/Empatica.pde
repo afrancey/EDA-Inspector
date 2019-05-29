@@ -45,6 +45,8 @@ class Empatica{
   String folder_path;
   String[] filenames;
   
+  String config_path;
+  
   PApplet mainscreen;
   
   String condition;
@@ -99,6 +101,7 @@ class Empatica{
     study_type = s_t;
     fname = fn;
     folder_path = top_path + "/" + fn;
+    config_path = top_path + "/config.txt";
     empatica_file_time = fn.substring(0,1);
     if (study_type != "emily"){
       empatica_file_time = fn.substring(0,10);
@@ -144,6 +147,38 @@ class Empatica{
     }
     return(lines);
     //print(lines);
+    
+  }
+  
+  void get_config_from_file(){
+    // expect config file to be in top_data_folder
+    ArrayList<String> lines = read_data_file(config_path);
+    
+    boolean success = true;
+    if (lines.get(0).contains("total time")){
+      // expect first line to be "total time,<integer>"
+      EDA_data_length = 4*Integer.parseInt(split(lines.get(0),",")[1]);
+    } else {
+      success = false;
+    }
+    
+    // intervals and subintervals handled in EDA_inspector
+    
+    /*
+    if (lines.get(1).contains("number of intervals")){
+      // expect first line to be "total time,<integer>"
+      num_intervals = Integer.parseInt(split(lines.get(0),",")[1]);
+    } else {
+      success = false;
+    }
+    if (lines.get(2).contains("subintervals per interval")){
+      // expect first line to be "total time,<integer>"
+      num_subintervals = Integer.parseInt(split(lines.get(0),",")[1]);
+    } else {
+      success = false;
+    }
+    */
+    
     
   }
   
