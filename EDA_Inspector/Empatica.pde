@@ -5,6 +5,7 @@ import java.util.Arrays;
 class Empatica{
   
   int EDA_data_length = 15*60*4; // length (in samples) of data; 15mins * 60secs * 4Hz
+  int EDA_starting_index = 0; // index (in original csv) to start from
   
   ArrayList<Float> SCL_data = new ArrayList<Float>();// = new float[];
   ArrayList<Float> SCL_time = new ArrayList<Float>();
@@ -179,7 +180,17 @@ class Empatica{
     }
     */
     
+    boolean found_me = false;
+    for (int p = 3; p < lines.size(); p++){
+      if (lines.get(p).contains(fname)){
+        EDA_starting_index = 4*Integer.parseInt(split(lines.get(p),",")[1]);
+        found_me = true;
+      }
+    }
     
+    if (found_me == false){
+      success = false;
+    }
   }
   
   void read_data(){
@@ -192,7 +203,7 @@ class Empatica{
       ArrayList<Float> SCL_time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
-      for (int l = lines.size() - EDA_data_length; l < lines.size();l++){
+      for (int l = EDA_starting_index + 2; l < EDA_starting_index + EDA_data_length;l++){
         
         float current_datapoint_EDA = Float.parseFloat(lines.get(l));
         // add data
