@@ -45,6 +45,8 @@ float EDA_threshold = 0.5;
 boolean files_created = false;
 boolean files_listed = false;
 
+int num_sections = 30;
+
 void listfiles(){
   
   // find empatica files
@@ -52,7 +54,7 @@ void listfiles(){
   
   File folder = new File(top_data_folder);
   File[] listOfFiles = folder.listFiles();
-
+  
   for(int i = 0; i < listOfFiles.length; i++) {
     String filename = listOfFiles[i].getName();
     if (listOfFiles[i].isFile()) {
@@ -502,7 +504,7 @@ float[] get_section_averages(int pnum){
   
   // now have z-scored list and indicator list
   // get means
-  int num_sections = 30;
+ // int num_sections = 30; //num_sections now read from config.txt
   int section_length = z_data.size()/num_sections;
   float[] mean = new float[num_sections];
   for (int m = 0; m < num_sections; m++){
@@ -614,5 +616,50 @@ void emily_finished() throws IOException{
   PrintWriter bwriter = new PrintWriter(dpath + "/bounds_" + datafile_timestamp + ".csv", "UTF-8");
   bwriter.print(boundaries_output);
   bwriter.close();
+}
+
+void get_config_parameters(){
+  ArrayList<String> lines = read_data_file(top_data_folder + "/config.txt");
+  boolean success = true;
+    if (lines.get(1).contains("number of intervals")){
+      // expect first line to be "total time,<integer>"
+      num_sections = Integer.parseInt(split(lines.get(0),",")[1]);
+    } else {
+      success = false;
+    }
+    if (lines.get(2).contains("subintervals per interval")){
+      // expect first line to be "total time,<integer>"
+      num_subintervals = Integer.parseInt(split(lines.get(0),",")[1]);
+    } else {
+      success = false;
+    }
+}
+
+ArrayList<String> read_data_file(String name){
+      // read EDA data
+  ArrayList<String> lines = new ArrayList<String>();
+  try {
+      //println(folder_path);
+      BufferedReader br = new BufferedReader(new FileReader(name));
+      StringBuilder sb = new StringBuilder();
+      String line = br.readLine();
+  
+      while (line != null) {
+          sb.append(line);
+          lines.add(line);
+          sb.append(System.lineSeparator());
+          line = br.readLine();
+      }
+      String everything = sb.toString();
+      br.close();
+  } catch(IOException ie) {
+    //println("ERROR");
+  } finally {
+    //println("FILEREAD");
+      //br.close();
+  }
+  return(lines);
+  //print(lines);
+  
 }
   

@@ -165,21 +165,6 @@ class Empatica{
     
     // intervals and subintervals handled in EDA_inspector
     
-    /*
-    if (lines.get(1).contains("number of intervals")){
-      // expect first line to be "total time,<integer>"
-      num_intervals = Integer.parseInt(split(lines.get(0),",")[1]);
-    } else {
-      success = false;
-    }
-    if (lines.get(2).contains("subintervals per interval")){
-      // expect first line to be "total time,<integer>"
-      num_subintervals = Integer.parseInt(split(lines.get(0),",")[1]);
-    } else {
-      success = false;
-    }
-    */
-    
     boolean found_me = false;
     for (int p = 3; p < lines.size(); p++){
       if (lines.get(p).contains(fname)){
