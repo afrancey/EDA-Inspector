@@ -619,7 +619,7 @@ void emily_finished() throws IOException{
 }
 
 void get_config_parameters(){
-  ArrayList<String> lines = read_data_file(top_data_folder + "/config.txt");
+  ArrayList<String> lines = read_data_file(top_data_folder + "/config.csv");
   boolean success = true;
     if (lines.get(2).contains("# intervals")){
       // expect first line to be "total time,<integer>"

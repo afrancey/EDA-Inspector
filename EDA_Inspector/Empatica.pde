@@ -1,6 +1,8 @@
 //import org.gicentre.utils.stat.*;
 import java.io.FileReader;
 import java.util.Arrays;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 class Empatica{
   
@@ -94,6 +96,8 @@ class Empatica{
   
   ArrayList<ROI> rois = new ArrayList<ROI>();
   
+  String time_of_day = "";
+  
   Empatica(PApplet parent, int x, int y, String top_path, String fn, String c, String s_t){
     //filenames = fns;
     x_pos = x;
@@ -102,7 +106,7 @@ class Empatica{
     study_type = s_t;
     fname = fn;
     folder_path = top_path + "/" + fn;
-    config_path = top_path + "/config.txt";
+    config_path = top_path + "/config.csv";
     empatica_file_time = fn.substring(0,1);
     if (study_type != "emily"){
       empatica_file_time = fn.substring(0,10);
@@ -158,7 +162,7 @@ class Empatica{
     boolean success = true;
     if (lines.get(0).contains("total time")){
       // expect first line to be "total time,<integer>"
-      EDA_data_length = 4*Integer.parseInt(split(lines.get(0),",")[1]);
+      EDA_data_length = (int)fs_EDA*Integer.parseInt(split(lines.get(1),",")[1]);
     } else {
       success = false;
     }
@@ -167,8 +171,18 @@ class Empatica{
     
     boolean found_me = false;
     for (int p = 3; p < lines.size(); p++){
-      if (lines.get(p).contains(fname)){
-        EDA_starting_index = 4*Integer.parseInt(split(lines.get(p),",")[1]);
+      String pnum = split(lines.get(p), ",")[0];
+      String cond = split(lines.get(p), ",")[1];
+      String timestring = split(lines.get(p),",")[2];
+      if (fname.equals(pnum + " " + cond)){
+        // starting index should be difference between config start time and file recording start time
+        Date startString = new Date((long)starttime_EDA*1000L);
+        String pattern = "HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String time_of_day = simpleDateFormat.format(startString);
+        int diff = string_date_to_seconds(timestring) - string_date_to_seconds(time_of_day)
+        
+        EDA_starting_index = 4*diff;
         found_me = true;
       }
     }
@@ -180,11 +194,11 @@ class Empatica{
   
   void read_data(){
     // read EDA data
-    get_config_from_file();
     ArrayList<String> lines = read_data_file(folder_path + "/" + "EDA.csv");
     if (lines.size() > 100){
       starttime_EDA = Float.parseFloat(lines.get(0));
       fs_EDA = Float.parseFloat(lines.get(1));
+      get_config_from_file();
       ArrayList<Float> SCL_data_temp = new ArrayList<Float>();
       ArrayList<Float> SCL_time_temp = new ArrayList<Float>();
       
@@ -467,14 +481,9 @@ class Empatica{
   }
 
   int string_date_to_seconds(String t){
-    // takes string formatted as "HH:MM:SS PP" and returns
-    // number of seconds since "00:00:00 AM"
-    int hour = Integer.parseInt(t.substring(0,2));
-    if (t.substring(9,11).equals("PM")){
-      //afternoon
-      hour+=12;
-    }
-    
+    // takes string formatted as "HH:mm:ss" and returns
+    // number of seconds since "00:00:00"
+    int hour = Integer.parseInt(t.substring(0,2));    
     int min = Integer.parseInt(t.substring(3,5));
     int sec = Integer.parseInt(t.substring(6,8));
     
