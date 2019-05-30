@@ -160,9 +160,10 @@ class Empatica{
     ArrayList<String> lines = read_data_file(config_path);
     
     boolean success = true;
-    if (lines.get(0).contains("total time")){
+    if (lines.get(1).contains("total time")){
       // expect first line to be "total time,<integer>"
       EDA_data_length = (int)fs_EDA*Integer.parseInt(split(lines.get(1),",")[1]);
+      println("EDA_data_length: " + Integer.toString(EDA_data_length));
     } else {
       success = false;
     }
@@ -177,6 +178,7 @@ class Empatica{
       if (fname.equals(pnum + " " + cond)){
         // starting index should be difference between config start time and file recording start time
         Date startString = new Date((long)starttime_EDA*1000L);
+        println(fname + ", " + startString);
         String pattern = "HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String time_of_day = simpleDateFormat.format(startString);
