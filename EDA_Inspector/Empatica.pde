@@ -180,7 +180,7 @@ class Empatica{
         String pattern = "HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String time_of_day = simpleDateFormat.format(startString);
-        int diff = string_date_to_seconds(timestring) - string_date_to_seconds(time_of_day)
+        int diff = string_date_to_seconds(timestring) - string_date_to_seconds(time_of_day);
         
         EDA_starting_index = 4*diff;
         found_me = true;
@@ -483,9 +483,10 @@ class Empatica{
   int string_date_to_seconds(String t){
     // takes string formatted as "HH:mm:ss" and returns
     // number of seconds since "00:00:00"
-    int hour = Integer.parseInt(t.substring(0,2));    
-    int min = Integer.parseInt(t.substring(3,5));
-    int sec = Integer.parseInt(t.substring(6,8));
+    
+    int hour = Integer.parseInt(split(t,":")[0]);    
+    int min = Integer.parseInt(split(t,":")[1]);
+    int sec = Integer.parseInt(split(t,":")[2]);
     
     return(hour*60*60 + min*60 + sec); 
     
