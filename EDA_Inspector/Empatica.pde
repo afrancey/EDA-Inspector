@@ -205,7 +205,8 @@ class Empatica{
       ArrayList<Float> SCL_time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
-      for (int l = EDA_starting_index + 2; l < EDA_starting_index + EDA_data_length;l++){
+      // +2 to account for first two info lines
+      for (int l = EDA_starting_index + 2; l < EDA_starting_index + EDA_data_length + 2;l++){
         
         float current_datapoint_EDA = Float.parseFloat(lines.get(l));
         // add data
