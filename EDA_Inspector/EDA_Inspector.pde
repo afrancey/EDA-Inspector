@@ -138,9 +138,6 @@ void setup() {
   datafile_timestamp = Long.toString(System.currentTimeMillis());
   println(datafile_timestamp);
   
-  
- 
-  
 }
 
 void draw(){
@@ -624,15 +621,15 @@ void emily_finished() throws IOException{
 void get_config_parameters(){
   ArrayList<String> lines = read_data_file(top_data_folder + "/config.txt");
   boolean success = true;
-    if (lines.get(1).contains("number of intervals")){
+    if (lines.get(2).contains("# intervals")){
       // expect first line to be "total time,<integer>"
-      num_sections = Integer.parseInt(split(lines.get(0),",")[1]);
+      num_sections = Integer.parseInt(split(lines.get(2),",")[1]);
     } else {
       success = false;
     }
-    if (lines.get(2).contains("subintervals per interval")){
+    if (lines.get(3).contains("# subintervals")){
       // expect first line to be "total time,<integer>"
-      num_subintervals = Integer.parseInt(split(lines.get(0),",")[1]);
+      num_subintervals = Integer.parseInt(split(lines.get(3),",")[1]);
     } else {
       success = false;
     }
