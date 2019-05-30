@@ -478,6 +478,8 @@ void output_zeroes_and_area() throws IOException{
   
 }
 
+
+
 float[] get_section_averages(int pnum){
   Empatica emp = emily_empatica_list.get(pnum);
   ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
@@ -516,6 +518,77 @@ float[] get_section_averages(int pnum){
   }
   
   return(mean);
+  
+}
+
+float[] get_section_slopes(int pnum){
+  //gets slope of regression line
+  Empatica emp = emily_empatica_list.get(pnum);
+  ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
+  ArrayList<Integer> sample_bounds = sample_boundaries_each_subject.get(pnum);
+  ArrayList<Float> data = emp.SCL_data;
+  ArrayList<Float> z_data = zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
+
+  ArrayList<Integer> indicator_list = new ArrayList<Integer>();
+  for (int d = 0; d < z_data.size(); d++){
+    boolean rejected = false;
+    for (int bs = 0; bs < sample_bounds.size(); bs = bs+2){
+      int start = sample_bounds.get(bs);
+      int end = sample_bounds.get(bs+1);
+      if (d >= start && d <=end){
+        rejected = true;
+      }
+    }
+    if (rejected){
+      indicator_list.add(0);
+    } else {
+      indicator_list.add(1);
+    }
+  }
+  
+  // now have z-scored list and indicator list
+  // get means
+ // int num_sections = 30; //num_sections now read from config.txt
+  int section_length = z_data.size()/num_sections;
+  float[] slopes = new float[num_sections];
+  for (int m = 0; m < num_sections; m++){
+    int start = m*section_length;
+    int end = (m+1)*section_length;
+    ArrayList<Float> chop_z = new ArrayList<Float>(z_data.subList(start,end));
+    ArrayList<Integer> chop_ind = new ArrayList<Integer>(indicator_list.subList(start,end));
+    slopes[m] = get_slope_with_indicator_list(chop_z, chop_ind);
+  }
+  
+  return(slopes);
+  
+}
+
+float get_slope_with_indicator_list(ArrayList<Float> z, ArrayList<Integer> ind){
+  // first construct two new lists:
+  //  - data with rejected values removed
+  //  - corresponding timepoints
+  
+  ArrayList<Float> new_z = new ArrayList<Float>();
+  ArrayList<Float> new_t = new ArrayList<Float>();
+  for (int i = 0; i < z.size();i++){
+    if (ind.get(i) == 1){
+      new_z.add(z.get(i));
+      new_t.add(i*0.25);
+    }
+  }
+  
+  float mean_z = mean_ssd(new_z).get(0);
+  float mean_t = mean_ssd(new_t).get(0);
+  // find slope of regression line for this data
+  float numerator = 0;
+  float denominator = 0;
+  for (int i = 0; i < new_z.size(); i++){
+    numerator+= (new_t.get(i) - mean_t)*(new_z.get(i) - mean_z);
+    denominator+= pow(new_t.get(i) - mean_t,2);
+  }
+  
+  float slope = numerator/denominator;
+  return(slope);
   
 }
 
