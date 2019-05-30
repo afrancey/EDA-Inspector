@@ -679,6 +679,17 @@ void emily_finished() throws IOException{
     boundaries_output+="\n";
   }
   
+  String slopes_output = "";
+  for (int p = 0; p < emily_empatica_list.size(); p++){
+    slopes_output+= split(emily_empatica_list.get(p).fname,  " ")[0] + "," + emily_empatica_list.get(p).condition + ",";
+    float[] slopes = get_section_slopes(p);
+    for (int m = 0; m < slopes.length; m++){
+      slopes_output+= Float.toString(slopes[m]) + ",";
+    }
+    slopes_output+="\n";
+  }
+    
+
   String dpath = dataPath("");
   dpath = dpath.replace("\\","/");
   
@@ -689,6 +700,10 @@ void emily_finished() throws IOException{
   PrintWriter bwriter = new PrintWriter(dpath + "/bounds_" + datafile_timestamp + ".csv", "UTF-8");
   bwriter.print(boundaries_output);
   bwriter.close();
+  
+  PrintWriter swriter = new PrintWriter(dpath + "/slopes_" + datafile_timestamp + ".csv", "UTF-8");
+  swriter.print(slopes_output);
+  swriter.close();
 }
 
 void get_config_parameters(){
