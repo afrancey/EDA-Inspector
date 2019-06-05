@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 class Muse{
   
-  int EDA_data_length = 15*60*4; // length (in samples) of data; 15mins * 60secs * 4Hz
+  int EDA_data_length = 60*200; // length (in samples) of data; 60secs * 220 Hz
   int EDA_starting_index = 0; // index (in original csv) to start from
   
   ArrayList<ArrayList<Float>> channel_data = new ArrayList<ArrayList<Float>>();// = new float[];
@@ -36,7 +36,7 @@ class Muse{
   int x_pos;
   int y_pos;
   
-  float fs_EDA;//Hz
+  float fs_EDA = 220;//Hz
   float starttime_EDA;
   boolean success_EDA = true;
   
