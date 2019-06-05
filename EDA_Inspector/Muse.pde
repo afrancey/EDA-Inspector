@@ -185,10 +185,10 @@ class Muse{
       
       // round down # data to nearest multiple of num_subgraphs
       int num_data_points_to_use = num_subgraphs*floor(data_temp.get(0).size()/num_subgraphs);
-      EEG_time = new ArrayList<Float>(SCL_time_temp.subList(0, num_data_points_to_use));
+      EEG_time = new ArrayList<Float>(time_temp.subList(0, num_data_points_to_use));
       channel_data = new ArrayList<ArrayList<Float>>();
-      for (int ch = 0; ch <=3 ch++){
-        channel_data.add(data_temp.get(ch).subList(0, num_data_points_to_use));
+      for (int ch = 0; ch <=3; ch++){
+        channel_data.add(new ArrayList<Float>((data_temp.get(ch).subList(0, num_data_points_to_use))));
       }
       
       // get baseline values
@@ -226,13 +226,15 @@ class Muse{
   void setup_graphs(){
     // for emily
     if (study_type.equals("emily")){
-      SCL = new CustomGraph(mainscreen,x_pos,y_pos, "SCL - " + fname, 0/fs_EDA, SCL_time.size()/fs_EDA);
-      SCL.setup_graph(SCL_time, SCL_data);
+      EEG = new CustomGraph(mainscreen,x_pos,y_pos, "SCL - " + fname, 0/fs_EDA, EEG_time.size()/fs_EDA);
+      EEG.setup_graph(EEG_time, channel_data.get(0));
       
+      /*
       small_EDA = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs_EDA, SCL_time.size()/fs_EDA);
       small_EDA.setup_graph(SCL_time, SCL_data);
+      */
       
-      make_subgraphs(SCL_time, SCL_data);
+      make_subgraphs(EEG_time, channel_data.get(0));
     } 
     
   }
