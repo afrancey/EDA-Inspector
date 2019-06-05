@@ -72,11 +72,7 @@ class Muse{
       empatica_file_time = fn.substring(0,10);
     }
     mainscreen = parent;
-    if (study_type.equals("emily")){
-      read_data();
-    } else {
-      read_data_adam();
-    }
+    read_data();
     setup_graphs();
     
   }
