@@ -15,10 +15,15 @@ import java.io.IOException;
 
 import java.lang.System;
 
+String analysis_type = "EEG";
+
 //CustomGraph cg;
 Empatica e1;
 ArrayList<Empatica> emily_empatica_list=new ArrayList<Empatica>();
 ArrayList<Empatica> adam_empatica_list=new ArrayList<Empatica>();
+
+ArrayList<Muse> muse_list = new ArrayList<Muse>();
+
 
 ArrayList<PVector> screen_boundaries = new ArrayList<PVector>();
 ArrayList<ArrayList<Integer>> sample_boundaries_each_subject = new ArrayList<ArrayList<Integer>>();
@@ -31,6 +36,8 @@ String stage = "folder selection";
 ArrayList<ArrayList<String>> not_empatica = new ArrayList<ArrayList<String>>(); // not_empatica.get(i) = {filename, reason};
 ArrayList<String> empatica_names = new ArrayList<String>(); // not_empatica.get(i) = {filename, reason};
 ArrayList<String> rejected_empatica = new ArrayList<String>(); // rejected_empatica.get(i) = filename;
+
+ArrayList<String> muse_names = new ArrayList<String>();
 
 //ArrayList<String[]> not_empatica = new ArrayList<String[]>(); // not_empatica.get(i) = {"
 
@@ -47,6 +54,28 @@ boolean files_listed = false;
 
 int num_sections = 30;
 int num_subintervals = 3;
+
+void listfiles_EEG(){
+  // find empatica files
+  // each item in top_data_folder needs to be a subfolder containing 6 empatica .csvs
+  
+  File folder = new File(top_data_folder);
+  File[] listOfFiles = folder.listFiles();
+  
+  //get_config_parameters();
+  
+  for(int i = 0; i < listOfFiles.length; i++) {
+    String filename = listOfFiles[i].getName();
+    if (listOfFiles[i].isFile()) {
+      println("File " + listOfFiles[i].getName());
+      Muse new_muse = new Muse(this, 100,100, top_data_folder, filename, "null", "emily");
+      muse_list.add(new_muse);
+      muse_names.add(filename);
+    } 
+  }
+            
+  files_listed = true;
+}
 
 void listfiles(){
   
@@ -110,7 +139,12 @@ void folderSelected(File selection) {
     top_data_folder = top_data_folder.replace("\\","/");
     println(top_data_folder);
     stage = "folder selected";
-    listfiles();
+    
+    if (analysis_type.equals("EEG")){
+      listfiles_EEG();
+    } else {
+      listfiles();
+    }
   }
 }
 
