@@ -1,3 +1,4 @@
+/*
 class Device{
   
   int data_length = 0; // length (in samples) of data; 60secs * 220 Hz
@@ -121,17 +122,6 @@ class Device{
         // add time
         time_temp.add(sample_count/fs_EDA);
         
-        /*
-        //check max
-        if (current_datapoint_EDA > max_EDA){
-          max_EDA = current_datapoint_EDA;
-        }
-        
-        // check min
-        if (current_datapoint_EDA < min_EDA){
-          min_EDA = current_datapoint_EDA;
-        }
-        */
         
         sample_count++;
       }
@@ -146,14 +136,7 @@ class Device{
       
       // get baseline values
       sample_count = 0;
-      
-      /*
-      for (int l = 2; l < 1202;l++){
-        SCL_baseline_d.add(Float.parseFloat(lines.get(l)));
-        SCL_baseline_t.add(sample_count/fs_EDA);
-        sample_count++;
-      }
-      */
+
     }
     
     print("data size ");
@@ -187,3 +170,4 @@ class Device{
     small_graph.draw_graph();
   } 
 }
+*/

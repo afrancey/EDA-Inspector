@@ -15,7 +15,8 @@ import java.io.IOException;
 
 import java.lang.System;
 
-String analysis_type = "EEG";
+//String analysis_type = "EEG";
+String analysis_type = "EDA";
 
 //CustomGraph cg;
 Empatica e1;
