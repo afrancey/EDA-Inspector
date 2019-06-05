@@ -217,21 +217,30 @@ void displayFolderSelectionResults(){
   
   textSize(30);
   
-  text("Participants: ", 50, height/10);
-  for (int en = 0; en < empatica_names.size(); en++){
-    text(empatica_names.get(en), 50, height/10 + 40 + en*40);
-  }
-
-  text("Errors: ", width/4, height/10);
-  for (int ne = 0; ne < not_empatica.size(); ne++){
-    text(not_empatica.get(ne).get(0), width/4, height/10 + 40 + ne*40);
-  }
+  if (analysis_type.equals("EEG")){
+    text("Participants: ", 50, height/10);
+    for (int en = 0; en < empatica_names.size(); en++){
+      text(muse_names.get(en), 50, height/10 + 40 + en*40);
+    }
+    
+  } else {
   
-  text("Does not reach " + Float.toString(EDA_threshold) + " uS threshold (REJECTED): ", width/2, height/10);
-  for (int re = 0; re < rejected_empatica.size(); re++){
-    text(rejected_empatica.get(re), width/2, height/10 + 40 + re*40);
-  }
+    text("Participants: ", 50, height/10);
+    for (int en = 0; en < empatica_names.size(); en++){
+      text(empatica_names.get(en), 50, height/10 + 40 + en*40);
+    }
   
+    text("Errors: ", width/4, height/10);
+    for (int ne = 0; ne < not_empatica.size(); ne++){
+      text(not_empatica.get(ne).get(0), width/4, height/10 + 40 + ne*40);
+    }
+    
+    text("Does not reach " + Float.toString(EDA_threshold) + " uS threshold (REJECTED): ", width/2, height/10);
+    for (int re = 0; re < rejected_empatica.size(); re++){
+      text(rejected_empatica.get(re), width/2, height/10 + 40 + re*40);
+    }
+  }
+    
   if (files_listed){
     textSize(40);
     text("Click anywhere to continue.", 50 , 50);
