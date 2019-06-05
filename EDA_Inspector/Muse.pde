@@ -9,16 +9,9 @@ class Muse{
   int EDA_data_length = 15*60*4; // length (in samples) of data; 15mins * 60secs * 4Hz
   int EDA_starting_index = 0; // index (in original csv) to start from
   
-  ArrayList<Float> SCL_data = new ArrayList<Float>();// = new float[];
-  ArrayList<Float> SCL_time = new ArrayList<Float>();
-  CustomGraph SCL;
-  
-  CustomGraph SCL_wave;
-  
-  CustomGraph SCL_walk;
-  
-  ArrayList<Float> SCL_baseline_t = new ArrayList<Float>();
-  ArrayList<Float> SCL_baseline_d = new ArrayList<Float>();
+  ArrayList<ArrayList<Float>> channel_data = new ArrayList<ArrayList<Float>>();// = new float[];
+  ArrayList<Float> EEG_time = new ArrayList<Float>();
+  CustomGraph EEG;
   
   CustomGraph small_EDA;
   
@@ -156,24 +149,26 @@ class Muse{
   }
   
   void read_data(){
-    // read EDA data
+    // read EEG data
     ArrayList<String> lines = read_data_file(folder_path + "/" + "EDA.csv");
     if (lines.size() > 100){
-      starttime_EDA = Float.parseFloat(lines.get(0));
-      fs_EDA = Float.parseFloat(lines.get(1));
-      get_config_from_file();
-      ArrayList<Float> SCL_data_temp = new ArrayList<Float>();
-      ArrayList<Float> SCL_time_temp = new ArrayList<Float>();
+      //get_config_from_file();
+      ArrayList<ArrayList<Float>> data_temp = new ArrayList<ArrayList<Float>>();
+      ArrayList<Float> time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
-      // +2 to account for first two info lines
-      for (int l = EDA_starting_index + 2; l < EDA_starting_index + EDA_data_length + 2;l++){
+      // +1 to account for header
+      for (int l = EDA_starting_index + 1; l < EDA_starting_index + EDA_data_length + 1;l++){
         
-        float current_datapoint_EDA = Float.parseFloat(lines.get(l));
-        // add data
-        SCL_data_temp.add(current_datapoint_EDA);
-        SCL_time_temp.add(sample_count/fs_EDA);
+        String[] line = split(lines.get(l), " "); // line looks like "index[int] tp9[float] tp10[float] fp1[float] fp2[float]
+        for (int ch = 1; ch <= 4; ch++){
+          //add data for each channel
+          data_temp.get(ch-1).add(Float.parseFloat(line[ch]));
+        }
+        // add time
+        time_temp.add(sample_count/fs_EDA);
         
+        /*
         //check max
         if (current_datapoint_EDA > max_EDA){
           max_EDA = current_datapoint_EDA;
@@ -183,26 +178,33 @@ class Muse{
         if (current_datapoint_EDA < min_EDA){
           min_EDA = current_datapoint_EDA;
         }
+        */
         
         sample_count++;
       }
       
       // round down # data to nearest multiple of num_subgraphs
-      int num_data_points_to_use = num_subgraphs*floor(SCL_data_temp.size()/num_subgraphs);
-      SCL_time = new ArrayList<Float>(SCL_time_temp.subList(0, num_data_points_to_use));
-      SCL_data = new ArrayList<Float>(SCL_data_temp.subList(0, num_data_points_to_use));
+      int num_data_points_to_use = num_subgraphs*floor(data_temp.get(0).size()/num_subgraphs);
+      EEG_time = new ArrayList<Float>(SCL_time_temp.subList(0, num_data_points_to_use));
+      channel_data = new ArrayList<ArrayList<Float>>();
+      for (int ch = 0; ch <=3 ch++){
+        channel_data.add(data_temp.get(ch).subList(0, num_data_points_to_use));
+      }
       
       // get baseline values
       sample_count = 0;
+      
+      /*
       for (int l = 2; l < 1202;l++){
         SCL_baseline_d.add(Float.parseFloat(lines.get(l)));
         SCL_baseline_t.add(sample_count/fs_EDA);
         sample_count++;
       }
+      */
     }
     
     print("data size ");
-    println(SCL_data.size());
+    println(EEG_time.size());
                                
   }
   
