@@ -6,7 +6,9 @@ class Device{
   ArrayList<ArrayList<Float>> channel_data = new ArrayList<ArrayList<Float>>();
   ArrayList<Float> timepoints = new ArrayList<Float>();
   
-  ArrayList<CustomGraph> subgraphs = new ArrayList<CustomGraph>();
+  // subgraphs break each channel into contiguous intervals
+  // subgraphs.get(ch).get(i) is the i-th subgraph of the ch-th channel
+  ArrayList<ArrayList<CustomGraph>> subgraphs = new ArrayList<ArrayList<CustomGraph>>();
   int current_subgraph_index = 0;
   int num_subgraphs = 4;
   int max_subgraph_index = num_subgraphs - 1;
@@ -165,18 +167,22 @@ class Device{
     ArrayList<Float> t = timepoints;
     ArrayList<ArrayList<Float>> d = channel_data;
     
-    for (int s = 0; s < num_subgraphs;s++){
-      int start = s*t.size()/num_subgraphs;
-      int end = (s+1)*t.size()/num_subgraphs;
-      
-      CustomGraph sg = new CustomGraph(mainscreen,0,0, "SCL_" + Integer.toString(s) + " - " + fname, start/fs, end/fs);
-      sg.setup_graph(new ArrayList<Float>(t.subList(start, end)), new ArrayList<Float>(d.subList(start, end)));
-      subgraphs.add(sg);
-    }   
+    for (int ch = 0; ch < d.size(); ch++){
+      ArrayList<CustomGraph> channel_graphs = new ArrayList<CustomGraph>();
+      for (int s = 0; s < num_subgraphs;s++){
+        int start = s*t.size()/num_subgraphs;
+        int end = (s+1)*t.size()/num_subgraphs;
+        
+        CustomGraph sg = new CustomGraph(mainscreen,0,0, fname + ", Channel " + Integer.toString(ch) + ", Subgraph " + Integer.toString(s), start/fs, end/fs);
+        sg.setup_graph(new ArrayList<Float>(t.subList(start, end)), new ArrayList<Float>(d.get(ch).subList(start, end)));
+        channel_graphs.add(sg);
+      }
+     subgraphs.add(channel_graphs);
+    }
   }
   
   void draw_data(){
-    current_graph = subgraphs.get(current_subgraph_index);
+    current_graph = subgraphs.get(0).get(current_subgraph_index);
     current_graph.draw_graph();
     small_graph.draw_graph();
   } 
