@@ -112,16 +112,8 @@ class Empatica{
       empatica_file_time = fn.substring(0,10);
     }
     mainscreen = parent;
-    get_pid();
-    //get_markers();
     if (study_type.equals("emily")){
       read_data();
-    } else {
-      read_data_adam();
-    }
-    get_interval("stim wave nothing");
-    if (study_type.equals("adam")){
-      generate_ROI_adam();
     }
     setup_graphs();
     
@@ -242,9 +234,7 @@ class Empatica{
     
     print("data size ");
     println(SCL_data.size());
-    
-    //zscore_EDA();
-                               
+             
   }
   
   void make_subgraphs(ArrayList<Float> t, ArrayList<Float> d){
@@ -261,35 +251,8 @@ class Empatica{
     
     
   }
-  void read_data_adam(){
-    // read EDA data
-    ArrayList<String> lines = read_data_file(folder_path + "/" + "EDA.csv");
-    if (lines.size() > 100){
-      starttime_EDA = Float.parseFloat(lines.get(0));
-      fs_EDA = Float.parseFloat(lines.get(1));
-      
-      int sample_count = 0;
-      for (int l = 2; l < lines.size();l++){
-      //for (int l = 0; l < 240;l++){
-        SCL_data.add(Float.parseFloat(lines.get(l)));
-        SCL_time.add(sample_count/fs_EDA);
-        sample_count++;
-      }
-    }                             
-  }
-  
-  void get_pid(){
-    int[] valid_empatica_participants = {5,6,7,8,9,10,12,13,14,17,18,19, 20, 21, 22, 23, 24, 25, 26};
-    for (int i = 0; i < valid_empatica_participants.length; i++){
-      if (fname.contains("__" + Integer.toString(valid_empatica_participants[i]))){
-        pid_adam = Integer.toString(valid_empatica_participants[i]);  
-        println(pid_adam);
-      }
-    }
-  }
   
   void setup_graphs(){
-    //zscore_EDA();
     
      // for adam
 
@@ -305,30 +268,6 @@ class Empatica{
       
       make_subgraphs(SCL_time, SCL_data);
     }
-    
-    
-    if (study_type.equals("adam")){
-      ArrayList<Float> SCL_time_chop = new ArrayList<Float>(SCL_time.subList((int)(interval[0]*fs_EDA),min((int)(interval[1]*fs_EDA), SCL_time.size())));
-      ArrayList<Float> SCL_data_chop = new ArrayList<Float>(SCL_data.subList((int)(interval[0]*fs_EDA),min((int)(interval[1]*fs_EDA), SCL_data.size())));
-      SCL = new CustomGraph(mainscreen,x_pos,y_pos, "SCL - " + fname, interval[0], interval[1]);
-      SCL.setup_graph(SCL_time_chop, SCL_data_chop);
-    
-      ArrayList<Float> SCL_wave_t = new ArrayList<Float>(SCL_time.subList((int)(markers.timestamps[7]*fs_EDA),min((int)(markers.timestamps[14]*fs_EDA), SCL_time.size())));
-      ArrayList<Float> SCL_wave_d = new ArrayList<Float>(SCL_data.subList((int)(markers.timestamps[7]*fs_EDA),min((int)(markers.timestamps[14]*fs_EDA), SCL_data.size())));
-      SCL_wave = new CustomGraph(mainscreen,x_pos,y_pos+325, "SCL wave - " + fname, markers.timestamps[7], markers.timestamps[14]);
-      SCL_wave.setup_graph(SCL_wave_t, SCL_wave_d);
-      
-      ArrayList<Float> SCL_walk_t = new ArrayList<Float>(SCL_time.subList((int)(markers.timestamps[21]*fs_EDA),min((int)(markers.timestamps[28]*fs_EDA), SCL_time.size())));
-      ArrayList<Float> SCL_walk_d = new ArrayList<Float>(SCL_data.subList((int)(markers.timestamps[21]*fs_EDA),min((int)(markers.timestamps[28]*fs_EDA), SCL_data.size())));
-      SCL_walk = new CustomGraph(mainscreen,x_pos,y_pos+650, "SCL walk - " + fname, markers.timestamps[21], markers.timestamps[28]);
-      SCL_walk.setup_graph(SCL_walk_t, SCL_walk_d);
-      
-      marker_graph = new CustomGraph(mainscreen,x_pos,y_pos, "                                                  ++ MARKERS - " + fname, interval[0], interval[1]);
-      marker_graph.setup_graph(Arrays.copyOfRange(markers.timestamps, interval_index[0],interval_index[1]+1), Arrays.copyOfRange(markers.marker_colours_float, interval_index[0], interval_index[1]+1));
-    }
-    
-    
-    
   }
   
   void draw_data(){
@@ -336,146 +275,14 @@ class Empatica{
     current_graph = subgraphs_EDA.get(current_subgraph_index);
     //current_graph = SCL;
     current_graph.draw_graph();
-    
-    //SCL.draw_graph();
-    //subgraphs_EDA.get(0).draw_graph();
     small_EDA.draw_graph();
-    //SCL_walk.draw_graph();
-    //SCL_wave.draw_graph();
     
     if (study_type.equals("adam")){
       marker_graph.draw_graph();
     }
-    
-    /*
-    for (int roi = 0; roi < 1;roi++){
-      rois.get(roi).draw_data();
-    }
-    */
-    
-    
-    
+     
   }
   
-  void get_markers(){
-    //println("getting marker");
-    File folder = new File("C:/Users/alzfr/Desktop/expt 3 data/stimuli");
-    File[] listOfFiles = folder.listFiles();
-    
-    for(int i = 0; i < listOfFiles.length; i++) {
-      if (listOfFiles[i].isFile()) {
-        //println("File " + listOfFiles[i].getName());
-        if (listOfFiles[i].getName().contains("_" + pid_adam)){
-          markers = new Markers("C:/Users/alzfr/Desktop/expt 3 data/stimuli/" + listOfFiles[i].getName(), Double.parseDouble(empatica_file_time) + (double)time_lag_empatica);
-        }
-      }
-    }
-  }
-  
-  void get_interval(String section){
-    if (study_type.equals("adam")){
-      // intervals in time!!!
-      if (section.equals("baseline stand")){
-        interval_index[0] = 0;
-        interval_index[1] = 7;
-      } else if (section.equals("baseline wave nothing")){
-        interval_index[0] = 7;
-        interval_index[1] = 14;
-      } else if (section.equals("baseline wave LAS")){
-        interval_index[0] = 14;
-        interval_index[1] = 21;
-      }else if (section.equals("baseline walk")){
-        interval_index[0] = 21;
-        interval_index[1] = 28;
-      }else if (section.equals("stim stand")){
-        interval_index[0] = 28;
-        interval_index[1] = 56;
-      }else if (section.equals("stim wave nothing")){
-        interval_index[0] = 56;
-        interval_index[1] = 84;
-      }else if (section.equals("stim wave LAS")){
-        interval_index[0] = 84;
-        interval_index[1] = 112;
-      }else if (section.equals("stim walk")){
-        interval_index[0] = 112;
-        interval_index[1] = 139;
-      } else {
-        interval_index[0] = 28;
-        interval_index[1] = 56;
-        //interval_index[0] = 0;
-        //interval_index[1] = markers.timestamps.length-1;
-      }
-      interval[0] = markers.timestamps[interval_index[0]];
-      interval[1] = markers.timestamps[interval_index[1]];
-    } else if (study_type.equals("emily")){
-      // intervals is element index!!!!
-      interval[0] = 0;
-      interval[1] = 2400; // 10 minutes
-      //interval[0] = 730*4;
-      //interval[1] = 800*4; // 15 minutes
-    } else {
-    }
-  }
-  
-  void zscore_EDA(){
-    
-    // create array of baseline standing values
-    ArrayList<Float> baseline = new ArrayList<Float>(SCL_data.subList((int)(markers.timestamps[0]*fs_EDA),(int)(markers.timestamps[6]*fs_EDA)));
-    
-    // calculate mean
-    float sum = 0;
-    for (int i = 0; i < baseline.size();i++){
-      sum+=baseline.get(i);
-    }
-    float mean = sum/baseline.size();
-    
-    //calculate sample SD
-    float sum_of_squares = 0;
-    for (int i = 0; i < baseline.size();i++){
-      sum_of_squares+=pow(baseline.get(i) - mean,2);
-    }
-    
-    float ssd = pow(sum_of_squares/(baseline.size()-1),0.5);
-    
-    for (int i = 0; i < SCL_data.size(); i++){
-      float val = (SCL_data.get(i) - mean)/ssd;
-      SCL_data.set(i, val);
-    }
-  }
-  
-
-  
-  
-  void generate_ROI_adam(){
-    // for first 28, wait two seconds after timestamp, then ROI 5 seconds
-    String stim_type = "none";
-    for (int s = 0; s < 28; s++){
-      ArrayList<Float> time_array = new ArrayList<Float>(SCL_time.subList((int)((markers.timestamps[s]+2)*fs_EDA), (int)((markers.timestamps[s] + 8)*fs_EDA)));
-      ArrayList<Float> data_array = new ArrayList<Float>(SCL_data.subList((int)((markers.timestamps[s]+2)*fs_EDA), (int)((markers.timestamps[s] + 8)*fs_EDA))); 
-      rois.add(new ROI(mainscreen, fs_EDA, time_array, data_array));
-    }
-    for (int s = 28; s < 140; s = s+2){
-      
-      int colour = markers.marker_colours[s+1];
-      print("colour ");
-      println(colour);
-      if (colour == 2){
-        stim_type = "low";
-        println("low");
-      } else {
-        stim_type = "high";
-      }
-      
-      ArrayList<Float> time_array = new ArrayList<Float>(SCL_time.subList((int)((markers.timestamps[s]+2)*fs_EDA), (int)((markers.timestamps[s] + 8)*fs_EDA)));
-      ArrayList<Float> data_array = new ArrayList<Float>(SCL_data.subList((int)((markers.timestamps[s]+2)*fs_EDA), (int)((markers.timestamps[s] + 8)*fs_EDA)));
-      ROI roi = new ROI(mainscreen, fs_EDA, time_array, data_array);
-      roi.set_stim_type(stim_type);
-      print("rois stim type ");
-      println(roi.stim_type);
-      rois.add(roi);
-    }
-
-  }
   int get_difference_in_seconds_between_two_times(String t1, String t2){
   // string format of t1 and t2: "HH:MM:SS PP"
   // ie "10:42:24 AM"
