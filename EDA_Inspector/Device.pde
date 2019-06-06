@@ -1,4 +1,3 @@
-/*
 class Device{
   
   int data_length = 0; // length (in samples) of data; 60secs * 220 Hz
@@ -170,4 +169,3 @@ class Device{
     small_graph.draw_graph();
   } 
 }
-*/
