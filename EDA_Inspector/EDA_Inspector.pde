@@ -332,11 +332,11 @@ void draw_mouseline(){
   int num_data_points = current_empatica.SCL_time.size();
   float max_eda = current_empatica.max_EDA;
   float min_eda = current_empatica.min_EDA;
-  float max_time = num_data_points/current_empatica.fs_EDA;
+  float max_time = num_data_points/current_empatica.fs;
   float starttime = current_empatica.current_subgraph_index*max_time/current_empatica.num_subgraphs;
   float endtime = (current_empatica.current_subgraph_index+1)*max_time/current_empatica.num_subgraphs;
-  PVector top_left_corner = current_empatica.small_EDA.lineChart.getDataToScreen(new PVector(starttime, max_eda));
-  PVector bottom_right_corner = current_empatica.small_EDA.lineChart.getDataToScreen(new PVector(endtime, min_eda));
+  PVector top_left_corner = current_empatica.small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
+  PVector bottom_right_corner = current_empatica.small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
   rectMode(CORNERS);
   rect(top_left_corner.x, top_left_corner.y, bottom_right_corner.x, bottom_right_corner.y);
 
