@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-class Muse{
+class Muse extends Device{
   
   Muse(PApplet parent, int x, int y, String top_path, String fn, String c, String s_t){
     

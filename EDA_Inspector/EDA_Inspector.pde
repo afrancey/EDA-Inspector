@@ -18,13 +18,8 @@ import java.lang.System;
 //String analysis_type = "EEG";
 String analysis_type = "EDA";
 
-//CustomGraph cg;
-Empatica e1;
-ArrayList<Empatica> emily_empatica_list=new ArrayList<Empatica>();
-ArrayList<Empatica> adam_empatica_list=new ArrayList<Empatica>();
-
-ArrayList<Muse> muse_list = new ArrayList<Muse>();
-
+// holds Muses and Empaticas
+ArrayList<Device> device_list = new ArrayList<Device>();
 
 ArrayList<PVector> screen_boundaries = new ArrayList<PVector>();
 ArrayList<ArrayList<Integer>> sample_boundaries_each_subject = new ArrayList<ArrayList<Integer>>();
@@ -77,6 +72,7 @@ void setup() {
   //size(700,700);
   fullScreen();
   textFont(createFont("Arial",10),10);
+  
   selectFolder("Select folder to process", "folderSelected"); 
   
   println(dataPath(""));
