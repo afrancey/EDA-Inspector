@@ -97,8 +97,8 @@ void draw(){
     displayFolderSelectionResults();
   } else if (stage.equals("inspection")){
      background(255);
-     if (filecount < emily_empatica_list.size()){
-       emily_empatica_list.get(filecount).draw_data();
+     if (filecount < device_list.size()){
+       device_list.get(filecount).draw_data();
      }
      draw_mouseline();
   } else if (stage.equals("finished")){
@@ -165,7 +165,7 @@ void keyPressed() {
     if (key == CODED) {
       if (keyCode == RIGHT) {
         println("rightpress");
-        Empatica current_empatica = emily_empatica_list.get(filecount);
+        Empatica current_empatica = device_list.get(filecount);
         if (current_empatica.current_subgraph_index < current_empatica.num_subgraphs){
           
           // first turn screen boundaries into SCL sample boundaries determined by timings of currently shown subgraph
@@ -194,7 +194,7 @@ void keyPressed() {
           
           if (current_empatica.current_subgraph_index == current_empatica.max_subgraph_index){
             filecount++;
-            if (filecount >= emily_empatica_list.size()){
+            if (filecount >= device_list.size()){
               stage = "finished";
             }
           } else {
@@ -216,20 +216,20 @@ void mouseClicked(){
     String snap_result = checkSnapBoundaryToAxis(x,y);
     if (snap_result == "left"){
       //boundary snaps to left axis
-      float min_time = emily_empatica_list.get(filecount).current_graph.lineChart.getMinX();
-      float max_eda = emily_empatica_list.get(filecount).current_graph.lineChart.getMaxY();
+      float min_time = device_list.get(filecount).current_graph.lineChart.getMinX();
+      float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
   
-      PVector left_screenbound = emily_empatica_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_time,max_eda));
+      PVector left_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_time,max_eda));
       point = left_screenbound;
     } else if (snap_result == "right"){
-      float max_eda = emily_empatica_list.get(filecount).current_graph.lineChart.getMaxY();
-      float max_time = emily_empatica_list.get(filecount).current_graph.lineChart.getMaxX();
-      PVector right_screenbound = emily_empatica_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_time,max_eda));
+      float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
+      float max_time = device_list.get(filecount).current_graph.lineChart.getMaxX();
+      PVector right_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_time,max_eda));
       point = right_screenbound;
     } else {
       point = new PVector(x, y);
     }
-    PVector datapoint = emily_empatica_list.get(filecount).current_graph.lineChart.getScreenToData(point);
+    PVector datapoint = device_list.get(filecount).current_graph.lineChart.getScreenToData(point);
     if (datapoint != null){
       screen_boundaries.add(point);
     }
@@ -256,12 +256,12 @@ void showSnapBoundaryToAxis(){
 
 String checkSnapBoundaryToAxis(int x, int y){
   int num_seconds_in_buffer = 1;
-  float min_time = emily_empatica_list.get(filecount).current_graph.lineChart.getMinX();
-  float max_eda = emily_empatica_list.get(filecount).current_graph.lineChart.getMaxY();
-  float max_time = emily_empatica_list.get(filecount).current_graph.lineChart.getMaxX();
+  float min_time = device_list.get(filecount).current_graph.lineChart.getMinX();
+  float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
+  float max_time = device_list.get(filecount).current_graph.lineChart.getMaxX();
   
-  float left_screenbound = emily_empatica_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_time+num_seconds_in_buffer,max_eda)).x;
-  float right_screenbound = emily_empatica_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_time-num_seconds_in_buffer,max_eda)).x;
+  float left_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_time+num_seconds_in_buffer,max_eda)).x;
+  float right_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_time-num_seconds_in_buffer,max_eda)).x;
   
   if (x <= left_screenbound){
     return("left");
@@ -302,15 +302,15 @@ void draw_mouseline(){
   }
   
   // draw ruler
-  if (filecount < emily_empatica_list.size()){
-    PVector datapoint = emily_empatica_list.get(filecount).current_graph.lineChart.getScreenToData(new PVector(mouseX, mouseY));
+  if (filecount < device_list.size()){
+    PVector datapoint = device_list.get(filecount).current_graph.lineChart.getScreenToData(new PVector(mouseX, mouseY));
     if (datapoint != null){
       fill(0,0,0);
       stroke(0,0,0);
       strokeWeight(1);
       text("time: " + Float.toString(datapoint.x), mouseX + 20, height - height/3 + 100);
       text("SCL: " + Float.toString(datapoint.y), mouseX + 20, height - height/3 + 130);
-      PVector mouse_endpoint = emily_empatica_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(datapoint.x + 2, datapoint.y + 0.1));
+      PVector mouse_endpoint = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(datapoint.x + 2, datapoint.y + 0.1));
       line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
       line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
       
@@ -324,11 +324,11 @@ void draw_mouseline(){
   }
   
   // draw rects on small graph
-  //emily_empatica_list
+  //device_list
   fill(0,0,0,40);
   stroke(0,0,0);
   strokeWeight(1);
-  Empatica current_empatica = emily_empatica_list.get(filecount);
+  Empatica current_empatica = device_list.get(filecount);
   int num_data_points = current_empatica.SCL_time.size();
   float max_eda = current_empatica.max_EDA;
   float min_eda = current_empatica.min_EDA;
@@ -346,8 +346,8 @@ void draw_mouseline(){
 void emily_finished() throws IOException{
   // save means for each participant
   String means_output = "";
-  for (int p = 0; p < emily_empatica_list.size(); p++){
-    means_output+= split(emily_empatica_list.get(p).fname,  " ")[0] + "," + emily_empatica_list.get(p).condition + ",";
+  for (int p = 0; p < device_list.size(); p++){
+    means_output+= split(device_list.get(p).fname,  " ")[0] + "," + device_list.get(p).condition + ",";
     float[] weighted_means = get_section_averages(p);
     for (int m = 0; m < weighted_means.length; m++){
       means_output+= Float.toString(weighted_means[m]) + ",";
@@ -356,8 +356,8 @@ void emily_finished() throws IOException{
   }
   
   String boundaries_output = "";
-  for (int p = 0; p < emily_empatica_list.size(); p++){
-    boundaries_output+=emily_empatica_list.get(p).fname + ",";
+  for (int p = 0; p < device_list.size(); p++){
+    boundaries_output+=device_list.get(p).fname + ",";
     ArrayList<Integer> subject_bounds = sample_boundaries_each_subject.get(p);
     for (int b = 0; b < subject_bounds.size(); b++){
       boundaries_output+= Integer.toString(subject_bounds.get(b)) + " ";
@@ -366,8 +366,8 @@ void emily_finished() throws IOException{
   }
   
   String slopes_output = "";
-  for (int p = 0; p < emily_empatica_list.size(); p++){
-    slopes_output+= split(emily_empatica_list.get(p).fname,  " ")[0] + "," + emily_empatica_list.get(p).condition + ",";
+  for (int p = 0; p < device_list.size(); p++){
+    slopes_output+= split(device_list.get(p).fname,  " ")[0] + "," + device_list.get(p).condition + ",";
     float[] slopes = get_section_slopes(p);
     for (int m = 0; m < slopes.length; m++){
       slopes_output+= Float.toString(slopes[m]) + ",";
