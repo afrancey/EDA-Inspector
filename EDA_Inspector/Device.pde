@@ -84,7 +84,7 @@ class Device{
       String timestring = split(lines.get(p),",")[2];
       if (fname.equals(pnum + " " + cond)){
         // starting index should be difference between config start time and file recording start time
-        Date startString = new Date((long)starttime_EDA*1000L);
+        Date startString = new Date((long)starttime*1000L);
         println(fname + ", " + startString);
         String pattern = "HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -119,7 +119,7 @@ class Device{
           data_temp.get(ch-1).add(Float.parseFloat(line[ch]));
         }
         // add time
-        time_temp.add(sample_count/fs_EDA);
+        time_temp.add(sample_count/fs);
         
         
         sample_count++;
