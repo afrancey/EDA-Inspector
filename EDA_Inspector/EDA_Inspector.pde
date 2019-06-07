@@ -15,6 +15,8 @@ import java.io.IOException;
 
 import java.lang.System;
 
+float EDA_threshold = 0.5;
+
 //String analysis_type = "EEG";
 String analysis_type = "EDA";
 
@@ -33,17 +35,9 @@ ArrayList<ArrayList<String>> not_device = new ArrayList<ArrayList<String>>(); //
 ArrayList<String> device_names = new ArrayList<String>(); // not_device.get(i) = {filename, reason};
 ArrayList<String> rejected_device = new ArrayList<String>(); // rejected_device.get(i) = filename;
 
-ArrayList<String> muse_names = new ArrayList<String>();
-
-//ArrayList<String[]> not_empatica = new ArrayList<String[]>(); // not_empatica.get(i) = {"
-
 int filecount = 0;
-//String type = "adam";
-String type = "emily";
 
 String datafile_timestamp = "null";
-
-float EDA_threshold = 0.5;
 
 boolean files_created = false;
 boolean files_listed = false;
@@ -125,13 +119,7 @@ void displayFolderSelectionResults(){
   
   textSize(30);
   
-  if (analysis_type.equals("EEG")){
-    text("Participants: ", 50, height/10);
-    for (int en = 0; en < device_names.size(); en++){
-      text(muse_names.get(en), 50, height/10 + 40 + en*40);
-    }
-    
-  } else {
+
   
     text("Participants: ", 50, height/10);
     for (int en = 0; en < device_names.size(); en++){
@@ -147,7 +135,6 @@ void displayFolderSelectionResults(){
     for (int re = 0; re < rejected_device.size(); re++){
       text(rejected_device.get(re), width/2, height/10 + 40 + re*40);
     }
-  }
     
   if (files_listed){
     textSize(40);
