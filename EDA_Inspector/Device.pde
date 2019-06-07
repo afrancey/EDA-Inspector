@@ -44,9 +44,13 @@ class Device{
   String time_of_day = "";
   int num_channels;
   
-  Device(PApplet parent, String top_path, String fn, String c, String s_t, int num_ch){
+  Device(PApplet parent, String top_path, String fn, String c, String s_t){
     //filenames = fns;
-    num_channels = num_ch;
+    if (s_t.equals("EEG")){
+      num_channels = 4;
+    } else {
+      num_channels = 1;
+    }
     condition = c;
     study_type = s_t;
     fname = fn;
