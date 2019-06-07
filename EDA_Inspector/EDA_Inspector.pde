@@ -29,9 +29,9 @@ String top_data_folder = "";
 
 String stage = "folder selection";
 
-ArrayList<ArrayList<String>> not_empatica = new ArrayList<ArrayList<String>>(); // not_empatica.get(i) = {filename, reason};
-ArrayList<String> empatica_names = new ArrayList<String>(); // not_empatica.get(i) = {filename, reason};
-ArrayList<String> rejected_empatica = new ArrayList<String>(); // rejected_empatica.get(i) = filename;
+ArrayList<ArrayList<String>> not_device = new ArrayList<ArrayList<String>>(); // not_device.get(i) = {filename, reason};
+ArrayList<String> device_names = new ArrayList<String>(); // not_device.get(i) = {filename, reason};
+ArrayList<String> rejected_device = new ArrayList<String>(); // rejected_device.get(i) = filename;
 
 ArrayList<String> muse_names = new ArrayList<String>();
 
@@ -127,25 +127,25 @@ void displayFolderSelectionResults(){
   
   if (analysis_type.equals("EEG")){
     text("Participants: ", 50, height/10);
-    for (int en = 0; en < empatica_names.size(); en++){
+    for (int en = 0; en < device_names.size(); en++){
       text(muse_names.get(en), 50, height/10 + 40 + en*40);
     }
     
   } else {
   
     text("Participants: ", 50, height/10);
-    for (int en = 0; en < empatica_names.size(); en++){
-      text(empatica_names.get(en), 50, height/10 + 40 + en*40);
+    for (int en = 0; en < device_names.size(); en++){
+      text(device_names.get(en), 50, height/10 + 40 + en*40);
     }
   
     text("Errors: ", width/4, height/10);
-    for (int ne = 0; ne < not_empatica.size(); ne++){
-      text(not_empatica.get(ne).get(0), width/4, height/10 + 40 + ne*40);
+    for (int ne = 0; ne < not_device.size(); ne++){
+      text(not_device.get(ne).get(0), width/4, height/10 + 40 + ne*40);
     }
     
     text("Does not reach " + Float.toString(EDA_threshold) + " uS threshold (REJECTED): ", width/2, height/10);
-    for (int re = 0; re < rejected_empatica.size(); re++){
-      text(rejected_empatica.get(re), width/2, height/10 + 40 + re*40);
+    for (int re = 0; re < rejected_device.size(); re++){
+      text(rejected_device.get(re), width/2, height/10 + 40 + re*40);
     }
   }
     
@@ -165,21 +165,21 @@ void keyPressed() {
     if (key == CODED) {
       if (keyCode == RIGHT) {
         println("rightpress");
-        Empatica current_empatica = device_list.get(filecount);
-        if (current_empatica.current_subgraph_index < current_empatica.num_subgraphs){
+        Device current_device = device_list.get(filecount);
+        if (current_device.current_subgraph_index < current_device.num_subgraphs){
           
           // first turn screen boundaries into SCL sample boundaries determined by timings of currently shown subgraph
           ArrayList<Integer> sample_boundaries = new ArrayList<Integer>();
           for (int i = 0; i < screen_boundaries.size(); i++){
-            PVector data_value = current_empatica.current_graph.lineChart.getScreenToData(screen_boundaries.get(i));
+            PVector data_value = current_device.current_graph.lineChart.getScreenToData(screen_boundaries.get(i));
             float time_boundary = data_value.x;
             int sample_boundary = (int)(time_boundary*4.0);
             sample_boundaries.add(sample_boundary);
           }
           
           // if this is the first subgraph, add it to global arrays
-          if (current_empatica.current_subgraph_index == 0){
-            names_boundaries.add(current_empatica.fname);
+          if (current_device.current_subgraph_index == 0){
+            names_boundaries.add(current_device.fname);
             sample_boundaries_each_subject.add(sample_boundaries);
           } else {
             // otherwise, add it to the most recently added array in global array
@@ -192,13 +192,13 @@ void keyPressed() {
           // increment index if not on last subgraph,
           // increment filecount if this is the last subgraph
           
-          if (current_empatica.current_subgraph_index == current_empatica.max_subgraph_index){
+          if (current_device.current_subgraph_index == current_device.max_subgraph_index){
             filecount++;
             if (filecount >= device_list.size()){
               stage = "finished";
             }
           } else {
-            current_empatica.current_subgraph_index++;
+            current_device.current_subgraph_index++;
           }
         }
       }
@@ -328,15 +328,15 @@ void draw_mouseline(){
   fill(0,0,0,40);
   stroke(0,0,0);
   strokeWeight(1);
-  Empatica current_empatica = device_list.get(filecount);
-  int num_data_points = current_empatica.SCL_time.size();
-  float max_eda = current_empatica.max_EDA;
-  float min_eda = current_empatica.min_EDA;
-  float max_time = num_data_points/current_empatica.fs;
-  float starttime = current_empatica.current_subgraph_index*max_time/current_empatica.num_subgraphs;
-  float endtime = (current_empatica.current_subgraph_index+1)*max_time/current_empatica.num_subgraphs;
-  PVector top_left_corner = current_empatica.small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
-  PVector bottom_right_corner = current_empatica.small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
+  Device current_device = device_list.get(filecount);
+  int num_data_points = current_device.SCL_time.size();
+  float max_eda = current_device.max_EDA;
+  float min_eda = current_device.min_EDA;
+  float max_time = num_data_points/current_device.fs;
+  float starttime = current_device.current_subgraph_index*max_time/current_device.num_subgraphs;
+  float endtime = (current_device.current_subgraph_index+1)*max_time/current_device.num_subgraphs;
+  PVector top_left_corner = current_device.small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
+  PVector bottom_right_corner = current_device.small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
   rectMode(CORNERS);
   rect(top_left_corner.x, top_left_corner.y, bottom_right_corner.x, bottom_right_corner.y);
 
