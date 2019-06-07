@@ -56,6 +56,9 @@ boolean files_listed = false;
 int num_sections = 30;
 int num_subintervals = 3;
 
+void listfiles(){//run through folder and find files
+}
+
 void folderSelected(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
@@ -65,12 +68,8 @@ void folderSelected(File selection) {
     top_data_folder = top_data_folder.replace("\\","/");
     println(top_data_folder);
     stage = "folder selected";
+    listfiles();
     
-    if (analysis_type.equals("EEG")){
-      listfiles_EEG();
-    } else {
-      listfiles();
-    }
   }
 }
 
@@ -78,20 +77,7 @@ void setup() {
   //size(700,700);
   fullScreen();
   textFont(createFont("Arial",10),10);
-  selectFolder("Select folder to process", "folderSelected");
-  
-  //listfiles();
-  //print("esize");
-  //println(emily_empatica_list.size());
-  //emily_empatica_list = new ArrayList<Empatica>(emily_empatica_list.subList(22,24)); // hack to reduce list size for inspection
-  
-  /*
-  try{
-    output_zeroes_and_area();
-  } catch(IOException e) {
-    println("exception");
-  }
-  */
+  selectFolder("Select folder to process", "folderSelected"); 
   
   println(dataPath(""));
   
