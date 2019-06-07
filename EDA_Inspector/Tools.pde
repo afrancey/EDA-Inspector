@@ -30,4 +30,16 @@ class Tools{
     //print(lines);
     
   }
+  
+  int string_date_to_seconds(String t){
+    // takes string formatted as "HH:mm:ss" and returns
+    // number of seconds since "00:00:00"
+    
+    int hour = Integer.parseInt(split(t,":")[0]);    
+    int min = Integer.parseInt(split(t,":")[1]);
+    int sec = Integer.parseInt(split(t,":")[2]);
+    
+    return(hour*60*60 + min*60 + sec); 
+    
+  }
 }
