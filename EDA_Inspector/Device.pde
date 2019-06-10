@@ -44,6 +44,9 @@ class Device{
   String time_of_day = "";
   int num_channels;
   
+  float data_max = -10000;
+  float data_min = 10000;
+  
   Device(PApplet parent, String top_path, String fn, String c, String s_t){
     //filenames = fns;
     if (s_t.equals("EEG")){
@@ -120,7 +123,17 @@ class Device{
         String[] line = split(lines.get(l), " "); // line looks like "index[int] tp9[float] tp10[float] fp1[float] fp2[float]
         for (int ch = 1; ch <= 4; ch++){
           //add data for each channel
-          data_temp.get(ch-1).add(Float.parseFloat(line[ch]));
+          float datapoint = Float.parseFloat(line[ch]);
+          data_temp.get(ch-1).add(datapoint);
+          
+          // get max and min values
+          if (Float.parseFloat(line[ch])> data_max){
+            data_max = Float.parseFloat(line[ch]);
+          }
+          
+          if (Float.parseFloat(line[ch]) < data_min){
+            data_min = Float.parseFloat(line[ch]);
+          }
         }
         // add time
         time_temp.add(sample_count/fs);
