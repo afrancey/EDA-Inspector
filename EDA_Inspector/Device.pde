@@ -67,6 +67,8 @@ class Device{
     
     make_subgraphs(); 
   }
+  
+  ArrayList<String> checkDevice(){return(new ArrayList<String>(Arrays.asList("did you override checkDevice()?", "ERROR")));}
  
   
   void get_config_from_file(){

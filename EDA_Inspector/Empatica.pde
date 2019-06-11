@@ -8,59 +8,58 @@ class Empatica extends Device{
   
   Empatica(PApplet parent, String top_path, String fn, String c){
     super(parent, top_path, fn, c, "EDA");
+    //listFiles(folder_path);
   }
   
-  void listfiles(){
+  ArrayList<String> checkDevice(){
     
     // find empatica files
     // each item in top_data_folder needs to be a subfolder containing 6 empatica .csvs
     
-    File folder = new File(top_data_folder);
-    File[] listOfFiles = folder.listFiles();
+    File folder = new File(folder_path);
     
-    get_config_parameters();
+    //get_config_parameters();
     
-    for(int i = 0; i < listOfFiles.length; i++) {
-      String filename = listOfFiles[i].getName();
-      if (listOfFiles[i].isFile()) {
-        println("File " + listOfFiles[i].getName());
-        not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "not a folder")));
-      } else if (listOfFiles[i].isDirectory()) {
-        File subfolder = new File(top_data_folder + "/" + filename);
-        File[] subfiles = subfolder.listFiles();
-        
-        if (subfiles.length != 8){
-          not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "wrong number")));
-        } else {
-          // check to see if it has correct files
-          // "ACC.csv", "BVP.csv", "EDA.csv", "HR.csv", "IBI.csv", "info.txt", "tags.csv", "TEMP.csv"
-          String empatica_filenames[] = {"ACC.csv", "BVP.csv", "EDA.csv", "HR.csv", "IBI.csv", "info.txt", "tags.csv", "TEMP.csv"};
-          String filenames_in_empatica_folder[] = new String[8];
-          for (int sf = 0; sf < subfiles.length;sf++){
-            filenames_in_empatica_folder[sf] = subfiles[sf].getName();
-          }
-          
-          if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
-            // has right files in folder
-            String condition = split(filename, " ")[1];
-            Empatica new_emily_empatica = new Empatica(this, 100,100, top_data_folder, filename, condition, "emily");
-            
-            if (new_emily_empatica.max_EDA > EDA_threshold){
-              emily_empatica_list.add(new_emily_empatica);
-              empatica_names.add(filename);
-            } else {
-              // rejected for too low EDA
-              rejected_empatica.add(filename);
-            }
-          } else {
-            // does not have correct files in folder
-            not_empatica.add(new ArrayList<String>(Arrays.asList(filename, "wrong files")));
-          }
+    String filename = folder.getName();
+    if (folder.isFile()) {
+      println("File " + folder.getName());
+      return(new ArrayList<String>(Arrays.asList(filename, "not a folder")));
+    } else if (folder.isDirectory()) {
+      File subfolder = new File(top_data_folder + "/" + filename);
+      File[] subfiles = subfolder.listFiles();
+      
+      if (subfiles.length != 8){
+        return(new ArrayList<String>(Arrays.asList(filename, "wrong number")));
+      } else {
+        // check to see if it has correct files
+        // "ACC.csv", "BVP.csv", "EDA.csv", "HR.csv", "IBI.csv", "info.txt", "tags.csv", "TEMP.csv"
+        String empatica_filenames[] = {"ACC.csv", "BVP.csv", "EDA.csv", "HR.csv", "IBI.csv", "info.txt", "tags.csv", "TEMP.csv"};
+        String filenames_in_empatica_folder[] = new String[8];
+        for (int sf = 0; sf < subfiles.length;sf++){
+          filenames_in_empatica_folder[sf] = subfiles[sf].getName();
         }
-              
+        
+        if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
+          // has right files in folder
+          String condition = split(filename, " ")[1];
+      
+          if (data_max > EDA_threshold){
+            return(new ArrayList<String>(Arrays.asList(filename, "device found")));
+          } else {
+            // rejected for too low EDA
+            return(new ArrayList<String>(Arrays.asList(filename, "threshold error")));
+          }
+        } else {
+          // does not have correct files in folder
+          return(new ArrayList<String>(Arrays.asList(filename, "wrong files")));
+        }
       }
+            
+    } else {
+      // not a file and not a directory (??)
+      return(new ArrayList<String>(Arrays.asList(filename, "ERROR")));
     }
-    files_listed = true;
+  //files_listed = true;
   }
   
   float[] get_section_averages(int pnum){
