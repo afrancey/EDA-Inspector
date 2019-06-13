@@ -129,6 +129,8 @@ class Device{
       int header_offset = 0;
       int starting_channel = 0;
       int ending_channel = 0;
+      int channel_offset = 0;
+      int num_channels = 1;
       
       // EEG:
       // first line is header
@@ -143,20 +145,24 @@ class Device{
         header_offset = 1;
         starting_channel = 1;
         ending_channel = 4;
+        channel_offset = 1;
+        num_channels = 4;
       } else if (study_type.equals("EDA")){
         header_offset = 2;
         starting_channel = 0;
         ending_channel = 0;
+        channel_offset = 0;
+        num_channels = 1;
       }
       // +1 to account for header
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
         
         String[] line = split(lines.get(l), " "); 
        
-        for (int ch = 1; ch <= 4; ch++){
+        for (int ch = starting_channel; ch <= ending_channel; ch++){
           //add data for each channel
           float datapoint = Float.parseFloat(line[ch]);
-          data_temp.get(ch-1).add(datapoint);
+          data_temp.get(ch-channel_offset).add(datapoint);
           
           // get max and min values
           if (Float.parseFloat(line[ch])> data_max){
@@ -178,7 +184,7 @@ class Device{
       int num_data_points_to_use = num_subgraphs*floor(data_temp.get(0).size()/num_subgraphs);
       timepoints = new ArrayList<Float>(time_temp.subList(0, num_data_points_to_use));
       channel_data = new ArrayList<ArrayList<Float>>();
-      for (int ch = 0; ch <=3; ch++){
+      for (int ch = 0; ch <=num_channels; ch++){
         channel_data.add(new ArrayList<Float>((data_temp.get(ch).subList(0, num_data_points_to_use))));
       }
       
