@@ -1,4 +1,6 @@
 class Device{
+
+  Tools tools = new Tools();
   
   int data_length = 0; // length (in samples) of data; 60secs * 220 Hz
   int starting_index = 0; // index (in original csv) to start from
@@ -73,7 +75,7 @@ class Device{
   
   void get_config_from_file(){
     // expect config file to be in top_data_folder
-    ArrayList<String> lines = read_data_file(config_path);
+    ArrayList<String> lines = tools.read_data_file(config_path);
     
     boolean success = true;
     if (lines.get(1).contains("total time")){
@@ -112,7 +114,7 @@ class Device{
   
   void read_data(){
     // read EEG data
-    ArrayList<String> lines = read_data_file(folder_path + "/" + "EDA.csv");
+    ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
     if (lines.size() > 100){
       //get_config_from_file();
       ArrayList<ArrayList<Float>> data_temp = new ArrayList<ArrayList<Float>>();
