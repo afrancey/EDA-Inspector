@@ -64,8 +64,12 @@ class Device{
     file_time = fn.substring(0,1);
     mainscreen = parent;
     
-    get_config_from_file();
-    println("got config");
+    if (study_type.equals("EEG")){
+      fs = 220;
+    } else {
+      fs = 4;
+    }
+    
     //fills channel_data and timepoints;
     read_data();
     
@@ -122,7 +126,10 @@ class Device{
     print(lines);
     println("read the file");
     if (lines.size() > 100){
-      //get_config_from_file();
+      if (study_type.equals("EDA")){   
+        starttime = Float.parseFloat(lines.get(0));
+      }
+      get_config_from_file();
       ArrayList<ArrayList<Float>> data_temp = new ArrayList<ArrayList<Float>>();
       ArrayList<Float> time_temp = new ArrayList<Float>();
       
@@ -156,6 +163,7 @@ class Device{
         num_channels = 1;
       }
       println("set vars");
+      println(starting_index);
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
         println(l);
         
