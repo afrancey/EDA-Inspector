@@ -12,7 +12,7 @@ class Empatica extends Device{
   }
   
   
-  ArrayList<String> checkDevice(){'
+  ArrayList<String> checkDevice(){
     // find empatica files
     // each item in top_data_folder needs to be a subfolder containing 6 empatica .csvs
     
