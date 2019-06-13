@@ -174,16 +174,16 @@ class Device{
        
         for (int ch = starting_channel; ch <= ending_channel; ch++){
           //add data for each channel
-          float datapoint = Float.parseFloat(line[ch]);
+          float datapoint = 100*Float.parseFloat(line[ch]);
           data_temp.get(ch-channel_offset).add(datapoint);
           
           // get max and min values
-          if (Float.parseFloat(line[ch])> data_max){
-            data_max = Float.parseFloat(line[ch]);
+          if (datapoint> data_max){
+            data_max = datapoint;
           }
           
-          if (Float.parseFloat(line[ch]) < data_min){
-            data_min = Float.parseFloat(line[ch]);
+          if (datapoint < data_min){
+            data_min = datapoint;
           }
         }
         // add time
@@ -194,6 +194,8 @@ class Device{
       }
       
       println("finished adding samples");
+      println(data_min);
+      println(data_max);
       
       // round down # data to nearest multiple of num_subgraphs
       int num_data_points_to_use = num_subgraphs*floor(data_temp.get(0).size()/num_subgraphs);
