@@ -67,6 +67,7 @@ void listfiles(){
       }
       
       ArrayList<String> checkDevice_result = device.checkDevice();
+      println(checkDevice_result);
       if (checkDevice_result.get(1).equals("device found")){
         device_list.add(device);
         device_names.add(checkDevice_result.get(0));
@@ -111,6 +112,8 @@ void setup() {
 
 void draw(){
   
+  println(stage);
+  
   if (stage.equals("folder selection")){
     // do nothing ; neat animation
     if (frameCount%300 < 150){
@@ -127,17 +130,20 @@ void draw(){
      if (filecount < device_list.size()){
        device_list.get(filecount).draw_data();
      }
+     println("hereerdfgdflgfeksnfknsfkjnskfbsksajfnvkjesfngkjrnf");
      draw_mouseline();
   } else if (stage.equals("finished")){
     //print("finished");
     background(0);
     if (files_created == false){
       files_created = true;
+      /*
       try{
-        //emily_finished();
+        emily_finished();
       } catch(IOException e) {
         println("exception");
       }
+      */
     } else {
       stroke(255);
       fill(255);
