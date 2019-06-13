@@ -134,7 +134,7 @@ void draw(){
     if (files_created == false){
       files_created = true;
       try{
-        emily_finished();
+        //emily_finished();
       } catch(IOException e) {
         println("exception");
       }
@@ -363,6 +363,7 @@ void draw_mouseline(){
 
 }
 
+/*
 void emily_finished() throws IOException{
   // save means for each participant
   
@@ -411,7 +412,7 @@ void emily_finished() throws IOException{
   PrintWriter swriter = new PrintWriter(dpath + "/slopes_" + datafile_timestamp + ".csv", "UTF-8");
   swriter.print(slopes_output);
   swriter.close();
-}
+}*/
 
 void get_config_parameters(){
   ArrayList<String> lines = tools.read_data_file(top_data_folder + "/config.csv");
