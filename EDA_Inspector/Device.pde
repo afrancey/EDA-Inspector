@@ -28,8 +28,8 @@ class Device{
   String condition;
   String pid;
   
-  int x_pos;
-  int y_pos;
+  int x_pos = 0;
+  int y_pos = 0;
   
   float fs;//Hz
   float starttime;
@@ -70,11 +70,20 @@ class Device{
       fs = 4;
     }
     
+  }
+  
+  void setup_device(){
     //fills channel_data and timepoints;
     read_data();
     
     println("read data");
     
+    small_graph = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs, timepoints.size()/fs);
+    
+    println("created graph");
+    println(timepoints);
+    println(channel_data.get(0));
+    small_graph.setup_graph(timepoints, channel_data.get(0));
     make_subgraphs(); 
   }
   
@@ -122,6 +131,7 @@ class Device{
   
   void read_data(){
     // read EEG data
+    println("inside read data");
     ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
     println("read the file");
     if (lines.size() > 100){
@@ -203,6 +213,7 @@ class Device{
       channel_data = new ArrayList<ArrayList<Float>>();
       for (int ch = 0; ch <num_channels; ch++){
         channel_data.add(new ArrayList<Float>((data_temp.get(ch).subList(0, num_data_points_to_use))));
+        println("added channel");
       }
       
       // get baseline values

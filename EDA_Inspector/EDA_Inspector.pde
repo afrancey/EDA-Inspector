@@ -68,6 +68,7 @@ void listfiles(){
     ArrayList<String> checkDevice_result = device.checkDevice();
     println(checkDevice_result);
     if (checkDevice_result.get(1).equals("device found")){
+      device.setup_device();
       device_list.add(device);
       device_names.add(checkDevice_result.get(0));
     } else if (checkDevice_result.get(1).equals("threshold error")) {

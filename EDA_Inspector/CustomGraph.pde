@@ -39,6 +39,9 @@ class CustomGraph {
   
   void setup_graph(ArrayList<Float> t, ArrayList<Float> d){
     
+    println(t);
+    println(d);
+    
     textSize(20);
     // Both x and y data set here.
     
