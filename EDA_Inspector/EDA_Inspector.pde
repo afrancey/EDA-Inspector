@@ -57,25 +57,23 @@ void listfiles(){
   
   for(int i = 0; i < listOfFiles.length; i++) {
     String filename = listOfFiles[i].getName();
-    if (listOfFiles[i].isFile()) {
-      println("File " + listOfFiles[i].getName());
-      Device device;
-      if (analysis_type.equals("EEG")){
-        device = new Muse(this, 100,100, top_data_folder, filename, "null", "emily");
-      } else {
-        device = new Empatica(this, top_data_folder, filename, "null");
-      }
-      
-      ArrayList<String> checkDevice_result = device.checkDevice();
-      println(checkDevice_result);
-      if (checkDevice_result.get(1).equals("device found")){
-        device_list.add(device);
-        device_names.add(checkDevice_result.get(0));
-      } else if (checkDevice_result.get(1).equals("threshold error")) {
-        rejected_device.add(checkDevice_result.get(0));
-      } else {
-        not_device.add(checkDevice_result);
-      }
+    print(filename);
+    Device device;
+    if (analysis_type.equals("EEG")){
+      device = new Muse(this, 100,100, top_data_folder, filename, "null", "emily");
+    } else {
+      device = new Empatica(this, top_data_folder, filename, "null");
+    }
+    
+    ArrayList<String> checkDevice_result = device.checkDevice();
+    println(checkDevice_result);
+    if (checkDevice_result.get(1).equals("device found")){
+      device_list.add(device);
+      device_names.add(checkDevice_result.get(0));
+    } else if (checkDevice_result.get(1).equals("threshold error")) {
+      rejected_device.add(checkDevice_result.get(0));
+    } else {
+      not_device.add(checkDevice_result);
     } 
   }
             
@@ -111,8 +109,6 @@ void setup() {
 }
 
 void draw(){
-  
-  println(stage);
   
   if (stage.equals("folder selection")){
     // do nothing ; neat animation
