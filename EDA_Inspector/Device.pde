@@ -64,8 +64,12 @@ class Device{
     file_time = fn.substring(0,1);
     mainscreen = parent;
     
+    get_config_from_file();
+    println("got config");
     //fills channel_data and timepoints;
     read_data();
+    
+    println("read data");
     
     make_subgraphs(); 
   }
@@ -115,14 +119,21 @@ class Device{
   void read_data(){
     // read EEG data
     ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
+    println("read the file");
     if (lines.size() > 100){
       //get_config_from_file();
       ArrayList<ArrayList<Float>> data_temp = new ArrayList<ArrayList<Float>>();
       ArrayList<Float> time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
+      int header_offset = 0;
+      if (study_type.equals("EEG")){
+        header_offset = 1;
+      } else if (study_type.equals("EDA")){
+        header_offset = 2;
+      }
       // +1 to account for header
-      for (int l = starting_index + 1; l < starting_index + data_length + 1;l++){
+      for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
         
         String[] line = split(lines.get(l), " "); // line looks like "index[int] tp9[float] tp10[float] fp1[float] fp2[float]
         for (int ch = 1; ch <= 4; ch++){
