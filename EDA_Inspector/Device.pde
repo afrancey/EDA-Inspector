@@ -155,12 +155,19 @@ class Device{
         ending_channel = 4;
         channel_offset = 1;
         num_channels = 4;
+        
+        for (int eeg_ch = 0; eeg_ch < num_channels; eeg_ch++){
+          data_temp.add(new ArrayList<Float>());
+        }
       } else if (study_type.equals("EDA")){
         header_offset = 2;
         starting_channel = 0;
         ending_channel = 0;
         channel_offset = 0;
         num_channels = 1;
+        for (int eda_ch = 0; eda_ch < num_channels; eda_ch++){
+          data_temp.add(new ArrayList<Float>());
+        }
       }
       println("set vars");
       println(starting_index);
