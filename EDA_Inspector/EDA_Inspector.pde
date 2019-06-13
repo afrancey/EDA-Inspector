@@ -15,6 +15,8 @@ import java.io.IOException;
 
 import java.lang.System;
 
+Tools tools = new Tools();
+
 float EDA_threshold = 0.5;
 
 //String analysis_type = "EEG";
@@ -347,9 +349,9 @@ void draw_mouseline(){
   stroke(0,0,0);
   strokeWeight(1);
   Device current_device = device_list.get(filecount);
-  int num_data_points = current_device.SCL_time.size();
-  float max_eda = current_device.max_EDA;
-  float min_eda = current_device.min_EDA;
+  int num_data_points = current_device.timepoints.size();
+  float max_eda = current_device.data_max;
+  float min_eda = current_device.data_max;
   float max_time = num_data_points/current_device.fs;
   float starttime = current_device.current_subgraph_index*max_time/current_device.num_subgraphs;
   float endtime = (current_device.current_subgraph_index+1)*max_time/current_device.num_subgraphs;
@@ -363,6 +365,7 @@ void draw_mouseline(){
 
 void emily_finished() throws IOException{
   // save means for each participant
+  
   String means_output = "";
   for (int p = 0; p < device_list.size(); p++){
     means_output+= split(device_list.get(p).fname,  " ")[0] + "," + device_list.get(p).condition + ",";
@@ -411,7 +414,7 @@ void emily_finished() throws IOException{
 }
 
 void get_config_parameters(){
-  ArrayList<String> lines = read_data_file(top_data_folder + "/config.csv");
+  ArrayList<String> lines = tools.read_data_file(top_data_folder + "/config.csv");
   boolean success = true;
     if (lines.get(2).contains("# intervals")){
       // expect first line to be "total time,<integer>"
