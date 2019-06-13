@@ -127,15 +127,32 @@ class Device{
       
       int sample_count = 0;
       int header_offset = 0;
+      int starting_channel = 0;
+      int ending_channel = 0;
+      
+      // EEG:
+      // first line is header
+      // line looks like "index[int] tp9[float] tp10[float] fp1[float] fp2[float]
+      
+      // EDA:
+      // first line is timestamp
+      // second line is sampling rate (Hz)
+      // line looks like "datapoint"
+      
       if (study_type.equals("EEG")){
         header_offset = 1;
+        starting_channel = 1;
+        ending_channel = 4;
       } else if (study_type.equals("EDA")){
         header_offset = 2;
+        starting_channel = 0;
+        ending_channel = 0;
       }
       // +1 to account for header
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
         
-        String[] line = split(lines.get(l), " "); // line looks like "index[int] tp9[float] tp10[float] fp1[float] fp2[float]
+        String[] line = split(lines.get(l), " "); 
+       
         for (int ch = 1; ch <= 4; ch++){
           //add data for each channel
           float datapoint = Float.parseFloat(line[ch]);
