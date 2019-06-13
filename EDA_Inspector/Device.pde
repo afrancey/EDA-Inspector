@@ -123,7 +123,6 @@ class Device{
   void read_data(){
     // read EEG data
     ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
-    print(lines);
     println("read the file");
     if (lines.size() > 100){
       if (study_type.equals("EDA")){   
@@ -169,18 +168,13 @@ class Device{
           data_temp.add(new ArrayList<Float>());
         }
       }
-      println("set vars");
-      println(starting_index);
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
-        println(l);
         
         String[] line = split(lines.get(l), " "); 
-        println("got line");
        
         for (int ch = starting_channel; ch <= ending_channel; ch++){
           //add data for each channel
           float datapoint = Float.parseFloat(line[ch]);
-          println("got datapoint");
           data_temp.get(ch-channel_offset).add(datapoint);
           
           // get max and min values
@@ -197,14 +191,15 @@ class Device{
         
         
         sample_count++;
-        println("added one sample");
       }
+      
+      println("finished adding samples");
       
       // round down # data to nearest multiple of num_subgraphs
       int num_data_points_to_use = num_subgraphs*floor(data_temp.get(0).size()/num_subgraphs);
       timepoints = new ArrayList<Float>(time_temp.subList(0, num_data_points_to_use));
       channel_data = new ArrayList<ArrayList<Float>>();
-      for (int ch = 0; ch <=num_channels; ch++){
+      for (int ch = 0; ch <num_channels; ch++){
         channel_data.add(new ArrayList<Float>((data_temp.get(ch).subList(0, num_data_points_to_use))));
       }
       
