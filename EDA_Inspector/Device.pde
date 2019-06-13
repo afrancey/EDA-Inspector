@@ -104,9 +104,9 @@ class Device{
         String pattern = "HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String time_of_day = simpleDateFormat.format(startString);
-        //int diff = string_date_to_seconds(timestring) - string_date_to_seconds(time_of_day);
+        int diff = tools.string_date_to_seconds(timestring) - tools.string_date_to_seconds(time_of_day);
         
-        //EDA_starting_index = 4*diff;
+        starting_index = (int)fs*diff;
         found_me = true;
       }
     }
@@ -119,6 +119,7 @@ class Device{
   void read_data(){
     // read EEG data
     ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
+    print(lines);
     println("read the file");
     if (lines.size() > 100){
       //get_config_from_file();
@@ -154,14 +155,17 @@ class Device{
         channel_offset = 0;
         num_channels = 1;
       }
-      // +1 to account for header
+      println("set vars");
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
+        println(l);
         
         String[] line = split(lines.get(l), " "); 
+        println("got line");
        
         for (int ch = starting_channel; ch <= ending_channel; ch++){
           //add data for each channel
           float datapoint = Float.parseFloat(line[ch]);
+          println("got datapoint");
           data_temp.get(ch-channel_offset).add(datapoint);
           
           // get max and min values
@@ -178,6 +182,7 @@ class Device{
         
         
         sample_count++;
+        println("added one sample");
       }
       
       // round down # data to nearest multiple of num_subgraphs
