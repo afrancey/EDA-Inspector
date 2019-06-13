@@ -11,6 +11,7 @@ class Empatica extends Device{
     //listFiles(folder_path);
   }
   
+  
   ArrayList<String> checkDevice(){
     
     // find empatica files
@@ -61,6 +62,9 @@ class Empatica extends Device{
     }
   //files_listed = true;
   }
+  
+  /*
+  
   
   float[] get_section_averages(int pnum){
     Empatica emp = emily_empatica_list.get(pnum);
@@ -201,5 +205,6 @@ class Empatica extends Device{
     
     return(weighted_mean);
   }
+  */
   
 }
