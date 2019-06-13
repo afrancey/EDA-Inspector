@@ -69,14 +69,14 @@ class Device{
     } else {
       fs = 4;
     }
+    //fills channel_data and timepoints;
+    read_data();
+        
+    println("read data");
     
   }
   
   void setup_device(){
-    //fills channel_data and timepoints;
-    read_data();
-    
-    println("read data");
     
     small_graph = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs, timepoints.size()/fs);
     
