@@ -134,13 +134,11 @@ void draw(){
     background(0);
     if (files_created == false){
       files_created = true;
-      /*
       try{
-        emily_finished();
+        finished();
       } catch(IOException e) {
         println("exception");
       }
-      */
     } else {
       stroke(255);
       fill(255);

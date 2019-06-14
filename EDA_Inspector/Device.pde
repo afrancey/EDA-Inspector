@@ -189,7 +189,7 @@ class Device{
        
         for (int ch = starting_channel; ch <= ending_channel; ch++){
           //add data for each channel
-          float datapoint = 100*Float.parseFloat(line[ch]);
+          float datapoint = Float.parseFloat(line[ch]);
           data_temp.get(ch-channel_offset).add(datapoint);
           
           // get max and min values
