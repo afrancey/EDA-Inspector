@@ -62,13 +62,15 @@ class Empatica extends Device{
   //files_listed = true;
   }
   
+  float[] get_mean_for_each_interval(ArrayList<Integer> sample_bounds){
+    
+    // first z-score data
+    ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
+    ArrayList<Float> data = channel_data.get(0);
+    ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
   
-    Empatica emp = emily_empatica_list.get(pnum);
-    ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
-    ArrayList<Integer> sample_bounds = sample_boundaries_each_subject.get(pnum);
-    ArrayList<Float> data = emp.SCL_data;
-    ArrayList<Float> z_data = zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
-  
+    // now genertae indicator list
+    // indicator_list.get(i) = 1 if data.get(i) is not artifact (outside of sample bounds)
     ArrayList<Integer> indicator_list = new ArrayList<Integer>();
     for (int d = 0; d < z_data.size(); d++){
       boolean rejected = false;
@@ -88,7 +90,7 @@ class Empatica extends Device{
     
     // now have z-scored list and indicator list
     // get means
-   // int num_sections = 30; //num_sections now read from config.txt
+    // int num_sections = 30; //num_sections now read from config.txt
     int section_length = z_data.size()/num_sections;
     float[] mean = new float[num_sections];
     for (int m = 0; m < num_sections; m++){
