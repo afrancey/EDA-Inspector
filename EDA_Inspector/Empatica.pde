@@ -69,24 +69,7 @@ class Empatica extends Device{
     ArrayList<Float> data = channel_data.get(0);
     ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
   
-    // now genertae indicator list
-    // indicator_list.get(i) = 1 if data.get(i) is not artifact (outside of sample bounds)
-    ArrayList<Integer> indicator_list = new ArrayList<Integer>();
-    for (int d = 0; d < z_data.size(); d++){
-      boolean rejected = false;
-      for (int bs = 0; bs < sample_bounds.size(); bs = bs+2){
-        int start = sample_bounds.get(bs);
-        int end = sample_bounds.get(bs+1);
-        if (d >= start && d <=end){
-          rejected = true;
-        }
-      }
-      if (rejected){
-        indicator_list.add(0);
-      } else {
-        indicator_list.add(1);
-      }
-    }
+    ArrayList<Integer> indicator_list = tools.sample_bounds_to_indicator_list(sample_bounds, z_data.size());
     
     // now have z-scored list and indicator list
     // get means
@@ -105,30 +88,13 @@ class Empatica extends Device{
     
   }
   
-  float[] get_section_slopes(int pnum){
+  float[] get_section_slopes(ArrayList<Integer> sample_bounds){
     //gets slope of regression line
-    Empatica emp = emily_empatica_list.get(pnum);
-    ArrayList<Float> baseline_score_params = mean_ssd(emp.SCL_data);
-    ArrayList<Integer> sample_bounds = sample_boundaries_each_subject.get(pnum);
-    ArrayList<Float> data = emp.SCL_data;
-    ArrayList<Float> z_data = zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
-  
-    ArrayList<Integer> indicator_list = new ArrayList<Integer>();
-    for (int d = 0; d < z_data.size(); d++){
-      boolean rejected = false;
-      for (int bs = 0; bs < sample_bounds.size(); bs = bs+2){
-        int start = sample_bounds.get(bs);
-        int end = sample_bounds.get(bs+1);
-        if (d >= start && d <=end){
-          rejected = true;
-        }
-      }
-      if (rejected){
-        indicator_list.add(0);
-      } else {
-        indicator_list.add(1);
-      }
-    }
+    ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
+    ArrayList<Float> data = channel_data.get(0);;
+    ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
+    
+    ArrayList<Integer> indicator_list = tools.sample_bounds_to_indicator_list(sample_bounds, z_data.size());
     
     // now have z-scored list and indicator list
     // get means

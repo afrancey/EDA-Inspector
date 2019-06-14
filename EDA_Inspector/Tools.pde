@@ -79,4 +79,26 @@ class Tools{
     
     return(zscored);
   }
+  
+  ArrayList<Integer> sample_bounds_to_indicator_list(ArrayList<Integer> sample_bounds, int size){
+    // generate indicator list
+    // indicator_list.get(i) = 1 if data.get(i) is not artifact (outside of sample bounds)
+    ArrayList<Integer> indicator_list = new ArrayList<Integer>();
+    for (int d = 0; d < size; d++){
+      boolean rejected = false;
+      for (int bs = 0; bs < sample_bounds.size(); bs = bs+2){
+        int start = sample_bounds.get(bs);
+        int end = sample_bounds.get(bs+1);
+        if (d >= start && d <=end){
+          rejected = true;
+        }
+      }
+      if (rejected){
+        indicator_list.add(0);
+      } else {
+        indicator_list.add(1);
+      }
+    }
+    return(indicator_list);
+  }
 }
