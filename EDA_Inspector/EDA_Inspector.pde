@@ -366,6 +366,57 @@ void draw_mouseline(){
 
 }
 
+void emily_finished() throws IOException{
+  // save means for each participant
+  
+  String means_output = "";
+  for (int p = 0; p < device_list.size(); p++){
+    
+    means_output+= split(device_list.get(p).fname,  " ")[0] + "," + device_list.get(p).condition + ",";
+    float[] weighted_means = get_mean_for_each_interval(p);
+    for (int m = 0; m < weighted_means.length; m++){
+      means_output+= Float.toString(weighted_means[m]) + ",";
+    }
+    means_output+="\n";
+  }
+  
+  String boundaries_output = "";
+  for (int p = 0; p < device_list.size(); p++){
+    boundaries_output+=device_list.get(p).fname + ",";
+    ArrayList<Integer> subject_bounds = sample_boundaries_each_subject.get(p);
+    for (int b = 0; b < subject_bounds.size(); b++){
+      boundaries_output+= Integer.toString(subject_bounds.get(b)) + " ";
+    }
+    boundaries_output+="\n";
+  }
+  
+  String slopes_output = "";
+  for (int p = 0; p < device_list.size(); p++){
+    slopes_output+= split(device_list.get(p).fname,  " ")[0] + "," + device_list.get(p).condition + ",";
+    float[] slopes = get_section_slopes(p);
+    for (int m = 0; m < slopes.length; m++){
+      slopes_output+= Float.toString(slopes[m]) + ",";
+    }
+    slopes_output+="\n";
+  }
+    
+
+  String dpath = dataPath("");
+  dpath = dpath.replace("\\","/");
+  
+  PrintWriter mwriter = new PrintWriter(dpath + "/means_" + datafile_timestamp + ".csv", "UTF-8");
+  mwriter.print(means_output);
+  mwriter.close();
+  
+  PrintWriter bwriter = new PrintWriter(dpath + "/bounds_" + datafile_timestamp + ".csv", "UTF-8");
+  bwriter.print(boundaries_output);
+  bwriter.close();
+  
+  PrintWriter swriter = new PrintWriter(dpath + "/slopes_" + datafile_timestamp + ".csv", "UTF-8");
+  swriter.print(slopes_output);
+  swriter.close();
+}
+
 /*
 void emily_finished() throws IOException{
   // save means for each participant

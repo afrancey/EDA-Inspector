@@ -127,8 +127,8 @@ class Empatica extends Device{
       }
     }
     
-    float mean_z = mean_ssd(new_z).get(0);
-    float mean_t = mean_ssd(new_t).get(0);
+    float mean_z = tools.mean_ssd(new_z).get(0);
+    float mean_t = tools.mean_ssd(new_t).get(0);
     // find slope of regression line for this data
     float numerator = 0;
     float denominator = 0;
@@ -149,7 +149,7 @@ class Empatica extends Device{
     for (int s = 0; s < data.size();s++){
       if (indicator.get(s) == 1){
           // good data
-          sums += data.get(s);
+          sum += data.get(s);
           num_indicators += 1;
       }
     }
