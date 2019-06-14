@@ -62,14 +62,14 @@ class Empatica extends Device{
   //files_listed = true;
   }
   
-  float[] get_mean_for_each_interval(ArrayList<Integer> sample_bounds){
+  float[] get_mean_for_each_interval(){
     
     // first z-score data
     ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
     ArrayList<Float> data = channel_data.get(0);
     ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
   
-    ArrayList<Integer> indicator_list = tools.sample_bounds_to_indicator_list(sample_bounds, z_data.size());
+    ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries, z_data.size());
     
     // now have z-scored list and indicator list
     // get means
@@ -88,13 +88,13 @@ class Empatica extends Device{
     
   }
   
-  float[] get_section_slopes(ArrayList<Integer> sample_bounds){
+  float[] get_section_slopes(){
     //gets slope of regression line
     ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
     ArrayList<Float> data = channel_data.get(0);;
     ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
     
-    ArrayList<Integer> indicator_list = tools.sample_bounds_to_indicator_list(sample_bounds, z_data.size());
+    ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries, z_data.size());
     
     // now have z-scored list and indicator list
     // get means

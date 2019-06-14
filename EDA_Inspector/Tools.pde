@@ -80,7 +80,7 @@ class Tools{
     return(zscored);
   }
   
-  ArrayList<Integer> sample_bounds_to_indicator_list(ArrayList<Integer> sample_bounds, int size){
+  ArrayList<Integer> sample_boundaries_to_indicator_list(ArrayList<Integer> sample_bounds, int size){
     // generate indicator list
     // indicator_list.get(i) = 1 if data.get(i) is not artifact (outside of sample bounds)
     ArrayList<Integer> indicator_list = new ArrayList<Integer>();

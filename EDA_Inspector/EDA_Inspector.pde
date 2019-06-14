@@ -216,6 +216,10 @@ void keyPressed() {
           // increment filecount if this is the last subgraph
           
           if (current_device.current_subgraph_index == current_device.max_subgraph_index){
+            
+            // save sample boundaries to device
+            device_list.get(filecount).sample_boundaries = sample_boundaries_each_subject.get(sample_boundaries_each_subject.size() - 1);
+            
             filecount++;
             if (filecount >= device_list.size()){
               stage = "finished";
