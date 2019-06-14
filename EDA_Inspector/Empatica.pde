@@ -88,7 +88,7 @@ class Empatica extends Device{
     
   }
   
-  float[] get_section_slopes(){
+  float[] get_slope_for_each_interval(){
     //gets slope of regression line
     ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
     ArrayList<Float> data = channel_data.get(0);;

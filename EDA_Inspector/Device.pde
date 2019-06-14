@@ -89,7 +89,10 @@ class Device{
     make_subgraphs(); 
   }
   
+  // override these functions in child class
   ArrayList<String> checkDevice(){return(new ArrayList<String>(Arrays.asList("did you override checkDevice()?", "ERROR")));}
+  float[] get_mean_for_each_interval(){return(new float[0]);}
+  float[] get_slope_for_each_interval(){return(new float[0]);}
  
   
   void get_config_from_file(){
