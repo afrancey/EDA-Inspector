@@ -356,7 +356,7 @@ void draw_mouseline(){
   Device current_device = device_list.get(filecount);
   int num_data_points = current_device.timepoints.size();
   float max_eda = current_device.data_max;
-  float min_eda = current_device.data_max;
+  float min_eda = current_device.data_min;
   float max_time = num_data_points/current_device.fs;
   float starttime = current_device.current_subgraph_index*max_time/current_device.num_subgraphs;
   float endtime = (current_device.current_subgraph_index+1)*max_time/current_device.num_subgraphs;
