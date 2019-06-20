@@ -425,18 +425,4 @@ void finished() throws IOException{
 }
 
 void get_config_parameters(){
-  ArrayList<String> lines = tools.read_data_file(top_data_folder + "/config.csv");
-  boolean success = true;
-    if (lines.get(2).contains("# intervals")){
-      // expect first line to be "total time,<integer>"
-      num_sections = Integer.parseInt(split(lines.get(2),",")[1]);
-    } else {
-      success = false;
-    }
-    if (lines.get(3).contains("# subintervals")){
-      // expect first line to be "total time,<integer>"
-      num_subintervals = Integer.parseInt(split(lines.get(3),",")[1]);
-    } else {
-      success = false;
-    }
 }
