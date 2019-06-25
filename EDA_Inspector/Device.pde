@@ -82,10 +82,6 @@ class Device{
   void setup_device(){
     
     small_graph = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs, timepoints.size()/fs);
-    
-    println("created graph");
-    println(timepoints);
-    println(channel_data.get(0));
     small_graph.setup_graph(timepoints, channel_data.get(0));
     make_subgraphs(); 
   }
