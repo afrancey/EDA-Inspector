@@ -40,6 +40,7 @@ class Device{
   Double double_time;
   
   String study_type;
+  String interval_type = "null";
   
   int time_lag_empatica = -10800; // empatica files are 3 hours ahead
   
@@ -100,6 +101,11 @@ class Device{
     ArrayList<String> lines = tools.read_data_file(config_path);
     
     boolean success = true;
+    
+    if (lines.get(0).contains("interval type")){
+      interval_type = split(lines.get(0), ",")[1];
+    }
+    
     if (lines.get(1).contains("total time")){
       // expect first line to be "total time,<integer>"
       data_length = (int)fs*Integer.parseInt(split(lines.get(1),",")[1]);
@@ -127,16 +133,22 @@ class Device{
       String cond = split(lines.get(p), ",")[1];
       String timestring = split(lines.get(p),",")[2];
       if (fname.equals(pnum + " " + cond)){
-        // starting index should be difference between config start time and file recording start time
-        Date startString = new Date((long)starttime*1000L);
-        println(fname + ", " + startString);
-        String pattern = "HH:mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String time_of_day = simpleDateFormat.format(startString);
-        int diff = tools.string_date_to_seconds(timestring) - tools.string_date_to_seconds(time_of_day);
         
-        starting_index = (int)fs*diff;
-        found_me = true;
+        if (interval_type.equals("middle")){
+          // do nothing... handled in read
+        } else {
+          // only other option than middle is to compare time in config to file start time
+          // starting index should be difference between config start time and file recording start time
+          Date startString = new Date((long)starttime*1000L);
+          println(fname + ", " + startString);
+          String pattern = "HH:mm:ss";
+          SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+          String time_of_day = simpleDateFormat.format(startString);
+          int diff = tools.string_date_to_seconds(timestring) - tools.string_date_to_seconds(time_of_day);
+          
+          starting_index = (int)fs*diff;
+          found_me = true;
+        }
       }
     }
     
@@ -193,6 +205,14 @@ class Device{
         for (int eda_ch = 0; eda_ch < num_channels; eda_ch++){
           data_temp.add(new ArrayList<Float>());
         }
+      }
+      
+      if (interval_type.equals("middle")){
+        // todo here: find middle minute of data, set starting_index appropriately
+        // starting_index: break in half, go back data_length/2 samples
+        int num_samples = lines.size() - header_offset;
+        starting_index = (int)((float)num_samples/2 - (float)data_length/2);
+        
       }
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
         
