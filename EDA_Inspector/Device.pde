@@ -15,8 +15,12 @@ class Device{
   int num_subgraphs = 4;
   int max_subgraph_index = num_subgraphs - 1;
   
+  ArrayList<CustomGraph> small_graphs = new ArrayList<CustomGraph>();
+  int current_channel_index = 0;  
+  
   CustomGraph current_graph;
-  CustomGraph small_graph;
+  CustomGraph current_small_graph;
+  
     
   String folder_path;
   String[] filenames;
@@ -81,8 +85,13 @@ class Device{
   
   void setup_device(){
     
-    small_graph = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs, timepoints.size()/fs);
-    small_graph.setup_graph(timepoints, channel_data.get(0));
+    // setup small gra[h for each channel
+    for (int ch = 0; ch < num_channels; ch++){
+      CustomGraph small_graph = new CustomGraph(mainscreen,x_pos,y_pos, "small", 0/fs, timepoints.size()/fs);
+      small_graph.setup_graph(timepoints, channel_data.get(ch));
+      small_graphs.add(small_graph);
+    }
+    
     make_subgraphs(); 
   }
   
@@ -216,7 +225,7 @@ class Device{
        
         for (int ch = starting_channel; ch <= ending_channel; ch++){
           //add data for each channel
-          float datapoint = Float.parseFloat(line[ch]);
+          float datapoint = 10*Float.parseFloat(line[ch]);
           data_temp.get(ch-channel_offset).add(datapoint);
           
           // get max and min values
@@ -279,8 +288,10 @@ class Device{
   }
   
   void draw_data(){
-    current_graph = subgraphs.get(0).get(current_subgraph_index);
+    current_graph = subgraphs.get(current_channel_index).get(current_subgraph_index);
     current_graph.draw_graph();
-    small_graph.draw_graph();
+    
+    current_small_graph = small_graphs.get(current_channel_index);
+    current_small_graph.draw_graph();
   } 
 }

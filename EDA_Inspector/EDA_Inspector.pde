@@ -360,8 +360,8 @@ void draw_mouseline(){
   float max_time = num_data_points/current_device.fs;
   float starttime = current_device.current_subgraph_index*max_time/current_device.num_subgraphs;
   float endtime = (current_device.current_subgraph_index+1)*max_time/current_device.num_subgraphs;
-  PVector top_left_corner = current_device.small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
-  PVector bottom_right_corner = current_device.small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
+  PVector top_left_corner = current_device.current_small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
+  PVector bottom_right_corner = current_device.current_small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
   rectMode(CORNERS);
   rect(top_left_corner.x, top_left_corner.y, bottom_right_corner.x, bottom_right_corner.y);
 
