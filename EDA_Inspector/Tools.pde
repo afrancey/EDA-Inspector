@@ -87,8 +87,8 @@ class Tools{
     for (int d = 0; d < size; d++){
       boolean rejected = false;
       for (int bs = 0; bs < sample_bounds.size(); bs = bs+2){
-        int start = sample_bounds.get(bs);
-        int end = sample_bounds.get(bs+1);
+        int start = min(sample_bounds.get(bs), sample_bounds.get(bs+1));
+        int end = max(sample_bounds.get(bs), sample_bounds.get(bs+1));
         if (d >= start && d <=end){
           rejected = true;
         }
