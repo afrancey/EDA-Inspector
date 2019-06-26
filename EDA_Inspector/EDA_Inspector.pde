@@ -245,13 +245,41 @@ void mouseClicked(){
     println("mouseclicked");
     int x = mouseX;
     int y = mouseY;
-    add_boundary(x,y);
+    boolean removing = undo_boundary(x);
+    if (removing == false){
+      add_boundary(x,y);
+    }
   }
   
 }
 
-void undo_boundary(int x){
+boolean undo_boundary(int x){
+  // check each boundary and see if it is between
   
+  int remove_last = 0;
+  int remove_first = 0;
+  boolean need_to_remove = false;
+  
+  for (int i = 0; i < screen_boundaries.size(); i = i + 2){
+    
+    if (i+1 < screen_boundaries.size()){
+      float bleft = min(screen_boundaries.get(i).x, screen_boundaries.get(i+1).x);
+      float bright = max(screen_boundaries.get(i).x, screen_boundaries.get(i+1).x);
+      
+      if (x >= bleft && x <= bright){
+        remove_last = i;
+        remove_first = i+1;
+        need_to_remove = true;
+      }  
+    } // else we are missing a boundary side
+  }
+  
+  if (need_to_remove){
+    screen_boundaries.remove(remove_first);
+    screen_boundaries.remove(remove_last);
+  }
+  
+  return(need_to_remove);
 }
 
 void add_boundary(int x, int y){
