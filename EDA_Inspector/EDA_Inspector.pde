@@ -245,29 +245,37 @@ void mouseClicked(){
     println("mouseclicked");
     int x = mouseX;
     int y = mouseY;
-    PVector point;
-    String snap_result = checkSnapBoundaryToAxis(x,y);
-    if (snap_result == "left"){
-      //boundary snaps to left axis
-      float min_time = device_list.get(filecount).current_graph.lineChart.getMinX();
-      float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
-  
-      PVector left_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_time,max_eda));
-      point = left_screenbound;
-    } else if (snap_result == "right"){
-      float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
-      float max_time = device_list.get(filecount).current_graph.lineChart.getMaxX();
-      PVector right_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_time,max_eda));
-      point = right_screenbound;
-    } else {
-      point = new PVector(x, y);
-    }
-    PVector datapoint = device_list.get(filecount).current_graph.lineChart.getScreenToData(point);
-    if (datapoint != null){
-      screen_boundaries.add(point);
-    }
+    add_boundary(x,y);
   }
   
+}
+
+void undo_boundary(int x){
+  
+}
+
+void add_boundary(int x, int y){
+  PVector point;
+  String snap_result = checkSnapBoundaryToAxis(x,y);
+  if (snap_result == "left"){
+    //boundary snaps to left axis
+    float min_time = device_list.get(filecount).current_graph.lineChart.getMinX();
+    float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
+
+    PVector left_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_time,max_eda));
+    point = left_screenbound;
+  } else if (snap_result == "right"){
+    float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
+    float max_time = device_list.get(filecount).current_graph.lineChart.getMaxX();
+    PVector right_screenbound = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_time,max_eda));
+    point = right_screenbound;
+  } else {
+    point = new PVector(x, y);
+  }
+  PVector datapoint = device_list.get(filecount).current_graph.lineChart.getScreenToData(point);
+  if (datapoint != null){
+    screen_boundaries.add(point);
+  }
 }
 
 void showSnapBoundaryToAxis(){
