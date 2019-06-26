@@ -385,7 +385,7 @@ void finished() throws IOException{
     
     // get info from device
     float[] weighted_means = current_device.get_mean_for_each_interval();
-    ArrayList<Integer> subject_bounds = current_device.sample_boundaries;
+    ArrayList<Integer> subject_bounds = current_device.sample_boundaries.get(0);
     float[] slopes = current_device.get_slope_for_each_interval();
     
     // generate output string
