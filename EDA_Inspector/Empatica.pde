@@ -69,7 +69,7 @@ class Empatica extends Device{
     ArrayList<Float> data = channel_data.get(0);
     ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
   
-    ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries, z_data.size());
+    ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries.get(0), z_data.size());
     
     // now have z-scored list and indicator list
     // get means
@@ -94,7 +94,7 @@ class Empatica extends Device{
     ArrayList<Float> data = channel_data.get(0);;
     ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
     
-    ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries, z_data.size());
+    ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries.get(0), z_data.size());
     
     // now have z-scored list and indicator list
     // get means
