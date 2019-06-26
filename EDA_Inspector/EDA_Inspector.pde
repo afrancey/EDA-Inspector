@@ -26,7 +26,7 @@ String analysis_type = "EDA";
 ArrayList<Device> device_list = new ArrayList<Device>();
 
 ArrayList<PVector> screen_boundaries = new ArrayList<PVector>();
-ArrayList<ArrayList<Integer>> sample_boundaries_each_subject = new ArrayList<ArrayList<Integer>>();
+ArrayList<Integer> current_sample_boundaries = new ArrayList<Integer>();
 ArrayList<String> names_boundaries = new ArrayList<String>();
 
 String top_data_folder = "";
@@ -194,17 +194,17 @@ void keyPressed() {
           for (int i = 0; i < screen_boundaries.size(); i++){
             PVector data_value = current_device.current_graph.lineChart.getScreenToData(screen_boundaries.get(i));
             float time_boundary = data_value.x;
-            int sample_boundary = (int)(time_boundary*4.0);
+            int sample_boundary = (int)(time_boundary*current_device.fs);
             sample_boundaries.add(sample_boundary);
           }
           
-          // if this is the first subgraph, add it to global arrays
+          // if this is the first subgraph, start new current_sample_boundaries array
           if (current_device.current_subgraph_index == 0){
             names_boundaries.add(current_device.fname);
-            sample_boundaries_each_subject.add(sample_boundaries);
+            current_sample_boundaries = sample_boundaries;
           } else {
-            // otherwise, add it to the most recently added array in global array
-            sample_boundaries_each_subject.get(sample_boundaries_each_subject.size() - 1).addAll(sample_boundaries);
+            // otherwise, append these boundaries to current_sample_boundaries
+            current_sample_boundaries.addAll(sample_boundaries);
           }
           
           // we don't need these anymore, wipe for next graph
@@ -216,7 +216,7 @@ void keyPressed() {
           if (current_device.current_subgraph_index == current_device.max_subgraph_index){
             
             // save sample boundaries to device
-            device_list.get(filecount).sample_boundaries = sample_boundaries_each_subject.get(sample_boundaries_each_subject.size() - 1);
+            current_device.sample_boundaries.add(current_sample_boundaries);
             
             filecount++;
             if (filecount >= device_list.size()){
