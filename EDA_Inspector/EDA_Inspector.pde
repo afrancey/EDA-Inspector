@@ -218,10 +218,18 @@ void keyPressed() {
             // save sample boundaries to device
             current_device.sample_boundaries.add(current_sample_boundaries);
             
-            filecount++;
-            if (filecount >= device_list.size()){
-              stage = "finished";
+            if (current_device.current_channel_index == current_device.num_channels - 1){
+              // last channel on last subgraph, we are done
+              filecount++;
+              if (filecount >= device_list.size()){
+                stage = "finished";
+              }
+            } else {
+              //last subgraph but not last channel
+              current_device.current_channel_index++;
+              current_device.current_subgraph_index = 0;
             }
+            
           } else {
             current_device.current_subgraph_index++;
           }
