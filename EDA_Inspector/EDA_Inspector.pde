@@ -19,8 +19,8 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
-//String analysis_type = "EEG";
-String analysis_type = "EDA";
+String analysis_type = "EEG";
+//String analysis_type = "EDA";
 
 // holds Muses and Empaticas
 ArrayList<Device> device_list = new ArrayList<Device>();
@@ -57,16 +57,15 @@ void listfiles(){
   
   for(int i = 0; i < listOfFiles.length; i++) {
     String filename = listOfFiles[i].getName();
-    print(filename);
     Device device;
     if (analysis_type.equals("EEG")){
-      device = new Muse(this, 100,100, top_data_folder, filename, "null", "emily");
+      device = new Muse(this, top_data_folder, filename, "null");
     } else {
+      // actually, filename is the name of the folder containing the set of Empatica files here
       device = new Empatica(this, top_data_folder, filename, "null");
     }
     
     ArrayList<String> checkDevice_result = device.checkDevice();
-    println(checkDevice_result);
     if (checkDevice_result.get(1).equals("device found")){
       device.setup_device();
       device_list.add(device);
@@ -88,7 +87,6 @@ void folderSelected(File selection) {
     println("User selected " + selection.getAbsolutePath());
     top_data_folder = selection.getAbsolutePath();
     top_data_folder = top_data_folder.replace("\\","/");
-    println(top_data_folder);
     stage = "folder selected";
     listfiles();
     
@@ -102,10 +100,7 @@ void setup() {
   
   selectFolder("Select folder to process", "folderSelected"); 
   
-  println(dataPath(""));
-  
   datafile_timestamp = Long.toString(System.currentTimeMillis());
-  println(datafile_timestamp);
   
 }
 
@@ -127,7 +122,6 @@ void draw(){
      if (filecount < device_list.size()){
        device_list.get(filecount).draw_data();
      }
-     println("hereerdfgdflgfeksnfknsfkjnskfbsksajfnvkjesfngkjrnf");
      draw_mouseline();
   } else if (stage.equals("finished")){
     //print("finished");

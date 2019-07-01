@@ -31,7 +31,7 @@ class Tools{
     
   }
   
-  ArrayList<String> read_header(String name){
+  String read_header(String name){
     String line = "null";
     try {
         BufferedReader br = new BufferedReader(new FileReader(name));
