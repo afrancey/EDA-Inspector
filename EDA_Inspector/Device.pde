@@ -131,7 +131,6 @@ class Device{
     
     boolean found_me = false;
     for (int p = 4; p < lines.size(); p++){
-      println("config line");
       String pnum = split(lines.get(p), ",")[0];
       String cond = split(lines.get(p), ",")[1];
       String timestring = split(lines.get(p),",")[2];
@@ -223,7 +222,6 @@ class Device{
         for (int col = starting_column; col <= ending_column; col++){
           //add data for each channel
           float datapoint = Float.parseFloat(line[col]);
-          println(data_temp.size());
           data_temp.get(col-starting_column).add(datapoint);
           
           // get max and min values
