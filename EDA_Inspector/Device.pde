@@ -76,12 +76,12 @@ class Device{
     } else {
       fs = 4;
     }
-    //fills channel_data and timepoints;
-    read_data();
-    
   }
   
   void setup_device(){
+    
+    //fills channel_data and timepoints;
+    read_data();
     
     // setup small gra[h for each channel
     for (int ch = 0; ch < num_channels; ch++){
@@ -160,12 +160,19 @@ class Device{
   
   void read_data(){
     // read EEG data
-    ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
+    ArrayList<String> lines = new ArrayList<String>();
+    if (study_type.equals("EDA")){
+      lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
+    } else {
+      // folder_path equals name of EEG file?
+      lines = tools.read_data_file(folder_path);
+    }
     if (lines.size() > 100){
       if (study_type.equals("EDA")){   
         starttime = Float.parseFloat(lines.get(0));
       }
       get_config_from_file();
+      println("got config")
       ArrayList<ArrayList<Float>> data_temp = new ArrayList<ArrayList<Float>>();
       ArrayList<Float> time_temp = new ArrayList<Float>();
       
