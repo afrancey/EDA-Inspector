@@ -130,7 +130,8 @@ class Device{
     }
     
     boolean found_me = false;
-    for (int p = 3; p < lines.size(); p++){
+    for (int p = 4; p < lines.size(); p++){
+      println("config line");
       String pnum = split(lines.get(p), ",")[0];
       String cond = split(lines.get(p), ",")[1];
       String timestring = split(lines.get(p),",")[2];
@@ -172,15 +173,13 @@ class Device{
         starttime = Float.parseFloat(lines.get(0));
       }
       get_config_from_file();
-      println("got config")
       ArrayList<ArrayList<Float>> data_temp = new ArrayList<ArrayList<Float>>();
       ArrayList<Float> time_temp = new ArrayList<Float>();
       
       int sample_count = 0;
       int header_offset = 0;
-      int starting_channel = 0;
-      int ending_channel = 0;
-      int channel_offset = 0;
+      int starting_column = 0;
+      int ending_column = 0;
       int num_channels = 1;
       
       // EEG:
@@ -194,9 +193,8 @@ class Device{
       
       if (study_type.equals("EEG")){
         header_offset = 1;
-        starting_channel = 1;
-        ending_channel = 4;
-        channel_offset = 1;
+        starting_column = 1;
+        ending_column = 4;
         num_channels = 4;
         
         for (int eeg_ch = 0; eeg_ch < num_channels; eeg_ch++){
@@ -204,9 +202,8 @@ class Device{
         }
       } else if (study_type.equals("EDA")){
         header_offset = 2;
-        starting_channel = 0;
-        ending_channel = 0;
-        channel_offset = 0;
+        starting_column = 0;
+        ending_column = 0;
         num_channels = 1;
         for (int eda_ch = 0; eda_ch < num_channels; eda_ch++){
           data_temp.add(new ArrayList<Float>());
@@ -218,16 +215,16 @@ class Device{
         // starting_index: break in half, go back data_length/2 samples
         int num_samples = lines.size() - header_offset;
         starting_index = (int)((float)num_samples/2 - (float)data_length/2);
-        
       }
-      for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
-        
+      
+      for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){ //<>//
         String[] line = split(lines.get(l), " "); 
-       
-        for (int ch = starting_channel; ch <= ending_channel; ch++){
+        
+        for (int col = starting_column; col <= ending_column; col++){
           //add data for each channel
-          float datapoint = 10*Float.parseFloat(line[ch]);
-          data_temp.get(ch-channel_offset).add(datapoint);
+          float datapoint = Float.parseFloat(line[col]);
+          println(data_temp.size());
+          data_temp.get(col-starting_column).add(datapoint);
           
           // get max and min values
           if (datapoint> data_max){
