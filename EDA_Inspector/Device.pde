@@ -217,8 +217,8 @@ class Device{
         starting_index = (int)((float)num_samples/2 - (float)data_length/2);
       }
       
-      for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){ //<>//
-        String[] line = split(lines.get(l), " "); 
+      for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
+        String[] line = split(lines.get(l), "\t"); 
         
         for (int col = starting_column; col <= ending_column; col++){
           //add data for each channel
