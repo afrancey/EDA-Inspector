@@ -31,6 +31,21 @@ class Tools{
     
   }
   
+  ArrayList<String> read_header(String name){
+    String line = "null";
+    try {
+        BufferedReader br = new BufferedReader(new FileReader(name));
+        line = br.readLine();
+        br.close();
+        if (line != null){
+          return(line);
+        }
+    } catch(IOException ie) {
+    } finally {
+    }
+    return(line);
+  }
+  
   int string_date_to_seconds(String t){
     // takes string formatted as "HH:mm:ss" and returns
     // number of seconds since "00:00:00"
