@@ -70,6 +70,7 @@ void listfiles(){
       device.setup_device();
       device_list.add(device);
       device_names.add(checkDevice_result.get(0));
+      print("Device added: " + checkDevice_result.get(0));
     } else if (checkDevice_result.get(1).equals("threshold error")) {
       rejected_device.add(checkDevice_result.get(0));
     } else {

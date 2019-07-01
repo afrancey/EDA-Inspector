@@ -21,13 +21,15 @@ class Muse extends Device{
       String header = tools.read_header(top_data_folder + "/" + fname);
       print("header: ");
       println(header);
+      if (header.contains("index")){
+        return(new ArrayList<String>(Arrays.asList(fname, "device found")));
+      } else {
+        return(new ArrayList<String>(Arrays.asList(fname, "not a device")));
+      }
       
     } else {
       return(new ArrayList<String>(Arrays.asList(fname, "not a file")));
     }
-              
-    files_listed = true;
-    return(new ArrayList<String>());
   }
   
 }

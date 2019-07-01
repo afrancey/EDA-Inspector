@@ -78,8 +78,6 @@ class Device{
     }
     //fills channel_data and timepoints;
     read_data();
-        
-    println("read data");
     
   }
   
@@ -114,7 +112,6 @@ class Device{
     if (lines.get(1).contains("total time")){
       // expect first line to be "total time,<integer>"
       data_length = (int)fs*Integer.parseInt(split(lines.get(1),",")[1]);
-      println("EDA_data_length: " + Integer.toString(data_length));
     } else {
       success = false;
     }
@@ -145,7 +142,6 @@ class Device{
           // only other option than middle is to compare time in config to file start time
           // starting index should be difference between config start time and file recording start time
           Date startString = new Date((long)starttime*1000L);
-          println(fname + ", " + startString);
           String pattern = "HH:mm:ss";
           SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
           String time_of_day = simpleDateFormat.format(startString);
@@ -164,9 +160,7 @@ class Device{
   
   void read_data(){
     // read EEG data
-    println("inside read data");
     ArrayList<String> lines = tools.read_data_file(folder_path + "/" + "EDA.csv");
-    println("read the file");
     if (lines.size() > 100){
       if (study_type.equals("EDA")){   
         starttime = Float.parseFloat(lines.get(0));
@@ -243,11 +237,6 @@ class Device{
         
         sample_count++;
       }
-      
-      println("finished adding samples");
-      println(data_min);
-      println(data_max);
-      
       // round down # data to nearest multiple of num_subgraphs
       int num_data_points_to_use = num_subgraphs*floor(data_temp.get(0).size()/num_subgraphs);
       timepoints = new ArrayList<Float>(time_temp.subList(0, num_data_points_to_use));
