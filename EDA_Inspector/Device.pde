@@ -12,7 +12,7 @@ class Device{
   // subgraphs.get(ch).get(i) is the i-th subgraph of the ch-th channel
   ArrayList<ArrayList<CustomGraph>> subgraphs = new ArrayList<ArrayList<CustomGraph>>();
   int current_subgraph_index = 0;
-  int num_subgraphs = 4;
+  int num_subgraphs = 10;
   int max_subgraph_index = num_subgraphs - 1;
   
   ArrayList<CustomGraph> small_graphs = new ArrayList<CustomGraph>();
