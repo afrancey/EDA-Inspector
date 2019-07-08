@@ -419,7 +419,7 @@ void finished() throws IOException{
     for (int p = 0; p < device_list.size(); p++){
       Device current_device = device_list.get(p);
       
-      // headers
+      // filename/condition
       means_output+= split(current_device.fname,  " ")[0] + "," + current_device.condition + ",";
       boundaries_output+=current_device.fname + ",";
       slopes_output+= split(current_device.fname,  " ")[0] + "," + current_device.condition + ",";
@@ -463,6 +463,34 @@ void finished() throws IOException{
     PrintWriter swriter = new PrintWriter(dpath + "/slopes_" + datafile_timestamp + ".csv", "UTF-8");
     swriter.print(slopes_output);
     swriter.close();
+  } else if (analysis_type.contains("EEG")){
+    String boundaries_output = "";
+      
+    for (int p = 0; p < device_list.size(); p++){
+      Device current_device = device_list.get(p);
+      // filename/condition
+      boundaries_output+=current_device.fname + ",";
+      
+      // get info from device
+      ArrayList<ArrayList<Integer>> subject_bounds = current_device.sample_boundaries;
+      
+      for (int ch = 0; ch < subject_bounds.size(); ch++){
+        ArrayList<Integer> channel_bounds = subject_bounds.get(ch);
+        for (int b = 0; b < channel_bounds.size(); b++){
+          boundaries_output+= Integer.toString(channel_bounds.get(b)) + " ";
+        }
+        boundaries_output+=",";
+      }
+      boundaries_output+="\n";
+      
+    }
+    
+    // write data file
+    String dpath = dataPath("");
+    dpath = dpath.replace("\\","/");
+    PrintWriter bwriter = new PrintWriter(dpath + "/bounds_" + datafile_timestamp + ".csv", "UTF-8");
+    bwriter.print(boundaries_output);
+    bwriter.close();
   }
 }
 
