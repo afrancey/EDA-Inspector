@@ -40,10 +40,8 @@ class Empatica extends Device{
         }
         
         if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
-          // has right files in folder
-          String condition = split(filename, " ")[1];
-      
-          if (data_max > EDA_threshold){
+          // has right files in folder 
+          if (data_max < EDA_threshold){
             return(new ArrayList<String>(Arrays.asList(filename, "device found")));
           } else {
             // rejected for too low EDA
