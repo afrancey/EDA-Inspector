@@ -12,7 +12,7 @@ class Device{
   // subgraphs.get(ch).get(i) is the i-th subgraph of the ch-th channel
   ArrayList<ArrayList<CustomGraph>> subgraphs = new ArrayList<ArrayList<CustomGraph>>();
   int current_subgraph_index = 0;
-  int num_subgraphs = 10;
+  int num_subgraphs = 4;
   int max_subgraph_index = num_subgraphs - 1;
   
   ArrayList<CustomGraph> small_graphs = new ArrayList<CustomGraph>();
@@ -76,6 +76,12 @@ class Device{
     } else {
       fs = 4;
     }
+    
+    int recording_time = 60;
+    float num_samples = recording_time*fs;
+    
+    num_subgraphs = ceil(num_samples/(float)width);
+    max_subgraph_index = num_subgraphs - 1;
   }
   
   void setup_device(){
