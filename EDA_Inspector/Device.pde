@@ -142,7 +142,7 @@ class Device{
       String timestring = split(lines.get(p),",")[2];
       if (fname.equals(pnum + " " + cond)){
         
-        if (interval_type.equals("middle")){
+        if (interval_type.equals("middle") | interval_type.equals("end")){
           // do nothing... handled in read
         } else {
           // only other option than middle is to compare time in config to file start time
