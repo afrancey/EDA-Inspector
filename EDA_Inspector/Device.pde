@@ -214,6 +214,13 @@ class Device{
         // starting_index: break in half, go back data_length/2 samples
         int num_samples = lines.size() - header_offset;
         starting_index = (int)((float)num_samples/2 - (float)data_length/2);
+        
+      }
+      
+      if (interval_type.equals("end")){
+        // take last 60 seconds of file.
+        int num_samples = lines.size() - header_offset;
+        starting_index = (int)(num_samples - fs*60);
       }
       
       for (int l = starting_index + header_offset; l < starting_index + data_length + header_offset;l++){
