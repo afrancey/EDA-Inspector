@@ -19,8 +19,8 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
-String analysis_type = "EEG";
-//String analysis_type = "EDA";
+//String analysis_type = "EEG";
+String analysis_type = "EDA";
 
 // holds Muses and Empaticas
 ArrayList<Device> device_list = new ArrayList<Device>();
@@ -68,11 +68,13 @@ void listfiles(){
     ArrayList<String> checkDevice_result = device.checkDevice();
     if (checkDevice_result.get(1).equals("device found")){
       device.setup_device();
-      device_list.add(device);
-      device_names.add(checkDevice_result.get(0));
-      print("Device added: " + checkDevice_result.get(0));
-    } else if (checkDevice_result.get(1).equals("threshold error")) {
-      rejected_device.add(checkDevice_result.get(0));
+      if (device.data_max < EDA_threshold){
+        rejected_device.add(checkDevice_result.get(0));
+      } else {
+        device_list.add(device);
+        device_names.add(checkDevice_result.get(0));
+        print("Device added: " + checkDevice_result.get(0));
+      }
     } else {
       not_device.add(checkDevice_result);
     } 

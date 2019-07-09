@@ -41,12 +41,7 @@ class Empatica extends Device{
         
         if (Arrays.equals(empatica_filenames,filenames_in_empatica_folder)){
           // has right files in folder 
-          if (data_max < EDA_threshold){
-            return(new ArrayList<String>(Arrays.asList(filename, "device found")));
-          } else {
-            // rejected for too low EDA
-            return(new ArrayList<String>(Arrays.asList(filename, "threshold error")));
-          }
+          return(new ArrayList<String>(Arrays.asList(filename, "device found")));
         } else {
           // does not have correct files in folder
           return(new ArrayList<String>(Arrays.asList(filename, "wrong files")));
