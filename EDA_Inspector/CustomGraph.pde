@@ -110,7 +110,7 @@ class CustomGraph {
     left_spacing = lineChart.getLeftSpacing();
   }
   
-  void draw_graph(){
+  void draw_graph(int index){
     textSize(30);
     if (empty_chart == false){
       //lineChart.draw(x_pos - lineChart.getLeftSpacing(),y_pos+20,1700+lineChart.getLeftSpacing(),500);
@@ -121,6 +121,8 @@ class CustomGraph {
       } else {
         // title is "small", draw small chart
         lineChart.draw(width/4, height - height/3+ height/10, width/2, height/4);
+        
+        //lineChart.draw(width/4, index*height/5, width/2, height/4);
       }
     } else {
       text(title, x_pos+500,y_pos+700);
