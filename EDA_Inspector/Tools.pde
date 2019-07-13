@@ -131,4 +131,27 @@ class Tools{
     
     return(mean_ssd(good_data));
   }
+  
+  ArrayList<ArrayList<String>> match_pre_and_post(){
+    String datafilepath = "";
+    ArrayList<String> lines = read_data_file(datafilepath);
+    
+    ArrayList<ArrayList<String>> master_list = new ArrayList<ArrayList<String>>();
+    
+    for (int i = 0; i < lines.size(); i = i+2){
+      ArrayList<String> pre_post = new ArrayList<String>();
+      String[] preline = split(lines.get(i), "\t"); 
+      String[] postline = split(lines.get(i+1), "\t"); 
+      
+      String prename = preline[0];
+      String postname = postline[0];
+      String numbername = preline[3] + postline[3];
+      pre_post.add(numbername);
+      pre_post.add(prename);
+      pre_post.add(postname);
+      master_list.add(pre_post);
+    }
+    
+    return(master_list);
+  }
 }
