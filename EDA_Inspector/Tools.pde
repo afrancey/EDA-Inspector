@@ -116,4 +116,19 @@ class Tools{
     }
     return(indicator_list);
   }
+
+  ArrayList<Float> get_zscore_params_using_multiple_signals_with_bounds(ArrayList<ArrayList<Float>> signals, ArrayList<ArrayList<Integer>> sample_boundaries){
+    // combines good data from multiple signals, returns zscore params (mean, sd)
+    ArrayList<Float> good_data = new ArrayList<Float>();
+    for (int signum = 0; signum < signals.size(); signum++){
+      ArrayList<Integer> indlist = sample_boundaries_to_indicator_list(sample_boundaries.get(signum), signals.get(signum).size());
+      for (int i = 0; i < indlist.size(); i++){
+        if (indlist.get(i) == 1){
+          good_data.add(signals.get(signum).get(i));
+        }
+      }
+    }
+    
+    return(mean_ssd(good_data));
+  }
 }
