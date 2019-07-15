@@ -19,8 +19,8 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
-String analysis_type = "EEG";
-//String analysis_type = "EDA";
+//String analysis_type = "EEG";
+String analysis_type = "EDA";
 
 // holds Muses and Empaticas
 ArrayList<Device> device_list = new ArrayList<Device>();
@@ -410,9 +410,12 @@ void draw_mouseline(){
 }
 
 void finished() throws IOException{
+  
   // save means for each participant
   
   if (analysis_type.contains("EDA")){
+    
+    set_zscore_params();
   
     String means_output = "";
     String boundaries_output = "";
@@ -497,4 +500,48 @@ void finished() throws IOException{
 }
 
 void get_config_parameters(){
+}
+
+void set_zscore_params(){
+  // read config file, merge pre and post signals, find mean and ssd, apply it to Device member
+  ArrayList<ArrayList<String>> pre_post_list = tools.match_pre_and_post();
+  for (int pair = 0; pair < pre_post_list.size(); pair++){
+    
+    // get filenames
+    String pre_name = pre_post_list.get(pair).get(1);
+    String post_name = pre_post_list.get(pair).get(2);
+    
+    Device pre_dev = new Device();
+    Device post_dev = new Device();
+    
+    // find devices matching pre and post filenames
+    for (int dev = 0; dev < device_list.size(); dev++){
+      Device cur_dev = device_list.get(dev);
+      if (cur_dev.fname.equals(pre_name)){
+        pre_dev = cur_dev;
+      }
+      if (cur_dev.fname.equals(post_name)){
+        post_dev = cur_dev;
+      }
+    }
+    
+    // found devices, combine data
+    ArrayList<ArrayList<Float>> data_list = new ArrayList<ArrayList<Float>>();
+    data_list.add(pre_dev.channel_data.get(0));
+    data_list.add(post_dev.channel_data.get(0));
+    
+    ArrayList<ArrayList<Integer>> bound_list = new ArrayList<ArrayList<Integer>>();
+    bound_list.add(pre_dev.sample_boundaries.get(0));
+    bound_list.add(post_dev.sample_boundaries.get(0));
+    
+    ArrayList<Float> combined_mean_ssd = tools.get_zscore_params_using_multiple_signals_with_bounds(data_list, bound_list);
+    
+    pre_dev.mean_to_use = combined_mean_ssd.get(0);
+    pre_dev.ssd_to_use = combined_mean_ssd.get(1);
+    post_dev.mean_to_use = combined_mean_ssd.get(0);
+    post_dev.ssd_to_use = combined_mean_ssd.get(1);
+    
+    
+  }
+  
 }
