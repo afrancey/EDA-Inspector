@@ -58,9 +58,8 @@ class Empatica extends Device{
   float[] get_mean_for_each_interval(){
     
     // first z-score data
-    ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
     ArrayList<Float> data = channel_data.get(0);
-    ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
+    ArrayList<Float> z_data = tools.zscore_list(data, mean_to_use,ssd_to_use);
   
     ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries.get(0), z_data.size());
     
@@ -83,9 +82,8 @@ class Empatica extends Device{
   
   float[] get_slope_for_each_interval(){
     //gets slope of regression line
-    ArrayList<Float> baseline_score_params = tools.mean_ssd(channel_data.get(0));
     ArrayList<Float> data = channel_data.get(0);;
-    ArrayList<Float> z_data = tools.zscore_list(data, baseline_score_params.get(0),baseline_score_params.get(1));
+    ArrayList<Float> z_data = tools.zscore_list(data, mean_to_use,ssd_to_use);
     
     ArrayList<Integer> indicator_list = tools.sample_boundaries_to_indicator_list(sample_boundaries.get(0), z_data.size());
     
