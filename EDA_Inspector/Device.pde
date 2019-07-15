@@ -59,6 +59,9 @@ class Device{
   
   ArrayList<ArrayList<Integer>> sample_boundaries = new ArrayList<ArrayList<Integer>>();
   
+  Device(){
+  }
+  
   Device(PApplet parent, String top_path, String fn, String c, String s_t){
     //filenames = fns;
     if (s_t.equals("EEG")){
