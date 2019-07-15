@@ -54,6 +54,9 @@ class Device{
   float data_max = -10000;
   float data_min = 10000;
   
+  float mean_to_use = 0;
+  float ssd_to_use = 1;
+  
   ArrayList<ArrayList<Integer>> sample_boundaries = new ArrayList<ArrayList<Integer>>();
   
   Device(PApplet parent, String top_path, String fn, String c, String s_t){
