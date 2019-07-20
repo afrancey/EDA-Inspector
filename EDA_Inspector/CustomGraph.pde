@@ -116,8 +116,13 @@ class CustomGraph {
       //lineChart.draw(x_pos - lineChart.getLeftSpacing(),y_pos+20,1700+lineChart.getLeftSpacing(),500);
       
       if (title.equals("small") == false){
-        //this is big, normal chart
-        lineChart.draw(0, 50, width-lineChart.getLeftSpacing(), height - height/3);
+        //this is big, normal chart (best for EDA)
+        //lineChart.draw(0, 50, width-lineChart.getLeftSpacing(), height - height/3);
+        
+        //multiple scales (best for EEG)
+        lineChart.draw(0, 200, width-lineChart.getLeftSpacing(), height/8);
+        lineChart.draw(0, height/8 + 200, width-lineChart.getLeftSpacing(), height/4);
+        
       } else {
         // title is "small", draw small chart
         lineChart.draw(width/4, height - height/3+ height/10, width/2, height/4);
