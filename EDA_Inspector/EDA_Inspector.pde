@@ -19,8 +19,8 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
-//String analysis_type = "EEG";
-String analysis_type = "EDA";
+String analysis_type = "EEG";
+//String analysis_type = "EDA";
 
 // holds Muses and Empaticas
 ArrayList<Device> device_list = new ArrayList<Device>();
@@ -321,7 +321,8 @@ void showSnapBoundaryToAxis(){
 }
 
 String checkSnapBoundaryToAxis(int x, int y){
-  int num_seconds_in_buffer = 1;
+  int num_samples_in_buffer = 4;
+  float num_seconds_in_buffer = num_samples_in_buffer/device_list.get(filecount).fs;
   float min_time = device_list.get(filecount).current_graph.lineChart.getMinX();
   float max_eda = device_list.get(filecount).current_graph.lineChart.getMaxY();
   float max_time = device_list.get(filecount).current_graph.lineChart.getMaxX();
