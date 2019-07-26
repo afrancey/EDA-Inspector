@@ -19,6 +19,8 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
+boolean draw_ruler = false;
+
 String analysis_type = "EEG";
 //String analysis_type = "EDA";
 
@@ -377,11 +379,15 @@ void draw_mouseline(){
       strokeWeight(1);
       text("time: " + Float.toString(datapoint.x), mouseX + 20, height - height/3 + 100);
       text("SCL: " + Float.toString(datapoint.y), mouseX + 20, height - height/3 + 130);
-      PVector mouse_endpoint = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(datapoint.x + 2, datapoint.y + 0.1));
-      line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
-      line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
       
-      line(mouseX + 10, mouse_endpoint.y, mouse_endpoint.x+10, mouseY); // hypoteneuse
+      if (draw_ruler){
+      PVector mouse_endpoint = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(datapoint.x + 2, datapoint.y + 0.1));
+        line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
+        line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
+        line(mouseX + 10, mouse_endpoint.y, mouse_endpoint.x+10, mouseY); // hypoteneuse
+      }
+      
+
       
         // draw line on mouse
       line(mouseX, 50, mouseX, height - height/3); // vertical
