@@ -20,6 +20,7 @@ Tools tools = new Tools();
 float EDA_threshold = 0.5;
 
 boolean draw_ruler = false;
+boolean draw_out_of_bounds = true;
 
 String analysis_type = "EEG";
 //String analysis_type = "EDA";
@@ -385,6 +386,26 @@ void draw_mouseline(){
         line(mouseX + 10, mouseY, mouseX + 10, mouse_endpoint.y); // vertical 0.1uS bar
         line(mouseX + 10, mouseY, mouse_endpoint.x+10, mouseY); // horizontal 2s bar
         line(mouseX + 10, mouse_endpoint.y, mouse_endpoint.x+10, mouseY); // hypoteneuse
+      }
+      
+      if (draw_out_of_bounds){
+        
+        // draw top boundary (at 100)
+        float max_x = device_list.get(filecount).current_graph.lineChart.getMaxX();
+        float min_x = device_list.get(filecount).current_graph.lineChart.getMinX();
+        PVector bottom_left = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_x, 100));
+        PVector top_right = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_x, 110));
+        fill(100,100,100,40);
+        rectMode(CORNERS);
+        rect(bottom_left.x,bottom_left.y, top_right.x, top_right.y);
+        
+        // draw bottom boundary (at -100)
+        PVector bottom_bottom_left = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(min_x, -110));
+        PVector bottom_top_right = device_list.get(filecount).current_graph.lineChart.getDataToScreen(new PVector(max_x, -100));
+        fill(100,100,100,40);
+        rectMode(CORNERS);
+        rect(bottom_bottom_left.x,bottom_bottom_left.y, bottom_top_right.x, bottom_top_right.y);
+      
       }
       
 

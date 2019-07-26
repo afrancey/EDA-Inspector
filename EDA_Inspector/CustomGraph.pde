@@ -120,6 +120,7 @@ class CustomGraph {
         //lineChart.draw(0, 50, width-lineChart.getLeftSpacing(), height - height/3);
         
         //multiple scales (best for EEG)
+        //note: whatever the last one drawn is, that's the one that can be accessed by device!
         lineChart.draw(0, 200, width-lineChart.getLeftSpacing(), height/8);
         lineChart.draw(0, height/8 + 200, width-lineChart.getLeftSpacing(), height/4);
         
