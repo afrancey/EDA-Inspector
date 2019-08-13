@@ -40,6 +40,7 @@ class Device{
   boolean success = true;
   
   String fname;
+  String display_name;
   String file_time;
   Double double_time;
   
