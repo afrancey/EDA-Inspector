@@ -132,8 +132,7 @@ class Tools{
     return(mean_ssd(good_data));
   }
   
-  ArrayList<ArrayList<String>> match_pre_and_post(){
-    String datafilepath = "PARTICIPANTS_EDA.csv";
+  ArrayList<ArrayList<String>> match_pre_and_post(String datafilepath){
     ArrayList<String> lines = read_data_file(datafilepath);
     
     ArrayList<ArrayList<String>> master_list = new ArrayList<ArrayList<String>>();

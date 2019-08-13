@@ -441,9 +441,9 @@ void finished() throws IOException{
   
   // save means for each participant
   
+  set_zscore_params_and_condition();
+  
   if (analysis_type.contains("EDA")){
-    
-    set_zscore_params();
   
     String means_output = "";
     String boundaries_output = "";
@@ -453,9 +453,9 @@ void finished() throws IOException{
       Device current_device = device_list.get(p);
       
       // filename/condition
-      means_output+= split(current_device.fname,  " ")[0] + "," + current_device.condition + ",";
-      boundaries_output+=current_device.fname + ",";
-      slopes_output+= split(current_device.fname,  " ")[0] + "," + current_device.condition + ",";
+      means_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + ",";
+      boundaries_output+=current_device.display_name + ",";
+      slopes_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + ",";
       
       // get info from device
       float[] weighted_means = current_device.get_mean_for_each_interval();
@@ -502,7 +502,7 @@ void finished() throws IOException{
     for (int p = 0; p < device_list.size(); p++){
       Device current_device = device_list.get(p);
       // filename/condition
-      boundaries_output+=current_device.fname + ",";
+      boundaries_output+=current_device.display_name + ",";
       
       // get info from device
       ArrayList<ArrayList<Integer>> subject_bounds = current_device.sample_boundaries;
@@ -530,12 +530,13 @@ void finished() throws IOException{
 void get_config_parameters(){
 }
 
-void set_zscore_params(){
+void set_zscore_params_and_condition(){
   // read config file, merge pre and post signals, find mean and ssd, apply it to Device member
-  ArrayList<ArrayList<String>> pre_post_list = tools.match_pre_and_post();
+  ArrayList<ArrayList<String>> pre_post_list = tools.match_pre_and_post("PARTICIPANTS_" + analysis_type + ".csv");
   for (int pair = 0; pair < pre_post_list.size(); pair++){
     
     // get filenames
+    String number = pre_post_list.get(pair).get(0);
     String pre_name = pre_post_list.get(pair).get(1);
     String post_name = pre_post_list.get(pair).get(2);
     
@@ -547,27 +548,34 @@ void set_zscore_params(){
       Device cur_dev = device_list.get(dev);
       if (cur_dev.fname.equals(pre_name)){
         pre_dev = cur_dev;
+        pre_dev.condition = "pre";
+        pre_dev.display_name = number;
       }
       if (cur_dev.fname.equals(post_name)){
         post_dev = cur_dev;
+        post_dev.condition = "post";
+        pre_dev.display_name = number;
       }
     }
     
-    // found devices, combine data
-    ArrayList<ArrayList<Float>> data_list = new ArrayList<ArrayList<Float>>();
-    data_list.add(pre_dev.channel_data.get(0));
-    data_list.add(post_dev.channel_data.get(0));
+    if (analysis_type.equals("EDA)){
     
-    ArrayList<ArrayList<Integer>> bound_list = new ArrayList<ArrayList<Integer>>();
-    bound_list.add(pre_dev.sample_boundaries.get(0));
-    bound_list.add(post_dev.sample_boundaries.get(0));
-    
-    ArrayList<Float> combined_mean_ssd = tools.get_zscore_params_using_multiple_signals_with_bounds(data_list, bound_list);
-    
-    pre_dev.mean_to_use = combined_mean_ssd.get(0);
-    pre_dev.ssd_to_use = combined_mean_ssd.get(1);
-    post_dev.mean_to_use = combined_mean_ssd.get(0);
-    post_dev.ssd_to_use = combined_mean_ssd.get(1);
+      // found devices, combine data
+      ArrayList<ArrayList<Float>> data_list = new ArrayList<ArrayList<Float>>();
+      data_list.add(pre_dev.channel_data.get(0));
+      data_list.add(post_dev.channel_data.get(0));
+      
+      ArrayList<ArrayList<Integer>> bound_list = new ArrayList<ArrayList<Integer>>();
+      bound_list.add(pre_dev.sample_boundaries.get(0));
+      bound_list.add(post_dev.sample_boundaries.get(0));
+      
+      ArrayList<Float> combined_mean_ssd = tools.get_zscore_params_using_multiple_signals_with_bounds(data_list, bound_list);
+      
+      pre_dev.mean_to_use = combined_mean_ssd.get(0);
+      pre_dev.ssd_to_use = combined_mean_ssd.get(1);
+      post_dev.mean_to_use = combined_mean_ssd.get(0);
+      post_dev.ssd_to_use = combined_mean_ssd.get(1);
+    }
     
     
   }
