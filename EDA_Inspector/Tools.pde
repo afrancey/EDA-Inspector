@@ -133,7 +133,7 @@ class Tools{
   }
   
   ArrayList<ArrayList<String>> match_pre_and_post(){
-    String datafilepath = "";
+    String datafilepath = "PARTICIPANTS_EDA.csv";
     ArrayList<String> lines = read_data_file(datafilepath);
     
     ArrayList<ArrayList<String>> master_list = new ArrayList<ArrayList<String>>();
@@ -145,8 +145,8 @@ class Tools{
       
       String prename = preline[0];
       String postname = postline[0];
-      String numbername = preline[3] + postline[3];
-      pre_post.add(numbername);
+      String number = split(preline[2], " ")[0];
+      pre_post.add(number);
       pre_post.add(prename);
       pre_post.add(postname);
       master_list.add(pre_post);
