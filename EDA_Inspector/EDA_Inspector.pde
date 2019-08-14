@@ -19,11 +19,11 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
-boolean draw_ruler = false;
-boolean draw_out_of_bounds = true;
+boolean draw_ruler = true;
+boolean draw_out_of_bounds = false;
 
-String analysis_type = "EEG";
-//String analysis_type = "EDA";
+//String analysis_type = "EEG";
+String analysis_type = "EDA";
 
 // holds Muses and Empaticas
 ArrayList<Device> device_list = new ArrayList<Device>();
@@ -445,7 +445,7 @@ void finished() throws IOException{
   
   if (analysis_type.contains("EDA")){
   
-    String means_output = "";
+    String means_output = "subject,time,group,standmean";
     String boundaries_output = "";
     String slopes_output = "";
       
@@ -453,9 +453,9 @@ void finished() throws IOException{
       Device current_device = device_list.get(p);
       
       // filename/condition
-      means_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + ",";
+      means_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + "," + current_device.group + ",";
       boundaries_output+=current_device.display_name + ",";
-      slopes_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + ",";
+      slopes_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + ","  + current_device.group + ",";
       
       // get info from device
       float[] weighted_means = current_device.get_mean_for_each_interval();
@@ -532,16 +532,20 @@ void get_config_parameters(){
 
 void set_zscore_params_and_condition(){
   // read config file, merge pre and post signals, find mean and ssd, apply it to Device member
-  ArrayList<ArrayList<String>> pre_post_list = tools.match_pre_and_post("PARTICIPANTS_" + analysis_type + ".csv");
+  ArrayList<ArrayList<String>> pre_post_list = tools.match_pre_and_post("C:/Users/alzfr/Documents/thesis stats/THESIS2018/expt2/PARTICIPANTS.csv");
   for (int pair = 0; pair < pre_post_list.size(); pair++){
     
     // get filenames
     String number = pre_post_list.get(pair).get(0);
     String pre_name = pre_post_list.get(pair).get(1);
     String post_name = pre_post_list.get(pair).get(2);
+    String grp = pre_post_list.get(pair).get(3);
     
     Device pre_dev = new Device();
     Device post_dev = new Device();
+    
+    boolean pre_found = false;
+    boolean post_found = false;
     
     // find devices matching pre and post filenames
     for (int dev = 0; dev < device_list.size(); dev++){
@@ -550,15 +554,21 @@ void set_zscore_params_and_condition(){
         pre_dev = cur_dev;
         pre_dev.condition = "pre";
         pre_dev.display_name = number;
+        pre_dev.group = grp;
+        print("pre found");
+        pre_found = true;
       }
       if (cur_dev.fname.equals(post_name)){
         post_dev = cur_dev;
         post_dev.condition = "post";
-        pre_dev.display_name = number;
+        post_dev.display_name = number;
+        post_dev.group = grp;
+        print("post found");
+        post_found = true;
       }
     }
     
-    if (analysis_type.equals("EDA)){
+    if (analysis_type.equals("EDA") & pre_found & post_found){
     
       // found devices, combine data
       ArrayList<ArrayList<Float>> data_list = new ArrayList<ArrayList<Float>>();

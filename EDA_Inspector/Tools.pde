@@ -139,15 +139,17 @@ class Tools{
     
     for (int i = 0; i < lines.size(); i = i+2){
       ArrayList<String> pre_post = new ArrayList<String>();
-      String[] preline = split(lines.get(i), "\t"); 
-      String[] postline = split(lines.get(i+1), "\t"); 
+      String[] preline = split(lines.get(i), ","); 
+      String[] postline = split(lines.get(i+1), ","); 
       
-      String prename = preline[0];
-      String postname = postline[0];
+      String prename = split(preline[0],".")[0];
+      String postname = split(postline[0],".")[0];
       String number = split(preline[2], " ")[0];
+      String group = split(preline[2], " ")[2];
       pre_post.add(number);
       pre_post.add(prename);
       pre_post.add(postname);
+      pre_post.add(group);
       master_list.add(pre_post);
     }
     

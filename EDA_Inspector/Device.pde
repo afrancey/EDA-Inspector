@@ -41,6 +41,7 @@ class Device{
   
   String fname;
   String display_name;
+  String group;
   String file_time;
   Double double_time;
   
