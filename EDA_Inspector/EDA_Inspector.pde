@@ -445,9 +445,9 @@ void finished() throws IOException{
   
   if (analysis_type.contains("EDA")){
   
-    String means_output = "subject,time,group,standmean";
+    String means_output = "subject,time,group,standmean\n";
     String boundaries_output = "";
-    String slopes_output = "";
+    String slopes_output = "subject,time,group,standslope\n";
       
     for (int p = 0; p < device_list.size(); p++){
       Device current_device = device_list.get(p);
@@ -455,7 +455,7 @@ void finished() throws IOException{
       // filename/condition
       means_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + "," + current_device.group + ",";
       boundaries_output+=current_device.display_name + ",";
-      slopes_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + ","  + current_device.group + ",";
+      slopes_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + "," + current_device.group + ",";
       
       // get info from device
       float[] weighted_means = current_device.get_mean_for_each_interval();
