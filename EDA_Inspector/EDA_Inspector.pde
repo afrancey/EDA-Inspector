@@ -137,6 +137,7 @@ void draw(){
       try{
         finished();
       } catch(IOException e) {
+        println(e);
         println("exception");
       }
     } else {
