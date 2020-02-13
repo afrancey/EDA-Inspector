@@ -443,58 +443,31 @@ void finished() throws IOException{
   // save means for each participant
   
   if (analysis_type.contains("EDA")){
-  
-    String means_output = "subject,time,group,standmean\n";
     String boundaries_output = "";
-    String slopes_output = "subject,time,group,standslope\n";
-      
     for (int p = 0; p < device_list.size(); p++){
       Device current_device = device_list.get(p);
       
       // filename/condition
-      means_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + "," + current_device.group + ",";
       boundaries_output+=current_device.display_name + ",";
-      slopes_output+= split(current_device.display_name,  " ")[0] + "," + current_device.condition + "," + current_device.group + ",";
       
       // get info from device
-      float[] weighted_means = current_device.get_mean_for_each_interval();
       ArrayList<Integer> subject_bounds = current_device.sample_boundaries.get(0);
-      float[] slopes = current_device.get_slope_for_each_interval();
       
       // generate output string
-      for (int m = 0; m < weighted_means.length; m++){
-        means_output+= Float.toString(weighted_means[m]) + ",";
-      }
-      means_output+="\n";
-      
       for (int b = 0; b < subject_bounds.size(); b++){
         boundaries_output+= Integer.toString(subject_bounds.get(b)) + " ";
       }
       boundaries_output+="\n";
-      
-      
-      for (int m = 0; m < slopes.length; m++){
-        slopes_output+= Float.toString(slopes[m]) + ",";
-      }
-      slopes_output+="\n";
-      
     }
     
     // write data file
     String dpath = dataPath("");
     dpath = dpath.replace("\\","/");
     
-    PrintWriter mwriter = new PrintWriter(dpath + "/means_" + datafile_timestamp + ".csv", "UTF-8");
-    mwriter.print(means_output);
-    mwriter.close();
-    
     PrintWriter bwriter = new PrintWriter(dpath + "/bounds_" + datafile_timestamp + ".csv", "UTF-8");
     bwriter.print(boundaries_output);
     bwriter.close();
     
-    PrintWriter swriter = new PrintWriter(dpath + "/slopes_" + datafile_timestamp + ".csv", "UTF-8");
-    swriter.print(slopes_output);
-    swriter.close();
   } else if (analysis_type.contains("EEG")){
     String boundaries_output = "";
       
