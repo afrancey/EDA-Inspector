@@ -442,8 +442,6 @@ void finished() throws IOException{
   
   // save means for each participant
   
-  set_zscore_params_and_condition();
-  
   if (analysis_type.contains("EDA")){
   
     String means_output = "subject,time,group,standmean\n";
@@ -531,6 +529,7 @@ void finished() throws IOException{
 void get_config_parameters(){
 }
 
+// DEPRECATED - TRY NOT TO USE!
 void set_zscore_params_and_condition(){
   // read config file, merge pre and post signals, find mean and ssd, apply it to Device member
   ArrayList<ArrayList<String>> pre_post_list = tools.match_pre_and_post("C:/Users/alzfr/Documents/thesis stats/THESIS2018/expt2/PARTICIPANTS.csv");
