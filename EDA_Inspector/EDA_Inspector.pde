@@ -502,6 +502,10 @@ void finished() throws IOException{
 void get_config_parameters(){
 }
 
+void set_display_name_and_condition(){
+  // to-d0:
+  // replace functionality of set_zscore_params_and_condition()
+}
 // DEPRECATED - TRY NOT TO USE!
 void set_zscore_params_and_condition(){
   // read config file, merge pre and post signals, find mean and ssd, apply it to Device member
