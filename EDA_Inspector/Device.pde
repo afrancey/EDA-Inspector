@@ -74,6 +74,7 @@ class Device{
     condition = c;
     study_type = s_t;
     fname = fn;
+    display_name = fn;
     folder_path = top_path + "/" + fn;
     config_path = top_path + "/config.csv";
     file_time = fn.substring(0,1);
