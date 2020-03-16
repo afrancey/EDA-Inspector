@@ -19,9 +19,10 @@ Tools tools = new Tools();
 
 float EDA_threshold = 0.5;
 
-boolean draw_ruler = true;
-boolean draw_out_of_bounds = false;
-boolean draw_smallgraph_mask_rects = false;
+boolean draw_ruler = true; // used for EDA: triangle ruler showing acceptable slope
+boolean draw_out_of_bounds = false; // used for EEG: draw horizontal lines at acceptable magnitude
+boolean draw_smallgraph_mask_rects = false; // used for both: draw mask over current section of signal in small macroscope graph
+boolean doing_artifact_boundaries = false; // create boundary on mouseclick
 
 String analysis_type = "EEG";
 //String analysis_type = "EDA";
@@ -247,9 +248,12 @@ void mouseClicked(){
     println("mouseclicked");
     int x = mouseX;
     int y = mouseY;
-    boolean removing = undo_boundary(x);
-    if (removing == false){
-      add_boundary(x,y);
+    
+    if (doing_artifact_boundaries){
+      boolean removing = undo_boundary(x);
+      if (removing == false){
+        add_boundary(x,y);
+      }
     }
   }
   
@@ -415,7 +419,10 @@ void draw_mouseline(){
         // draw line on mouse
       line(mouseX, 50, mouseX, height - height/3); // vertical
       //line(50, mouseY, width - 50, mouseY); // horizontal
-      showSnapBoundaryToAxis();
+      
+      if (doing_artifact_boundaries){
+        showSnapBoundaryToAxis();
+      }
     }
   }
   
