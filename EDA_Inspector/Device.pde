@@ -301,18 +301,18 @@ class Device{
   }
   
   void draw_data(){
-    current_graph = subgraphs.get(current_channel_index).get(current_subgraph_index);
-    current_graph.draw_graph(0);
+    //current_graph = subgraphs.get(current_channel_index).get(current_subgraph_index);
+    //current_graph.draw_graph(0);
     
-    current_small_graph = small_graphs.get(current_channel_index);
-    current_small_graph.draw_graph(0);
+    //current_small_graph = small_graphs.get(current_channel_index);
+    //current_small_graph.draw_graph(0);
     
-    /*
-    small_graphs.get(0).draw_graph(0);
-    small_graphs.get(1).draw_graph(1);
-    small_graphs.get(2).draw_graph(2);
-    small_graphs.get(3).draw_graph(3);
-    */
+    
+    small_graphs.get(0).draw_graph(1);
+    small_graphs.get(1).draw_graph(2);
+    small_graphs.get(2).draw_graph(3);
+    small_graphs.get(3).draw_graph(4);
+    
     
   } 
 }
