@@ -21,9 +21,10 @@ float EDA_threshold = 0.5;
 
 boolean draw_ruler = true;
 boolean draw_out_of_bounds = false;
+boolean draw_smallgraph_mask_rects = false;
 
-//String analysis_type = "EEG";
-String analysis_type = "EDA";
+String analysis_type = "EEG";
+//String analysis_type = "EDA";
 
 // holds Muses and Empaticas
 ArrayList<Device> device_list = new ArrayList<Device>();
@@ -419,21 +420,22 @@ void draw_mouseline(){
   }
   
   // draw rects on small graph
-  //device_list
-  fill(0,0,0,40);
-  stroke(0,0,0);
-  strokeWeight(1);
-  Device current_device = device_list.get(filecount);
-  int num_data_points = current_device.timepoints.size();
-  float max_eda = current_device.data_max;
-  float min_eda = current_device.data_min;
-  float max_time = num_data_points/current_device.fs;
-  float starttime = current_device.current_subgraph_index*max_time/current_device.num_subgraphs;
-  float endtime = (current_device.current_subgraph_index+1)*max_time/current_device.num_subgraphs;
-  PVector top_left_corner = current_device.current_small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
-  PVector bottom_right_corner = current_device.current_small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
-  rectMode(CORNERS);
-  rect(top_left_corner.x, top_left_corner.y, bottom_right_corner.x, bottom_right_corner.y);
+  if (draw_smallgraph_mask_rects){
+    fill(0,0,0,40);
+    stroke(0,0,0);
+    strokeWeight(1);
+    Device current_device = device_list.get(filecount);
+    int num_data_points = current_device.timepoints.size();
+    float max_eda = current_device.data_max;
+    float min_eda = current_device.data_min;
+    float max_time = num_data_points/current_device.fs;
+    float starttime = current_device.current_subgraph_index*max_time/current_device.num_subgraphs;
+    float endtime = (current_device.current_subgraph_index+1)*max_time/current_device.num_subgraphs;
+    PVector top_left_corner = current_device.current_small_graph.lineChart.getDataToScreen(new PVector(starttime, max_eda));
+    PVector bottom_right_corner = current_device.current_small_graph.lineChart.getDataToScreen(new PVector(endtime, min_eda));
+    rectMode(CORNERS);
+    rect(top_left_corner.x, top_left_corner.y, bottom_right_corner.x, bottom_right_corner.y);
+  }
 
 
 }
