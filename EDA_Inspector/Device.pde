@@ -66,7 +66,7 @@ class Device{
   
   Device(PApplet parent, String top_path, String fn, String c, String s_t){
     //filenames = fns;
-    if (s_t.equals("EEG")){
+    if (s_t.contains("EEG")){
       num_channels = 4;
     } else {
       num_channels = 1;
@@ -80,7 +80,7 @@ class Device{
     file_time = fn.substring(0,1);
     mainscreen = parent;
     
-    if (study_type.equals("EEG")){
+    if (study_type.contains("EEG")){
       fs = 220;
     } else {
       fs = 4;
@@ -205,7 +205,7 @@ class Device{
       // second line is sampling rate (Hz)
       // line looks like "datapoint"
       
-      if (study_type.equals("EEG")){
+      if (study_type.contains("EEG")){
         header_offset = 1;
         starting_column = 1;
         ending_column = 4;
@@ -301,17 +301,21 @@ class Device{
   }
   
   void draw_data(){
-    //current_graph = subgraphs.get(current_channel_index).get(current_subgraph_index);
-    //current_graph.draw_graph(0);
     
-    //current_small_graph = small_graphs.get(current_channel_index);
-    //current_small_graph.draw_graph(0);
+    if (analysis_type == "EEG_allchans"){
     
+      small_graphs.get(0).draw_graph(1);
+      small_graphs.get(1).draw_graph(2);
+      small_graphs.get(2).draw_graph(3);
+      small_graphs.get(3).draw_graph(4);
+    } else {
     
-    small_graphs.get(0).draw_graph(1);
-    small_graphs.get(1).draw_graph(2);
-    small_graphs.get(2).draw_graph(3);
-    small_graphs.get(3).draw_graph(4);
+      current_graph = subgraphs.get(current_channel_index).get(current_subgraph_index);
+      current_graph.draw_graph(0);
+      
+      current_small_graph = small_graphs.get(current_channel_index);
+      current_small_graph.draw_graph(0);
+    }
     
     
   } 

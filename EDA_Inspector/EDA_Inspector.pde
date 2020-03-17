@@ -23,8 +23,10 @@ boolean draw_ruler = true; // used for EDA: triangle ruler showing acceptable sl
 boolean draw_out_of_bounds = false; // used for EEG: draw horizontal lines at acceptable magnitude
 boolean draw_smallgraph_mask_rects = false; // used for both: draw mask over current section of signal in small macroscope graph
 boolean doing_artifact_boundaries = false; // create boundary on mouseclick
+boolean draw_components = false; // contains all of the above
 
-String analysis_type = "EEG";
+//String analysis_type = "EEG";
+String analysis_type = "EEG_allchans";
 //String analysis_type = "EDA";
 
 // holds Muses and Empaticas
@@ -63,7 +65,7 @@ void listfiles(){
   for(int i = 0; i < listOfFiles.length; i++) {
     String filename = listOfFiles[i].getName();
     Device device;
-    if (analysis_type.equals("EEG")){
+    if (analysis_type.contains("EEG")){
       device = new Muse(this, top_data_folder, filename, "null");
     } else {
       // actually, filename is the name of the folder containing the set of Empatica files here
@@ -378,7 +380,7 @@ void draw_mouseline(){
   }
   
   // draw ruler
-  if (filecount < device_list.size()){
+  if (filecount < device_list.size() && draw_components){
     PVector datapoint = device_list.get(filecount).current_graph.lineChart.getScreenToData(new PVector(mouseX, mouseY));
     if (datapoint != null){
       fill(0,0,0);
