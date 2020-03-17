@@ -189,7 +189,11 @@ void keyPressed() {
     stage = "inspection";
   } else if (stage.equals("inspection")){
     if (key == CODED) {
-      if (keyCode == RIGHT) {
+      
+      if (keyCode == RIGHT && analysis_type == "EEG_allchans"){
+        filecount++;
+      }
+      else if (keyCode == RIGHT) {
         println("rightpress");
         Device current_device = device_list.get(filecount);
         if (current_device.current_subgraph_index < current_device.num_subgraphs){
